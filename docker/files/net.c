@@ -426,6 +426,7 @@ int redisContextConnectUnix(redisContext *c, const char *path, const struct time
         c->unix_sock.path = strdup(path);
 
     if (timeout) {
+        validate(timeout);
         if (c->timeout != timeout) {
             if (c->timeout == NULL)
                 c->timeout = malloc(sizeof(struct timeval));
