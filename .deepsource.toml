@@ -2,4 +2,6 @@ version = 1
 
 [[analyzers]]
 name = "cxx"
-enabled = true
+
+[[transformers]]
+name = "clang-format"
