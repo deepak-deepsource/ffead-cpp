@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -25,96 +25,98 @@
 #include "TemplateHandler.h"
 #include "vector"
 #ifndef OS_MINGW
-#include <netinet/in.h>
 #include <arpa/inet.h>
+#include <netinet/in.h>
 #endif
-#include "DataSourceManager.h"
-#include <stdlib.h>
-#include <algorithm>
-#include "CryptoHandler.h"
-#include "vector"
-#include "CastUtil.h"
-#include <stdlib.h>
 #include "CacheManager.h"
+#include "CastUtil.h"
+#include "CryptoHandler.h"
+#include "DataSourceManager.h"
 #include "HttpRequest.h"
 #include "HttpResponse.h"
 #include "JSONSerialize.h"
-#include "string"
-#include "yuarel.h"
 #include "Router.h"
+#include "string"
+#include "vector"
+#include "yuarel.h"
+#include <algorithm>
+#include <stdlib.h>
 
 class TeBkUmMgrWorld {
-	int id;
-	int randomNumber;
+  int id;
+  int randomNumber;
+
 public:
-	TeBkUmMgrWorld(int id);
-	TeBkUmMgrWorld(int id, int randomNumber);
-	TeBkUmMgrWorld();
-	virtual ~TeBkUmMgrWorld();
-	int getId() const;
-	void setId(int id);
-	int getRandomNumber() const;
-	void setRandomNumber(int randomNumber);
+  TeBkUmMgrWorld(int id);
+  TeBkUmMgrWorld(int id, int randomNumber);
+  TeBkUmMgrWorld();
+  virtual ~TeBkUmMgrWorld();
+  int getId() const;
+  void setId(int id);
+  int getRandomNumber() const;
+  void setRandomNumber(int randomNumber);
 };
 
 class TeBkUmMgrFortune {
-	int id;
-	std::string message;
+  int id;
+  std::string message;
+
 public:
-	TeBkUmMgrFortune();
-	virtual ~TeBkUmMgrFortune();
-	int getId() const;
-	void setId(int id);
-	const std::string& getMessage() const;
-	void setMessage(const std::string& message);
-	bool operator < (const TeBkUmMgrFortune& other) const;
+  TeBkUmMgrFortune();
+  virtual ~TeBkUmMgrFortune();
+  int getId() const;
+  void setId(int id);
+  const std::string &getMessage() const;
+  void setMessage(const std::string &message);
+  bool operator<(const TeBkUmMgrFortune &other) const;
 };
 
 class TeBkUmMgrMessage {
-	std::string message;
+  std::string message;
+
 public:
-	virtual ~TeBkUmMgrMessage();
-	const std::string& getMessage() const;
-	void setMessage(const std::string& message);
+  virtual ~TeBkUmMgrMessage();
+  const std::string &getMessage() const;
+  void setMessage(const std::string &message);
 };
 
 class TeBkUmMgrRouter : public Router {
-	static const std::string HELLO_WORLD;
-	static std::string WORLD;
-	static std::string FORTUNE;
+  static const std::string HELLO_WORLD;
+  static std::string WORLD;
+  static std::string FORTUNE;
 
-	static TemplatePtr tmplFunc;
+  static TemplatePtr tmplFunc;
 
-	static Ser m_ser;
-	static Ser w_ser;
-	static SerCont wcont_ser;
+  static Ser m_ser;
+  static Ser w_ser;
+  static SerCont wcont_ser;
 
-	bool strToNum(const char* str, int len, int& ret);
+  bool strToNum(const char *str, int len, int &ret);
 
-	void db(TeBkUmMgrWorld&);
-	void queries(const char*, int, std::vector<TeBkUmMgrWorld>&);
+  void db(TeBkUmMgrWorld &);
+  void queries(const char *, int, std::vector<TeBkUmMgrWorld> &);
 #ifdef INC_SDORM_MONGO
-	static void dbUtil(void* ctx, int rn, std::vector<MgRawRes>& data);
+  static void dbUtil(void *ctx, int rn, std::vector<MgRawRes> &data);
 #endif
 
-	void updates(const char*, int, std::vector<TeBkUmMgrWorld>&);
-	
-	void cachedWorlds(const char*, int, std::vector<TeBkUmMgrWorld>&);
+  void updates(const char *, int, std::vector<TeBkUmMgrWorld> &);
+
+  void cachedWorlds(const char *, int, std::vector<TeBkUmMgrWorld> &);
 #ifdef INC_SDORM_MONGO
-	static void updateCacheUtil(void* ctx, int rn, std::vector<MgRawRes>& data);
+  static void updateCacheUtil(void *ctx, int rn, std::vector<MgRawRes> &data);
 #endif
 
-	void getContext(HttpRequest* request, Context* context);
+  void getContext(HttpRequest *request, Context *context);
 #ifdef INC_SDORM_MONGO
-	static void getContextUtil(void* ctx, int rn, std::vector<MgRawRes>& data);
-	MongoDBRawDataSourceImpl* sqli;
-	MongoDBRawDataSourceImpl* getDb();
+  static void getContextUtil(void *ctx, int rn, std::vector<MgRawRes> &data);
+  MongoDBRawDataSourceImpl *sqli;
+  MongoDBRawDataSourceImpl *getDb();
 #endif
 public:
-	TeBkUmMgrRouter();
-	virtual ~TeBkUmMgrRouter();
-	void updateCache();
-	bool route(HttpRequest* req, HttpResponse* res, Writer* sif);
+  TeBkUmMgrRouter();
+  virtual ~TeBkUmMgrRouter();
+  void updateCache();
+  bool route(HttpRequest *req, HttpResponse *res, Writer *sif);
 };
 
 #endif /* WEB_t1_INCLUDE_TeBkUmMgr_H_ */

@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,61 +22,54 @@
 
 #ifndef TESTALLINONE_H_
 #define TESTALLINONE_H_
-#include "TestObject1.h"
 #include "TestObject.h"
+#include "TestObject1.h"
 
-namespace test
-{
-	namespace all
-	{
-		namespace in
-		{
-			namespace one
-			{
-				class TestAllInOne
-				{
-					public:
-						TestObject to;
-						com::obj::TestObject coto;
-						std::vector<TestObject> vto;
-						std::vector<com::obj::TestObject> vcoto;
-						std::vector<std::vector<TestObject> > vvto;
-						std::vector<std::vector<com::obj::TestObject> > vvcoto;
+namespace test {
+namespace all {
+namespace in {
+namespace one {
+class TestAllInOne {
+public:
+  TestObject to;
+  com::obj::TestObject coto;
+  std::vector<TestObject> vto;
+  std::vector<com::obj::TestObject> vcoto;
+  std::vector<std::vector<TestObject>> vvto;
+  std::vector<std::vector<com::obj::TestObject>> vvcoto;
 
-						std::string toString()
-						{
-							std::string out;
-							out.append(to.toString());
-							out.append("\n");
-							out.append(coto.toString());
-							out.append("\n");
-							for (int var = 0; var < (int)vto.size(); ++var) {
-								out.append(vto.at(var).toString());
-								out.append("\n");
-							}
-							for (int var = 0; var < (int)vcoto.size(); ++var) {
-								out.append(vcoto.at(var).toString());
-								out.append("\n");
-							}
-							for (int var = 0; var < (int)vvto.size(); ++var) {
-								for (int var1 = 0; var1 < (int)vvto.at(var).size(); ++var1) {
-									out.append(vvto.at(var).at(var1).toString());
-									out.append("\n");
-								}
-							}
-							for (int var = 0; var < (int)vvcoto.size(); ++var) {
-								for (int var1 = 0; var1 < (int)vvcoto.at(var).size(); ++var1) {
-									out.append(vvcoto.at(var).at(var1).toString());
-									out.append("\n");
-								}
-							}
-							return out;
-						}
-				};
-			}
-		}
-	}
-}
-
+  std::string toString() {
+    std::string out;
+    out.append(to.toString());
+    out.append("\n");
+    out.append(coto.toString());
+    out.append("\n");
+    for (int var = 0; var < (int)vto.size(); ++var) {
+      out.append(vto.at(var).toString());
+      out.append("\n");
+    }
+    for (int var = 0; var < (int)vcoto.size(); ++var) {
+      out.append(vcoto.at(var).toString());
+      out.append("\n");
+    }
+    for (int var = 0; var < (int)vvto.size(); ++var) {
+      for (int var1 = 0; var1 < (int)vvto.at(var).size(); ++var1) {
+        out.append(vvto.at(var).at(var1).toString());
+        out.append("\n");
+      }
+    }
+    for (int var = 0; var < (int)vvcoto.size(); ++var) {
+      for (int var1 = 0; var1 < (int)vvcoto.at(var).size(); ++var1) {
+        out.append(vvcoto.at(var).at(var1).toString());
+        out.append("\n");
+      }
+    }
+    return out;
+  }
+};
+} // namespace one
+} // namespace in
+} // namespace all
+} // namespace test
 
 #endif /* TESTALLINONE_H_ */

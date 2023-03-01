@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -21,56 +21,52 @@
  */
 #include "WebSockHandler.h"
 
-int WebSockHandler::writeToPeer(WebSocketRespponseData* response, BaseSocket* sif) {
-	if(!response->isEmpty()) {
-		std::cout << "WS:Start:Writing" << std::endl;
-		std::cout << "WS:Packets:" << response->getMore().size() << std::endl;
-		for (int var = 0; var < (int)response->getMore().size(); ++var) {
-			if(!sif->isClosed() && response->getMore()[var].hasData()) {
-				if(sif->isEmbedded()) {
-					ResponseData rd;
-					WebSocketData* wres = &response->getMore()[var];
-					int type = Http11WebSocketDataFrame::getFramePdu(wres, rd._b, false);
-					int ret = sif->writeTo(&rd);
-					if(ret == 0) {
-						return 0;
-					}
-					if(type==1) {
-						rd.oft = 0;
-						rd._b = std::move(wres->textData);
-						ret = sif->writeTo(&rd);
-						if(ret == 0) {
-							return 0;
-						}
-					} else {
-						rd.oft = 0;
-						rd._b = std::move(wres->binaryData);
-						ret = sif->writeTo(&rd);
-						if(ret == 0) {
-							return 0;
-						}
-					}
-				} else {
-					sif->writeWsData(response);
-				}
-			}
-		}
-		std::cout << "WS:End:Writing" << std::endl;
-	}
-	return 1;
+int WebSockHandler::writeToPeer(WebSocketRespponseData *response,
+                                BaseSocket *sif) {
+  if (!response->isEmpty()) {
+    std::cout << "WS:Start:Writing" << std::endl;
+    std::cout << "WS:Packets:" << response->getMore().size() << std::endl;
+    for (int var = 0; var < (int)response->getMore().size(); ++var) {
+      if (!sif->isClosed() && response->getMore()[var].hasData()) {
+        if (sif->isEmbedded()) {
+          ResponseData rd;
+          WebSocketData *wres = &response->getMore()[var];
+          int type = Http11WebSocketDataFrame::getFramePdu(wres, rd._b, false);
+          int ret = sif->writeTo(&rd);
+          if (ret == 0) {
+            return 0;
+          }
+          if (type == 1) {
+            rd.oft = 0;
+            rd._b = std::move(wres->textData);
+            ret = sif->writeTo(&rd);
+            if (ret == 0) {
+              return 0;
+            }
+          } else {
+            rd.oft = 0;
+            rd._b = std::move(wres->binaryData);
+            ret = sif->writeTo(&rd);
+            if (ret == 0) {
+              return 0;
+            }
+          }
+        } else {
+          sif->writeWsData(response);
+        }
+      }
+    }
+    std::cout << "WS:End:Writing" << std::endl;
+  }
+  return 1;
 }
 
 int WebSockHandler::writeTo(WebSocketRespponseData *response) {
-	return writeToPeer(response, sif);
+  return writeToPeer(response, sif);
 }
 
-bool WebSockHandler::isWriteControl() {
-	return false;
-}
+bool WebSockHandler::isWriteControl() { return false; }
 
-BaseSocket* WebSockHandler::getSif() {
-	return sif;
-}
+BaseSocket *WebSockHandler::getSif() { return sif; }
 
-WebSockHandler::~WebSockHandler() {
-}
+WebSockHandler::~WebSockHandler() {}

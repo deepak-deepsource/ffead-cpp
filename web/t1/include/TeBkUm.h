@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,71 +22,72 @@
 
 #ifndef WEB_t1_INCLUDE_TeBkUm_H_
 #define WEB_t1_INCLUDE_TeBkUm_H_
-#include "TemplateHandler.h"
-#include "vector"
-#include "DataSourceManager.h"
-#include <stdlib.h>
-#include <algorithm>
-#include "CryptoHandler.h"
-#include "vector"
-#include "CastUtil.h"
-#include <stdlib.h>
 #include "CacheManager.h"
+#include "CastUtil.h"
+#include "CryptoHandler.h"
+#include "DataSourceManager.h"
 #include "HttpRequest.h"
 #include "HttpResponse.h"
 #include "JSONSerialize.h"
-#include "string"
-#include "TeBkUmWorld.h"
-#include "yuarel.h"
 #include "Router.h"
+#include "TeBkUmWorld.h"
+#include "TemplateHandler.h"
+#include "string"
+#include "vector"
+#include "yuarel.h"
+#include <algorithm>
+#include <stdlib.h>
 
 #pragma @Entity
-#pragma @Table name="fortune"
+#pragma @Table name = "fortune"
 class TeBkUmFortune {
-	#pragma @Id dbf="id"
-	int id;
-	#pragma @Column dbf="message"
-	std::string message;
-	friend class TeBkUmRouter;
+#pragma @Id dbf = "id"
+  int id;
+#pragma @Column dbf = "message"
+  std::string message;
+  friend class TeBkUmRouter;
+
 public:
-	TeBkUmFortune();
-	virtual ~TeBkUmFortune();
-	int getId() const;
-	void setId(int id);
-	const std::string& getMessage() const;
-	void setMessage(const std::string& message);
-	bool operator < (const TeBkUmFortune& other) const;
+  TeBkUmFortune();
+  virtual ~TeBkUmFortune();
+  int getId() const;
+  void setId(int id);
+  const std::string &getMessage() const;
+  void setMessage(const std::string &message);
+  bool operator<(const TeBkUmFortune &other) const;
 };
 
 class TeBkUmMessage {
-	std::string message;
+  std::string message;
+
 public:
-	virtual ~TeBkUmMessage();
-	const std::string& getMessage() const;
-	void setMessage(const std::string& message);
+  virtual ~TeBkUmMessage();
+  const std::string &getMessage() const;
+  void setMessage(const std::string &message);
 };
 
 class TeBkUmRouter : public Router {
-	static const std::string HELLO_WORLD;
-	static std::string WORLD;
+  static const std::string HELLO_WORLD;
+  static std::string WORLD;
 
-	static TemplatePtr tmplFunc;
+  static TemplatePtr tmplFunc;
 
-	static Ser m_ser;
-	static Ser w_ser;
-	static SerCont wcont_ser;
+  static Ser m_ser;
+  static Ser w_ser;
+  static SerCont wcont_ser;
 
-	bool strToNum(const char* str, int len, int& ret);
-	void db(TeBkUmWorld&);
-	void queries(const char*, int, std::vector<TeBkUmWorld>&);
-	void updates(const char*, int, std::vector<TeBkUmWorld>&);
-	void cachedWorlds(const char*, int, std::vector<TeBkUmWorld>&);
-	void getContext(HttpRequest* request, Context* context);
+  bool strToNum(const char *str, int len, int &ret);
+  void db(TeBkUmWorld &);
+  void queries(const char *, int, std::vector<TeBkUmWorld> &);
+  void updates(const char *, int, std::vector<TeBkUmWorld> &);
+  void cachedWorlds(const char *, int, std::vector<TeBkUmWorld> &);
+  void getContext(HttpRequest *request, Context *context);
+
 public:
-	TeBkUmRouter();
-	virtual ~TeBkUmRouter();
-	void updateCache();
-	bool route(HttpRequest* req, HttpResponse* res, Writer* sif);
+  TeBkUmRouter();
+  virtual ~TeBkUmRouter();
+  void updateCache();
+  bool route(HttpRequest *req, HttpResponse *res, Writer *sif);
 };
 
 #endif /* WEB_t1_INCLUDE_TeBkUm_H_ */

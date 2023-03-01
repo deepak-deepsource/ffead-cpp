@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,22 +22,22 @@
 
 #ifndef TEMPLATEGENERATOR_H_
 #define TEMPLATEGENERATOR_H_
+#include "ConfigurationData.h"
+#include "StringUtil.h"
+#include "fstream"
+#include "map"
 #include "string"
 #include "vector"
-#include "fstream"
-#include "StringUtil.h"
-#include "map"
-#include "ConfigurationData.h"
-
-
 
 class TemplateGenerator {
 public:
-	TemplateGenerator();
-	virtual ~TemplateGenerator();
-	static std::string generateTempCd(const std::string&, std::string &, std::string &, const std::string& app);
-	static std::string generateTempCdFast(const std::string&, std::string &, std::string &, const std::string& app);
-	static std::string generateTempCdAll(const std::string& serverRootDirectory);
+  TemplateGenerator();
+  virtual ~TemplateGenerator();
+  static std::string generateTempCd(const std::string &, std::string &,
+                                    std::string &, const std::string &app);
+  static std::string generateTempCdFast(const std::string &, std::string &,
+                                        std::string &, const std::string &app);
+  static std::string generateTempCdAll(const std::string &serverRootDirectory);
 };
 
 #endif /* TEMPLATEGENERATOR_H_ */

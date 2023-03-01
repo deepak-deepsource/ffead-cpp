@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -23,42 +23,42 @@
 #ifndef CRYPTOHANDLER_H_
 #define CRYPTOHANDLER_H_
 #include "AppDefines.h"
-#include "Compatibility.h"  // WinSock subsystem
+#include "Compatibility.h" // WinSock subsystem
 #ifdef HAVE_SSLINC
 #include <openssl/engine.h>
+#include <openssl/evp.h>
 #include <openssl/hmac.h>
 #include <openssl/sha.h>
-#include <openssl/evp.h>
 #endif
-#include <stdlib.h>
+#include "StringUtil.h"
+#include "cstring"
+#include "hescape.h"
+#include "string"
+#include <iomanip>
 #include <memory.h>
 #include <stdio.h>
-#include "string"
-#include "cstring"
 #include <stdlib.h>
-#include "StringUtil.h"
-#include <iomanip>
-#include "hescape.h"
 
 class CryptoHandler {
 #ifndef HAVE_SSLINC
-	static const char base46_map[];
+  static const char base46_map[];
 #endif
 public:
-	static char* hmac_sha1(char*, char*, const bool&);
-	static char* hmac_sha256(char*, char*, const bool&);
-	static char* hmac_sha384(char*, char*, const bool&);
-	static char* hmac_sha512(char*, char*, const bool&);
-	static std::string sha1(const std::string&);
-	static std::string urlEncode(const std::string& str);
-	static std::string urlDecode(const std::string& str);
-	static std::string_view sanitizeHtmlFast(const uint8_t *buf, size_t size, std::string& data, bool& allocd);
-	static void sanitizeHtml(std::string& data);
-	static void deSanitizeHtml(std::string& strret);
-	static std::string base64encodeStr(const std::string& input);
-	static std::string base64decodeStr(const std::string& input);
-	static char* base64encode(const unsigned char *input, const int& length);
-	static char* base64decode(unsigned char *input, const int& length);
+  static char *hmac_sha1(char *, char *, const bool &);
+  static char *hmac_sha256(char *, char *, const bool &);
+  static char *hmac_sha384(char *, char *, const bool &);
+  static char *hmac_sha512(char *, char *, const bool &);
+  static std::string sha1(const std::string &);
+  static std::string urlEncode(const std::string &str);
+  static std::string urlDecode(const std::string &str);
+  static std::string_view sanitizeHtmlFast(const uint8_t *buf, size_t size,
+                                           std::string &data, bool &allocd);
+  static void sanitizeHtml(std::string &data);
+  static void deSanitizeHtml(std::string &strret);
+  static std::string base64encodeStr(const std::string &input);
+  static std::string base64decodeStr(const std::string &input);
+  static char *base64encode(const unsigned char *input, const int &length);
+  static char *base64decode(unsigned char *input, const int &length);
 };
 
 #endif /* CRYPTOHANDLER_H_ */

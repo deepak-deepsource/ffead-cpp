@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -17,30 +17,29 @@
 #ifndef AMEFRESOURCES_H_
 #define AMEFRESOURCES_H_
 
-#include "AMEFEncoder.h"
 #include "AMEFDecoder.h"
+#include "AMEFEncoder.h"
 
-class AMEFResources
-{
-	AMEFResources(){}
-	~AMEFResources();
+class AMEFResources {
+  AMEFResources() {}
+  ~AMEFResources();
+
 public:
-
-	static char* longTocharArray(const long& l, const int& ind);
-	static std::string longTocharArrayS(const long& l, const int& ind);
-	static char* intTocharArray(const int& l, const int& ind);
-	static char* intTocharArrayWI(const int& l);
-	static int charArrayToInt(char* l, const int& off, const int& ind);
-	static long charArrayToLong(char* l, const int& off, const int& ind);
-	static long charArrayToLong(char* l, const int& ind);
-	static std::string intTocharArrayS(const int& l, const int& ind);
-	#ifdef IS_64_BIT
-		static std::string longTocharArrayWI(const unsigned long long& l);
-		static std::string longTocharArrayWI(const long& l);
-	#else
-		static std::string longTocharArrayWI(const unsigned long long& l);
-		static std::string longTocharArrayWI(const long& l);
-	#endif
+  static char *longTocharArray(const long &l, const int &ind);
+  static std::string longTocharArrayS(const long &l, const int &ind);
+  static char *intTocharArray(const int &l, const int &ind);
+  static char *intTocharArrayWI(const int &l);
+  static int charArrayToInt(char *l, const int &off, const int &ind);
+  static long charArrayToLong(char *l, const int &off, const int &ind);
+  static long charArrayToLong(char *l, const int &ind);
+  static std::string intTocharArrayS(const int &l, const int &ind);
+#ifdef IS_64_BIT
+  static std::string longTocharArrayWI(const unsigned long long &l);
+  static std::string longTocharArrayWI(const long &l);
+#else
+  static std::string longTocharArrayWI(const unsigned long long &l);
+  static std::string longTocharArrayWI(const long &l);
+#endif
 };
 
 #endif /* AMEFRESOURCES_H_ */

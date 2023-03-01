@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,13 +22,13 @@
 
 #ifndef SEARCHENGINEMANAGER_H_
 #define SEARCHENGINEMANAGER_H_
-#include "string"
-#include "map"
 #include "CacheInterface.h"
 #include "ConnectionPooler.h"
+#include "HttpClient.h"
 #include "Mutex.h"
 #include "SearchEngineInterface.h"
-#include "HttpClient.h"
+#include "map"
+#include "string"
 #ifdef HAVE_SOLR
 #include "SolrSearch.h"
 #endif
@@ -36,22 +36,23 @@
 #include "ElasticSearch.h"
 #endif
 
-
 class SearchEngineManager {
-	static std::map<std::string, SearchEngineManager*> engines;
-	static std::map<std::string, std::string> defEngineNames;
-	static std::map<std::string, bool> appInitCompletionStatus;
-	ConnectionProperties props;
-	ConnectionPooler* pool;
-	static void initSearch(const ConnectionProperties& props, const std::string& appName, GetClassBeanIns f);
-	static void destroy();
-	SearchEngineManager(const ConnectionProperties& props);
-	friend class ConfigurationHandler;
+  static std::map<std::string, SearchEngineManager *> engines;
+  static std::map<std::string, std::string> defEngineNames;
+  static std::map<std::string, bool> appInitCompletionStatus;
+  ConnectionProperties props;
+  ConnectionPooler *pool;
+  static void initSearch(const ConnectionProperties &props,
+                         const std::string &appName, GetClassBeanIns f);
+  static void destroy();
+  SearchEngineManager(const ConnectionProperties &props);
+  friend class ConfigurationHandler;
+
 public:
-	virtual ~SearchEngineManager();
-	static SearchEngineInterface* getImpl(std::string name = "");
-	static void triggerAppInitCompletion(std::string appName = "");
-	static bool isInitCompleted();
+  virtual ~SearchEngineManager();
+  static SearchEngineInterface *getImpl(std::string name = "");
+  static void triggerAppInitCompletion(std::string appName = "");
+  static bool isInitCompleted();
 };
 
 #endif /* SEARCHENGINEMANAGER_H_ */

@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,73 +22,80 @@
 
 #ifndef HTTPSERVICEHANDLER_H_
 #define HTTPSERVICEHANDLER_H_
-#include "ServiceHandler.h"
-#include "Task.h"
 #include "CommonUtils.h"
-#include "WebSockHandler.h"
+#include "ServiceHandler.h"
 #include "ServiceTask.h"
+#include "Task.h"
+#include "WebSockHandler.h"
 
 class HttpServiceHandler;
 
 class HttpServiceTask : public Task {
-	HandlerRequest handlerRequest;
-	HttpServiceHandler* service;
-	void run();
-	friend class HttpReadTask;
-	friend class HttpServiceHandler;
-	friend class CHServer;
+  HandlerRequest handlerRequest;
+  HttpServiceHandler *service;
+  void run();
+  friend class HttpReadTask;
+  friend class HttpServiceHandler;
+  friend class CHServer;
+
 public:
-	int getTid();
-	void setTid(int tid);
-	virtual ~HttpServiceTask();
-	HttpServiceTask();
-	virtual std::string getCntEncoding();
-	HttpServiceTask(ReusableInstanceHolder* h);
+  int getTid();
+  void setTid(int tid);
+  virtual ~HttpServiceTask();
+  HttpServiceTask();
+  virtual std::string getCntEncoding();
+  HttpServiceTask(ReusableInstanceHolder *h);
 };
 
 class HttpReadTask : public Task {
-	SocketInterface* sif;
-	HttpServiceHandler* service;
-	void run();
-	friend class HttpServiceHandler;
-	friend class CHServer;
+  SocketInterface *sif;
+  HttpServiceHandler *service;
+  void run();
+  friend class HttpServiceHandler;
+  friend class CHServer;
+
 public:
-	int getTid();
-	void setTid(int tid);
-	virtual ~HttpReadTask();
-	HttpReadTask();
+  int getTid();
+  void setTid(int tid);
+  virtual ~HttpReadTask();
+  HttpReadTask();
 };
 
 class HttpWriteTask : public Task {
-	SocketInterface* sif;
-	HttpServiceHandler* service;
-	void run();
-	friend class HttpServiceHandler;
-	friend class CHServer;
-	friend class HttpServiceTask;
+  SocketInterface *sif;
+  HttpServiceHandler *service;
+  void run();
+  friend class HttpServiceHandler;
+  friend class CHServer;
+  friend class HttpServiceTask;
+
 public:
-	int getTid();
-	void setTid(int tid);
-	virtual ~HttpWriteTask();
-	HttpWriteTask();
+  int getTid();
+  void setTid(int tid);
+  virtual ~HttpWriteTask();
+  HttpWriteTask();
 };
 
-typedef HttpServiceTask* (*HttpServiceTaskFactory) ();
-typedef HttpReadTask* (*HttpReadTaskFactory) ();
+typedef HttpServiceTask *(*HttpServiceTaskFactory)();
+typedef HttpReadTask *(*HttpReadTaskFactory)();
 
 class HttpServiceHandler : public ServiceHandler {
-	std::string cntEncoding;
-	webSockHandle wh;
-	httpSockHandle hsh;
-	friend class HttpServiceTask;
-	friend class HttpReadTask;
-	void sockInit(SocketInterface* si);
-	void handleService(void* request, SocketInterface* sif, void* context, int reqPos);
-	void handleRead(SocketInterface* sif);
-	void handleWrite(SocketInterface* sif);
+  std::string cntEncoding;
+  webSockHandle wh;
+  httpSockHandle hsh;
+  friend class HttpServiceTask;
+  friend class HttpReadTask;
+  void sockInit(SocketInterface *si);
+  void handleService(void *request, SocketInterface *sif, void *context,
+                     int reqPos);
+  void handleRead(SocketInterface *sif);
+  void handleWrite(SocketInterface *sif);
+
 public:
-	HttpServiceHandler(const std::string& cntEncoding, const webSockHandle& f, const int& spoolSize, bool isSinglEVH, const httpSockHandle& fr);
-	virtual ~HttpServiceHandler();
+  HttpServiceHandler(const std::string &cntEncoding, const webSockHandle &f,
+                     const int &spoolSize, bool isSinglEVH,
+                     const httpSockHandle &fr);
+  virtual ~HttpServiceHandler();
 };
 
 #endif /* HTTPSERVICEHANDLER_H_ */

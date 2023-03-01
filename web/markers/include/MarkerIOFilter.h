@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -26,14 +26,14 @@
 #include "Filter.h"
 #include <iostream>
 
-#pragma @Filter type="handle" path="*.marker"
-class MarkerIOFilter: public Filter {
+#pragma @Filter type = "handle" path = "*.marker"
+class MarkerIOFilter : public Filter {
 public:
-	MarkerIOFilter();
-	virtual ~MarkerIOFilter();
-	void doInputFilter(HttpRequest *req);
-	void doOutputFilter(HttpResponse *res);
-	bool doHandle(HttpRequest *req, HttpResponse* res);
+  MarkerIOFilter();
+  virtual ~MarkerIOFilter();
+  void doInputFilter(HttpRequest *req);
+  void doOutputFilter(HttpResponse *res);
+  bool doHandle(HttpRequest *req, HttpResponse *res);
 };
 
 #endif /* MarkerIOFILTER_H_ */

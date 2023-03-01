@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -23,35 +23,37 @@
 #ifndef SSLCOMMON_H_
 #define SSLCOMMON_H_
 #include "Compatibility.h"
-#include <strings.h>
 #include <string>
+#include <strings.h>
 #ifndef OS_MINGW
-#include <unistd.h>
-#include <netdb.h>
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <arpa/inet.h>
+#include <netdb.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
 #endif
 #include <iostream>
 /*HTTPS related*/
-#include <openssl/ssl.h>
 #include <openssl/err.h>
-#include <signal.h>
 #include <openssl/opensslv.h>
+#include <openssl/ssl.h>
+#include <signal.h>
 
 class SSLCommon {
-	SSLCommon();
+  SSLCommon();
+
 public:
-	static std::string ciphers;
-	virtual ~SSLCommon();
-	static void exitSSL(const char *func);
-	static void* zeroingMalloc (size_t howmuch);
-	static void load_dh_params(SSL_CTX *ctx, char *file);
-	static void load_ecdh_params(SSL_CTX *ctx);
-	static SSL_CTX *initialize_ctx(const bool&);
-	static void loadCerts(SSL_CTX* ctx, char* certFile, char* keyFile, const std::string& caList, const bool&);
-	static void check_cert(SSL *ssl, char *host);
-	static void closeSSL(const int& fd, SSL *ssl, BIO* bio);
+  static std::string ciphers;
+  virtual ~SSLCommon();
+  static void exitSSL(const char *func);
+  static void *zeroingMalloc(size_t howmuch);
+  static void load_dh_params(SSL_CTX *ctx, char *file);
+  static void load_ecdh_params(SSL_CTX *ctx);
+  static SSL_CTX *initialize_ctx(const bool &);
+  static void loadCerts(SSL_CTX *ctx, char *certFile, char *keyFile,
+                        const std::string &caList, const bool &);
+  static void check_cert(SSL *ssl, char *host);
+  static void closeSSL(const int &fd, SSL *ssl, BIO *bio);
 };
 
 #endif /* SSLCOMMON_H_ */
