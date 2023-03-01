@@ -183,7 +183,7 @@ bool Http2Handler::processFrame(Http2Frame *frame, void *&request, int reqPos) {
     // streams.insert(std::pair<int,
     // Http2StreamHandler>(frame->header.streamIdentifier,
     //		Http2StreamHandler(&context, frame->header.streamIdentifier,
-    //webpath)));
+    // webpath)));
   }
   bool flag = streams[streamIdentifier].handle(
       frame, precedingstreamId, settings, this, frameAcks, request);
