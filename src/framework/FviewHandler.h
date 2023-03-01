@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,14 +22,14 @@
 
 #ifndef FVIEWHANDLER_H_
 #define FVIEWHANDLER_H_
-#include "HttpResponse.h"
-#include "HttpRequest.h"
-#include "LoggerFactory.h"
 #include "ConfigurationData.h"
+#include "HttpRequest.h"
+#include "HttpResponse.h"
+#include "LoggerFactory.h"
 
 class FviewHandler {
 public:
-	static bool handle(HttpRequest* req, HttpResponse* res);
+  static bool handle(HttpRequest *req, HttpResponse *res);
 };
 
 #endif /* FVIEWHANDLER_H_ */

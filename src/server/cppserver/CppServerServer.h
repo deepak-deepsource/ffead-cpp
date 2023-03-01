@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,14 +23,16 @@
 #ifndef SRC_SERVER_CppServerServer_H_
 #define SRC_SERVER_CppServerServer_H_
 #include "ServerInitUtil.h"
-#include <memory>
 #include "fmt/ostream.h"
 #include "server/asio/service.h"
 #include "server/http/http_server.h"
+#include <memory>
 
 class CppServerServer {
-public:	
-	static void runServer(std::string ipaddr, int port, std::vector<std::string> servedAppNames, std::string serverRootDirectory, bool isSSLEnabled);
+public:
+  static void runServer(std::string ipaddr, int port,
+                        std::vector<std::string> servedAppNames,
+                        std::string serverRootDirectory, bool isSSLEnabled);
 };
 
 #endif /* SRC_SERVER_CppServerServer_H_ */

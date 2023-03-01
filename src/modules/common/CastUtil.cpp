@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@
  *      Author: sumeetc
  */
 
-
 #include "CastUtil.h"
 
 const std::string CastUtil::STD_STRING = "std::string";
@@ -30,8 +29,9 @@ const std::string CastUtil::BOOL_FALSE = "false";
 ThreadLocal CastUtil::_mcMap;
 
 void CastUtil::clear() {
-	std::map<std::string, std::string>* _mp = (std::map<std::string, std::string>*)_mcMap.get();
-	if(_mp!=NULL) {
-		delete _mp;
-	}
+  std::map<std::string, std::string> *_mp =
+      (std::map<std::string, std::string> *)_mcMap.get();
+  if (_mp != NULL) {
+    delete _mp;
+  }
 }

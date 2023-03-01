@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,56 +22,57 @@
 
 #ifndef BIGINT_H_
 #define BIGINT_H_
+#include "CastUtil.h"
+#include "algorithm"
 #include "string"
 #include "vector"
-#include "algorithm"
-#include "CastUtil.h"
 #include <iostream>
 
-
-
 class Bigint {
-	friend class Bigdecimal;
-	std::vector<int> parts;
-	bool isPositive;
-	int decimalStartsAt;
-	void create(const std::string& value);
-	void checkAndSetIfZero();
-	int decompose(std::string fnvalue, std::string snvalue, const Bigint& number, int recurse, std::string& build, const bool& isDecimal, const int&);
-	void internalAdd(const Bigint& number);
-	void internalDivide(const Bigint& number, const bool& isDecimal, const int&);
+  friend class Bigdecimal;
+  std::vector<int> parts;
+  bool isPositive;
+  int decimalStartsAt;
+  void create(const std::string &value);
+  void checkAndSetIfZero();
+  int decompose(std::string fnvalue, std::string snvalue, const Bigint &number,
+                int recurse, std::string &build, const bool &isDecimal,
+                const int &);
+  void internalAdd(const Bigint &number);
+  void internalDivide(const Bigint &number, const bool &isDecimal, const int &);
+
 public:
-	static std::string BLANK;
-	static std::string MINUS;
-	static std::string ZERO;
-	static int ZERO_INT;
-	static int NUM_LENGTH;
-	static int NUM_MAX;
-	static int NUM_MAX_THRESHOLD;
-	Bigint();
-	Bigint(const std::string& value);
-	void add(const Bigint& number);
-	Bigint operator+(const Bigint& number);
-	Bigint operator-(const Bigint& number);
-	Bigint operator*(const Bigint& number);
-	Bigint operator/(const Bigint& number);
-	Bigint& operator++();
-	Bigint& operator+=(const Bigint& number);
-	Bigint& operator--();
-	Bigint& operator-=(const Bigint& number);
-	friend bool operator== (const Bigint &lhs, const Bigint &rhs);
-	friend bool operator!= (const Bigint &lhs, const Bigint &rhs);
-	friend bool operator< (const Bigint &lhs, const Bigint &rhs);
-	friend bool operator<= (const Bigint &lhs, const Bigint &rhs);
-	friend bool operator> (const Bigint &lhs, const Bigint &rhs);
-	friend bool operator>= (const Bigint &lhs, const Bigint &rhs);
-	void subtract(const Bigint& number);
-	void multiply(const Bigint& number);
-	void divide(const Bigint& number);
-	static int compare(const Bigint& number1, const Bigint& number2);
-	int compare(const Bigint& number) const;
-	std::string toString() const;
-	virtual ~Bigint();
+  static std::string BLANK;
+  static std::string MINUS;
+  static std::string ZERO;
+  static int ZERO_INT;
+  static int NUM_LENGTH;
+  static int NUM_MAX;
+  static int NUM_MAX_THRESHOLD;
+  Bigint();
+  Bigint(const std::string &value);
+  void add(const Bigint &number);
+  Bigint operator+(const Bigint &number);
+  Bigint operator-(const Bigint &number);
+  Bigint operator*(const Bigint &number);
+  Bigint operator/(const Bigint &number);
+  Bigint &operator++();
+  Bigint &operator+=(const Bigint &number);
+  Bigint &operator--();
+  Bigint &operator-=(const Bigint &number);
+  friend bool operator==(const Bigint &lhs, const Bigint &rhs);
+  friend bool operator!=(const Bigint &lhs, const Bigint &rhs);
+  friend bool operator<(const Bigint &lhs, const Bigint &rhs);
+  friend bool operator<=(const Bigint &lhs, const Bigint &rhs);
+  friend bool operator>(const Bigint &lhs, const Bigint &rhs);
+  friend bool operator>=(const Bigint &lhs, const Bigint &rhs);
+  void subtract(const Bigint &number);
+  void multiply(const Bigint &number);
+  void divide(const Bigint &number);
+  static int compare(const Bigint &number1, const Bigint &number2);
+  int compare(const Bigint &number) const;
+  std::string toString() const;
+  virtual ~Bigint();
 };
 
 #endif /* BIGINT_H_ */

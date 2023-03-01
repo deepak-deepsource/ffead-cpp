@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -25,27 +25,29 @@
 #include "Http2Frame.h"
 
 class Http2AlternativeServicesFrame : public Http2Frame {
-	unsigned int maxAge;
-	uint16_t port;
-	unsigned char protoLength;
-	std::string protocolId;
-	unsigned char hostLength;
-	std::string host;
-	std::string origin;
-	Http2AlternativeServicesFrame(const std::string& data, Http2FrameHeader& header);
-	friend class Http2Handler;
-	friend class Http2StreamHandler;
+  unsigned int maxAge;
+  uint16_t port;
+  unsigned char protoLength;
+  std::string protocolId;
+  unsigned char hostLength;
+  std::string host;
+  std::string origin;
+  Http2AlternativeServicesFrame(const std::string &data,
+                                Http2FrameHeader &header);
+  friend class Http2Handler;
+  friend class Http2StreamHandler;
+
 public:
-	Http2AlternativeServicesFrame();
-	virtual ~Http2AlternativeServicesFrame();
-	std::string getFrameData();
-	const std::string& getHost() const;
-	unsigned char getHostLength() const;
-	unsigned int getMaxAge() const;
-	const std::string& getOrigin() const;
-	uint16_t getPort() const;
-	const std::string& getProtocolId() const;
-	unsigned char getProtoLength() const;
+  Http2AlternativeServicesFrame();
+  virtual ~Http2AlternativeServicesFrame();
+  std::string getFrameData();
+  const std::string &getHost() const;
+  unsigned char getHostLength() const;
+  unsigned int getMaxAge() const;
+  const std::string &getOrigin() const;
+  uint16_t getPort() const;
+  const std::string &getProtocolId() const;
+  unsigned char getProtoLength() const;
 };
 
 #endif /* HTTP2ALTERNATIVESERVICESFRAME_H_ */

@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -23,38 +23,36 @@
 #include "Http2WindowUpdateFrame.h"
 
 Http2WindowUpdateFrame::Http2WindowUpdateFrame() {
-	header.type = 8;
-	windowSizeIncrement = 0;
-	reserved = false;
+  header.type = 8;
+  windowSizeIncrement = 0;
+  reserved = false;
 }
 
-bool Http2WindowUpdateFrame::isReserved() const {
-	return reserved;
-}
+bool Http2WindowUpdateFrame::isReserved() const { return reserved; }
 
-Http2WindowUpdateFrame::Http2WindowUpdateFrame(std::string data, Http2FrameHeader& aheader) {
-	header = aheader;
-	header.type = 8;
-	reserved = ((data[0] >> 7) & 0x01);
-	data[0] = data[0] & 0x7F;
-	windowSizeIncrement = (int)CommonUtils::charArrayToULongLong(data.substr(0, 4));
+Http2WindowUpdateFrame::Http2WindowUpdateFrame(std::string data,
+                                               Http2FrameHeader &aheader) {
+  header = aheader;
+  header.type = 8;
+  reserved = ((data[0] >> 7) & 0x01);
+  data[0] = data[0] & 0x7F;
+  windowSizeIncrement =
+      (int)CommonUtils::charArrayToULongLong(data.substr(0, 4));
 }
 
 int Http2WindowUpdateFrame::getWindowSizeIncrement() const {
-	return windowSizeIncrement;
+  return windowSizeIncrement;
 }
 
-Http2WindowUpdateFrame::~Http2WindowUpdateFrame() {
-	
-}
+Http2WindowUpdateFrame::~Http2WindowUpdateFrame() {}
 
 std::string Http2WindowUpdateFrame::getFrameData() {
-	std::string edata;
-	std::string data = CommonUtils::ulonglongTocharArray(windowSizeIncrement, 4);
-	if(reserved)
-		data[0] |= 0x01 << 7;
-	else
-		data[0] &= ~(0x01 << 7);
-	edata.append(data);
-	return edata;
+  std::string edata;
+  std::string data = CommonUtils::ulonglongTocharArray(windowSizeIncrement, 4);
+  if (reserved)
+    data[0] |= 0x01 << 7;
+  else
+    data[0] &= ~(0x01 << 7);
+  edata.append(data);
+  return edata;
 }

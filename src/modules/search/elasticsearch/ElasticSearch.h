@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -27,30 +27,31 @@
 #include <cpr/response.h>
 #include <elasticlient/client.h>
 
-class ElasticSearchConnectionPool: public ConnectionPooler {
-	void initEnv();
-	void* newConnection(const bool& isWrite, const ConnectionNode& node);
-	void closeConnection(void* conn);
-	void destroy();
+class ElasticSearchConnectionPool : public ConnectionPooler {
+  void initEnv();
+  void *newConnection(const bool &isWrite, const ConnectionNode &node);
+  void closeConnection(void *conn);
+  void destroy();
+
 public:
-	ElasticSearchConnectionPool(const ConnectionProperties& props);
-	virtual ~ElasticSearchConnectionPool();
+  ElasticSearchConnectionPool(const ConnectionProperties &props);
+  virtual ~ElasticSearchConnectionPool();
 };
 
-class ElasticSearch: public SearchEngineInterface {
+class ElasticSearch : public SearchEngineInterface {
 public:
-	ElasticSearch(ConnectionPooler* pool);
-	virtual ~ElasticSearch();
+  ElasticSearch(ConnectionPooler *pool);
+  virtual ~ElasticSearch();
 
-	void createIndex(IndexQuery& iq);
-	void updateIndex(IndexQuery& iq);
-	void removeIndex(IndexQuery& iq);
+  void createIndex(IndexQuery &iq);
+  void updateIndex(IndexQuery &iq);
+  void removeIndex(IndexQuery &iq);
 
-	void add(DocumentQuery& iq);
-	void update(DocumentQuery& iq);
-	void remove(DocumentQuery& iq);
+  void add(DocumentQuery &iq);
+  void update(DocumentQuery &iq);
+  void remove(DocumentQuery &iq);
 
-	std::string query(SearchQuery& q);
+  std::string query(SearchQuery &q);
 };
 
 #endif /* ELASTICSEARCH_H_ */
