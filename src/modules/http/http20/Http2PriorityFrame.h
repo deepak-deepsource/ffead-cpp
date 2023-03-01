@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -25,18 +25,19 @@
 #include "Http2Frame.h"
 
 class Http2PriorityFrame : public Http2Frame {
-	bool exclusive;
-	int streamDependency;
-	unsigned char weight;
-	Http2PriorityFrame(std::string data, Http2FrameHeader& aheader);
-	friend class Http2Handler;
+  bool exclusive;
+  int streamDependency;
+  unsigned char weight;
+  Http2PriorityFrame(std::string data, Http2FrameHeader &aheader);
+  friend class Http2Handler;
+
 public:
-	Http2PriorityFrame();
-	virtual ~Http2PriorityFrame();
-	bool isExclusive() const;
-	int getStreamDependency() const;
-	unsigned char getWeight() const;
-	std::string getFrameData();
+  Http2PriorityFrame();
+  virtual ~Http2PriorityFrame();
+  bool isExclusive() const;
+  int getStreamDependency() const;
+  unsigned char getWeight() const;
+  std::string getFrameData();
 };
 
 #endif /* HTTP2PRIORITYFRAME_H_ */

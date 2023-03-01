@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,16 +22,14 @@
 
 #include "TestCronBasedJob.h"
 
-TestCronBasedJob::TestCronBasedJob() {
-	counter = 0;
-}
+TestCronBasedJob::TestCronBasedJob() { counter = 0; }
 
 TestCronBasedJob::~TestCronBasedJob() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
 
 void TestCronBasedJob::runJob() {
-	std::cout << "Job process run number - " + CastUtil::lexical_cast<std::string>(++counter) << std::endl;
+  std::cout << "Job process run number - " +
+                   CastUtil::lexical_cast<std::string>(++counter)
+            << std::endl;
 }
-
-

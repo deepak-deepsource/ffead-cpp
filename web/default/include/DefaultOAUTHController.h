@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,17 +23,16 @@
 #ifndef DEFAULTOAUTHCONTROLLER_H_
 #define DEFAULTOAUTHCONTROLLER_H_
 #include "Controller.h"
-#include "StringUtil.h"
 #include "CryptoHandler.h"
 #include "FileAuthController.h"
+#include "StringUtil.h"
 #include "Timer.h"
 
-class DefaultOAUTHController : public Controller
-{
+class DefaultOAUTHController : public Controller {
 public:
-	DefaultOAUTHController();
-	virtual ~DefaultOAUTHController();
-	bool service(HttpRequest* req, HttpResponse* res);
+  DefaultOAUTHController();
+  virtual ~DefaultOAUTHController();
+  bool service(HttpRequest *req, HttpResponse *res);
 };
 
 #endif /* DEFAULTOAUTHCONTROLLER_H_ */

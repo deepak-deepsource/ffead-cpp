@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,40 +22,22 @@
 
 #include "Test.h"
 
-Test::Test() {
-	id = 0;
-}
+Test::Test() { id = 0; }
 
 Test::~Test() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
-int Test::getId() const
-{
-	return id;
-}
+int Test::getId() const { return id; }
 
-void Test::setId(int id)
-{
-	this->id = id;
-}
+void Test::setId(int id) { this->id = id; }
 
-std::string Test::getName() const
-{
-	return name;
-}
+std::string Test::getName() const { return name; }
 
-void Test::setName(std::string name)
-{
-	this->name = name;
-}
+void Test::setName(std::string name) { this->name = name; }
 
-bool Test::operator<(Test t) const
-{
-	return this->id<t.id;
-}
+bool Test::operator<(Test t) const { return this->id < t.id; }
 
 Test::Test(int id, std::string name) {
-	this->id = id;
-	this->name = name;
+  this->id = id;
+  this->name = name;
 }
-

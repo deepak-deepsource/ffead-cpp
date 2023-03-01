@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,29 +23,27 @@
 #include "MarkerDefTemp.h"
 
 MarkerDefTemp::MarkerDefTemp() {
-	// TODO Auto-generated constructor stub
-
+  // TODO Auto-generated constructor stub
 }
 
 MarkerDefTemp::~MarkerDefTemp() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
 
-void MarkerDefTemp::getContext(HttpRequest* request, Context* context)
-{
-	std::string* dat = new std::string("1.js");
-	context->insert(std::pair<std::string, void*>("dat", dat));
+void MarkerDefTemp::getContext(HttpRequest *request, Context *context) {
+  std::string *dat = new std::string("1.js");
+  context->insert(std::pair<std::string, void *>("dat", dat));
 
-	MarkerTest* t = new MarkerTest;
-	t->setId(1);
-	t->setName("name");
-	context->insert(std::pair<std::string, void*>("test", t));
+  MarkerTest *t = new MarkerTest;
+  t->setId(1);
+  t->setName("name");
+  context->insert(std::pair<std::string, void *>("test", t));
 
-	std::vector<std::string>* vect = new std::vector<std::string>;
-	vect->push_back("vec1");
-	vect->push_back("vec2");
-	context->insert(std::pair<std::string, void*>("vect", vect));
+  std::vector<std::string> *vect = new std::vector<std::string>;
+  vect->push_back("vec1");
+  vect->push_back("vec2");
+  context->insert(std::pair<std::string, void *>("vect", vect));
 
-	int* num = new int(5);
-	context->insert(std::pair<std::string, void*>("number", num));
+  int *num = new int(5);
+  context->insert(std::pair<std::string, void *>("number", num));
 }

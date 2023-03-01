@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -24,13 +24,12 @@
 #define CONTENTTYPES_H_
 #include "string"
 
-
 class ContentTypes {
 public:
-	static std::string CONTENT_TYPE_TEXT_PLAIN;
-	static std::string CONTENT_TYPE_TEXT_HTML;
-	static std::string CONTENT_TYPE_APPLICATION_JSON;
-	static std::string CONTENT_TYPE_APPLICATION_XML;
+  static std::string CONTENT_TYPE_TEXT_PLAIN;
+  static std::string CONTENT_TYPE_TEXT_HTML;
+  static std::string CONTENT_TYPE_APPLICATION_JSON;
+  static std::string CONTENT_TYPE_APPLICATION_XML;
 };
 
 #endif /* CONTENTTYPES_H_ */

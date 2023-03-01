@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2013, Sumeet Chhetri
+        Copyright 2009-2013, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,62 +22,67 @@
 
 #include "PooledDistoCacheConnectionFactory.h"
 
-PooledDistoCacheConnectionFactory* PooledDistoCacheConnectionFactory::instance = NULL;
+PooledDistoCacheConnectionFactory *PooledDistoCacheConnectionFactory::instance =
+    NULL;
 
-PooledDistoCacheConnectionFactory::PooledDistoCacheConnectionFactory(const std::string& host, const int& port, const int& poolSize, const bool& isSSL) {
-	this->host = host;
-	this->port = port;
-	this->isSSL = isSSL;
-	this->poolSize = poolSize;
+PooledDistoCacheConnectionFactory::PooledDistoCacheConnectionFactory(
+    const std::string &host, const int &port, const int &poolSize,
+    const bool &isSSL) {
+  this->host = host;
+  this->port = port;
+  this->isSSL = isSSL;
+  this->poolSize = poolSize;
 }
 
-PooledDistoCacheConnectionFactory::~PooledDistoCacheConnectionFactory() {
-}
+PooledDistoCacheConnectionFactory::~PooledDistoCacheConnectionFactory() {}
 
-void PooledDistoCacheConnectionFactory::init(const std::string& host, const int& port, const int& poolSize, const bool& isSSL) {
-	if(instance==NULL)
-	{
-		instance = new PooledDistoCacheConnectionFactory(host, port, poolSize, isSSL);
-		instance->createPool();
-	}
+void PooledDistoCacheConnectionFactory::init(const std::string &host,
+                                             const int &port,
+                                             const int &poolSize,
+                                             const bool &isSSL) {
+  if (instance == NULL) {
+    instance =
+        new PooledDistoCacheConnectionFactory(host, port, poolSize, isSSL);
+    instance->createPool();
+  }
 }
 
 void PooledDistoCacheConnectionFactory::createPool() {
-	if(instance!=NULL)
-	{
-		for (int var = 0; var < instance->poolSize; ++var) {
-			DistoCacheClientUtils* clientUtil = new DistoCacheClientUtils(instance->host, instance->port, instance->isSSL);
-			instance->pool.push_back(clientUtil);
-		}
-	}
+  if (instance != NULL) {
+    for (int var = 0; var < instance->poolSize; ++var) {
+      DistoCacheClientUtils *clientUtil = new DistoCacheClientUtils(
+          instance->host, instance->port, instance->isSSL);
+      instance->pool.push_back(clientUtil);
+    }
+  }
 }
 
 void PooledDistoCacheConnectionFactory::destroy() {
-	if(instance!=NULL)
-	{
-		for (int var = 0; var < instance->poolSize; ++var) {
-			DistoCacheClientUtils* clientUtil = instance->pool.at(var);
-			delete clientUtil;
-		}
-		delete instance;
-	}
+  if (instance != NULL) {
+    for (int var = 0; var < instance->poolSize; ++var) {
+      DistoCacheClientUtils *clientUtil = instance->pool.at(var);
+      delete clientUtil;
+    }
+    delete instance;
+  }
 }
 
-DistoCacheClientUtils* PooledDistoCacheConnectionFactory::getConnection() {
-	if(instance!=NULL)
-	{
-		for (int var = 0; var < instance->poolSize; ++var) {
-			if(!instance->pool.at(var)->inUse)
-				return instance->pool.at(var);
-		}
-		//No issues with synchronization as the DistoCacheClientUtils class is thread-safe
-		return instance->pool.at(0);
-	}
-	throw std::runtime_error("PooledDistoCacheConnectionFactory not initialized");
+DistoCacheClientUtils *PooledDistoCacheConnectionFactory::getConnection() {
+  if (instance != NULL) {
+    for (int var = 0; var < instance->poolSize; ++var) {
+      if (!instance->pool.at(var)->inUse)
+        return instance->pool.at(var);
+    }
+    // No issues with synchronization as the DistoCacheClientUtils class is
+    // thread-safe
+    return instance->pool.at(0);
+  }
+  throw std::runtime_error("PooledDistoCacheConnectionFactory not initialized");
 }
 
-void PooledDistoCacheConnectionFactory::releaseConnection(DistoCacheClientUtils* clientUtil) {
-	clientUtil->lock.lock();
-	clientUtil->inUse = false;
-	clientUtil->lock.unlock();
+void PooledDistoCacheConnectionFactory::releaseConnection(
+    DistoCacheClientUtils *clientUtil) {
+  clientUtil->lock.lock();
+  clientUtil->inUse = false;
+  clientUtil->lock.unlock();
 }

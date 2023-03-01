@@ -14,9 +14,9 @@
 
 class GtmAccesController {
 public:
-	GtmAccesController();
-	virtual ~GtmAccesController();
-	bool service(HttpRequest* req, HttpResponse* res);
+  GtmAccesController();
+  virtual ~GtmAccesController();
+  bool service(HttpRequest *req, HttpResponse *res);
 };
 
 #endif /* GTMACCESCONTROLLER_H_ */

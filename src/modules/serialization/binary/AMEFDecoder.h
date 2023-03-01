@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -18,20 +18,25 @@
 #define AMEFDECODER_H_
 
 #include "AMEFObject.h"
-#include "iostream"
 #include "Timer.h"
-class AMEFDecoder
-{
-	void decodeObjectName(const std::string& buffer, AMEFObject *jDBObject);
+#include "iostream"
+class AMEFDecoder {
+  void decodeObjectName(const std::string &buffer, AMEFObject *jDBObject);
+
 public:
-	~AMEFDecoder();
-	AMEFDecoder();
-	AMEFObject* decodeB(const std::string& buffer, const bool& considerLength);
-	//AMEFObject* decodeBNew(const std::string& buffer, const bool& considerLength);
-	AMEFObject* decodeSinglePacketBInternal(const std::string& buffer, AMEFObject* jDBObject);
-	AMEFObject* decodeSinglePacketB(const std::string& buffer, AMEFObject* jDBObject);
-	//AMEFObject* decodeSinglePacketBNew(const std::string& buffer, bool ignoreName, AMEFObject* jDBObject);
-	std::string updatePacket(const std::string& orig, AMEFObject* jDBObject, int index);
+  ~AMEFDecoder();
+  AMEFDecoder();
+  AMEFObject *decodeB(const std::string &buffer, const bool &considerLength);
+  // AMEFObject* decodeBNew(const std::string& buffer, const bool&
+  // considerLength);
+  AMEFObject *decodeSinglePacketBInternal(const std::string &buffer,
+                                          AMEFObject *jDBObject);
+  AMEFObject *decodeSinglePacketB(const std::string &buffer,
+                                  AMEFObject *jDBObject);
+  // AMEFObject* decodeSinglePacketBNew(const std::string& buffer, bool
+  // ignoreName, AMEFObject* jDBObject);
+  std::string updatePacket(const std::string &orig, AMEFObject *jDBObject,
+                           int index);
 };
 
 #endif /* AMEFDECODER_H_ */
