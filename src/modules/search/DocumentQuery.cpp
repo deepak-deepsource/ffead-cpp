@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,49 +22,35 @@
 
 #include "DocumentQuery.h"
 
-DocumentQuery::DocumentQuery(bool commit) {
-	this->commit = commit;
+DocumentQuery::DocumentQuery(bool commit) { this->commit = commit; }
+
+DocumentQuery::~DocumentQuery() {}
+
+std::string &DocumentQuery::getData() { return data; }
+
+const std::string &DocumentQuery::getId() const { return id; }
+
+void DocumentQuery::setId(const std::string &id) { this->id = id; }
+
+const std::string &DocumentQuery::getIndexName() const { return indexName; }
+
+void DocumentQuery::setIndexName(const std::string &indexName) {
+  this->indexName = indexName;
 }
 
-DocumentQuery::~DocumentQuery() {
+std::map<std::string, std::string> &DocumentQuery::getProperties() {
+  return properties;
 }
 
-std::string& DocumentQuery::getData() {
-	return data;
+void DocumentQuery::setProperties(
+    const std::map<std::string, std::string> &properties) {
+  this->properties = properties;
 }
 
-const std::string& DocumentQuery::getId() const {
-	return id;
-}
+void DocumentQuery::setData(const std::string &data) { this->data = data; }
 
-void DocumentQuery::setId(const std::string& id) {
-	this->id = id;
-}
-
-const std::string& DocumentQuery::getIndexName() const {
-	return indexName;
-}
-
-void DocumentQuery::setIndexName(const std::string& indexName) {
-	this->indexName = indexName;
-}
-
-std::map<std::string, std::string>& DocumentQuery::getProperties() {
-	return properties;
-}
-
-void DocumentQuery::setProperties(const std::map<std::string, std::string>& properties) {
-	this->properties = properties;
-}
-
-void DocumentQuery::setData(const std::string &data) {
-	this->data = data;
-}
-
-const std::string& DocumentQuery::getOpType() const {
-	return opType;
-}
+const std::string &DocumentQuery::getOpType() const { return opType; }
 
 void DocumentQuery::setOpType(const std::string &opType) {
-	this->opType = opType;
+  this->opType = opType;
 }

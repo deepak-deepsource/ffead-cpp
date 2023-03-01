@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,21 +22,20 @@
 
 #include "TestFormController.h"
 
-
 TestFormController::TestFormController() {
-	// TODO Auto-generated constructor stub
-
+  // TODO Auto-generated constructor stub
 }
 
 TestFormController::~TestFormController() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
 
-void TestFormController::onSubmit(void* vform,HttpResponse* res)
-{
-	TestForm* form = (TestForm*)vform;
-	res->setHTTPResponseStatus(HTTPResponseStatus::Ok);
-	res->addHeaderValue(HttpResponse::ContentType, ContentTypes::CONTENT_TYPE_TEXT_PLAIN);
-	res->setContent(form->getTxt()+form->getChe());
-	std::cout << form->getTxt()+form->getChe() << "inside TestFormController" << std::endl;
+void TestFormController::onSubmit(void *vform, HttpResponse *res) {
+  TestForm *form = (TestForm *)vform;
+  res->setHTTPResponseStatus(HTTPResponseStatus::Ok);
+  res->addHeaderValue(HttpResponse::ContentType,
+                      ContentTypes::CONTENT_TYPE_TEXT_PLAIN);
+  res->setContent(form->getTxt() + form->getChe());
+  std::cout << form->getTxt() + form->getChe() << "inside TestFormController"
+            << std::endl;
 }

@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,134 +23,84 @@
 #include "TestObject1.h"
 
 TestObject::TestObject() {
-	a = 0;
-	b = 0;
-	d = 0;
-	e = 0;
-	f = 0;
-	g = 0;
-	h = 0;
-	i = 0;
-	j = 0;
-	k = 0;
-	l = 0;
+  a = 0;
+  b = 0;
+  d = 0;
+  e = 0;
+  f = 0;
+  g = 0;
+  h = 0;
+  i = 0;
+  j = 0;
+  k = 0;
+  l = 0;
 }
 
-int TestObject::getA() const {
-	return a;
-}
+int TestObject::getA() const { return a; }
 
-void TestObject::setA(int a) {
-	this->a = a;
-}
+void TestObject::setA(int a) { this->a = a; }
 
-long TestObject::getB() const {
-	return b;
-}
+long TestObject::getB() const { return b; }
 
-void TestObject::setB(long b) {
-	this->b = b;
-}
+void TestObject::setB(long b) { this->b = b; }
 
-std::string TestObject::getC() const {
-	return c;
-}
+std::string TestObject::getC() const { return c; }
 
-void TestObject::setC(std::string c) {
-	this->c = c;
-}
+void TestObject::setC(std::string c) { this->c = c; }
 
-float TestObject::getD() const {
-	return d;
-}
+float TestObject::getD() const { return d; }
 
-void TestObject::setD(float d) {
-	this->d = d;
-}
+void TestObject::setD(float d) { this->d = d; }
 
-double TestObject::getE() const {
-	return e;
-}
+double TestObject::getE() const { return e; }
 
-void TestObject::setE(double e) {
-	this->e = e;
-}
+void TestObject::setE(double e) { this->e = e; }
 
-bool TestObject::isF() const {
-	return f;
-}
+bool TestObject::isF() const { return f; }
 
-void TestObject::setF(bool f) {
-	this->f = f;
-}
+void TestObject::setF(bool f) { this->f = f; }
 
-long long TestObject::getG() const {
-	return g;
-}
+long long TestObject::getG() const { return g; }
 
-void TestObject::setG(long long g) {
-	this->g = g;
-}
+void TestObject::setG(long long g) { this->g = g; }
 
-short TestObject::getH() const {
-	return h;
-}
+short TestObject::getH() const { return h; }
 
-void TestObject::setH(short h) {
-	this->h = h;
-}
+void TestObject::setH(short h) { this->h = h; }
 
-unsigned short TestObject::getI() const {
-	return i;
-}
+unsigned short TestObject::getI() const { return i; }
 
-void TestObject::setI(unsigned short i) {
-	this->i = i;
-}
+void TestObject::setI(unsigned short i) { this->i = i; }
 
-unsigned int TestObject::getJ() const {
-	return j;
-}
+unsigned int TestObject::getJ() const { return j; }
 
-void TestObject::setJ(unsigned int j) {
-	this->j = j;
-}
+void TestObject::setJ(unsigned int j) { this->j = j; }
 
-unsigned long TestObject::getK() const {
-	return k;
-}
+unsigned long TestObject::getK() const { return k; }
 
-void TestObject::setK(unsigned long k) {
-	this->k = k;
-}
+void TestObject::setK(unsigned long k) { this->k = k; }
 
-unsigned long long TestObject::getL() const {
-	return l;
-}
+unsigned long long TestObject::getL() const { return l; }
 
-void TestObject::setL(unsigned long long l) {
-	this->l = l;
-}
+void TestObject::setL(unsigned long long l) { this->l = l; }
 
 TestObject::~TestObject() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
 
 std::string TestObject::toString() {
-	std::string out;
-	out.append(CastUtil::lexical_cast<std::string>(a) + " ");
-	out.append(CastUtil::lexical_cast<std::string>(b) + " ");
-	out.append(CastUtil::lexical_cast<std::string>(c) + " ");
-	out.append(CastUtil::lexical_cast<std::string>(d) + " ");
-	out.append(CastUtil::lexical_cast<std::string>(e) + " ");
-	out.append(CastUtil::lexical_cast<std::string>(f) + " ");
-	out.append(CastUtil::lexical_cast<std::string>(g) + " ");
-	out.append(CastUtil::lexical_cast<std::string>(h) + " ");
-	out.append(CastUtil::lexical_cast<std::string>(i) + " ");
-	out.append(CastUtil::lexical_cast<std::string>(j) + " ");
-	out.append(CastUtil::lexical_cast<std::string>(k) + " ");
-	out.append(CastUtil::lexical_cast<std::string>(l) + " ");
-	return out;
+  std::string out;
+  out.append(CastUtil::lexical_cast<std::string>(a) + " ");
+  out.append(CastUtil::lexical_cast<std::string>(b) + " ");
+  out.append(CastUtil::lexical_cast<std::string>(c) + " ");
+  out.append(CastUtil::lexical_cast<std::string>(d) + " ");
+  out.append(CastUtil::lexical_cast<std::string>(e) + " ");
+  out.append(CastUtil::lexical_cast<std::string>(f) + " ");
+  out.append(CastUtil::lexical_cast<std::string>(g) + " ");
+  out.append(CastUtil::lexical_cast<std::string>(h) + " ");
+  out.append(CastUtil::lexical_cast<std::string>(i) + " ");
+  out.append(CastUtil::lexical_cast<std::string>(j) + " ");
+  out.append(CastUtil::lexical_cast<std::string>(k) + " ");
+  out.append(CastUtil::lexical_cast<std::string>(l) + " ");
+  return out;
 }
-
-

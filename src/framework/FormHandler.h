@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,22 +22,23 @@
 
 #ifndef FORMHANDLER_H_
 #define FORMHANDLER_H_
-#include "Reflector.h"
-#include "HttpResponse.h"
-#include "HttpRequest.h"
-#include "Document.h"
-#include <dlfcn.h>
-#include "Constants.h"
-#include "LoggerFactory.h"
 #include "ConfigurationData.h"
+#include "Constants.h"
+#include "Document.h"
 #include "FormController.h"
+#include "HttpRequest.h"
+#include "HttpResponse.h"
 #include "JSONSerialize.h"
+#include "LoggerFactory.h"
+#include "Reflector.h"
+#include <dlfcn.h>
 
-typedef void* (*toVoidP) (const std::string&);
+typedef void *(*toVoidP)(const std::string &);
 
 class FormHandler {
 public:
-	static bool handle(HttpRequest* req, HttpResponse* res, Reflector& reflector, Element* ele);
+  static bool handle(HttpRequest *req, HttpResponse *res, Reflector &reflector,
+                     Element *ele);
 };
 
 #endif /* FORMHANDLER_H_ */

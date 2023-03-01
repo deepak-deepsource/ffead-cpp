@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,34 +22,17 @@
 
 #include "MarkerTest.h"
 
-MarkerTest::MarkerTest() {
-	id = 0;
-}
+MarkerTest::MarkerTest() { id = 0; }
 
 MarkerTest::~MarkerTest() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
-int MarkerTest::getId() const
-{
-	return id;
-}
+int MarkerTest::getId() const { return id; }
 
-void MarkerTest::setId(int id)
-{
-	this->id = id;
-}
+void MarkerTest::setId(int id) { this->id = id; }
 
-std::string MarkerTest::getName() const
-{
-	return name;
-}
+std::string MarkerTest::getName() const { return name; }
 
-void MarkerTest::setName(std::string name)
-{
-	this->name = name;
-}
+void MarkerTest::setName(std::string name) { this->name = name; }
 
-bool MarkerTest::operator<(MarkerTest t) const
-{
-	return this->id<t.id;
-}
+bool MarkerTest::operator<(MarkerTest t) const { return this->id < t.id; }

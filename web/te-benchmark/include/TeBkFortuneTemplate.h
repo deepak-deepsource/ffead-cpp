@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,19 +22,19 @@
 
 #ifndef TEBKFORTUNETEMPLATE_H_
 #define TEBKFORTUNETEMPLATE_H_
-#include "TemplateHandler.h"
-#include "TeBkFortune.h"
-#include "vector"
-#include "DataSourceManager.h"
-#include <stdlib.h>
-#include <algorithm>
 #include "CryptoHandler.h"
+#include "DataSourceManager.h"
+#include "TeBkFortune.h"
+#include "TemplateHandler.h"
+#include "vector"
+#include <algorithm>
+#include <stdlib.h>
 
-#pragma @Template path="fortunes" file="fortunes.tpe"
+#pragma @Template path = "fortunes" file = "fortunes.tpe"
 class TeBkFortuneTemplate {
 public:
-	virtual ~TeBkFortuneTemplate();
-	void getContext(HttpRequest* request, Context* context);
+  virtual ~TeBkFortuneTemplate();
+  void getContext(HttpRequest *request, Context *context);
 };
 
 #endif /* TEBKFORTUNETEMPLATE_H_ */

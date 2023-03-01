@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,32 +22,33 @@
 
 #ifndef DLOGGER_H_
 #define DLOGGER_H_
-#include "PropFileReader.h"
 #include "DateFormat.h"
 #include "Mutex.h"
+#include "PropFileReader.h"
 class DLogger {
 public:
-	static DLogger* getDLogger();
-	static void info(std::string);
-	static void debug(std::string);
-	static void error(std::string);
-	static void clear();
-	static void init();
-	static void init(std::string file);
-	static void init(std::string level,std::string mode,std::string file);
+  static DLogger *getDLogger();
+  static void info(std::string);
+  static void debug(std::string);
+  static void error(std::string);
+  static void clear();
+  static void init();
+  static void init(std::string file);
+  static void init(std::string level, std::string mode, std::string file);
+
 private:
-	virtual ~DLogger();
-	DLogger();
-	DLogger(std::string);
-	DLogger(std::string,std::string,std::string);
-	DateFormat datFormat;
-	std::string level;
-	std::string mode;
-	std::string filepath;
-	std::ofstream out;
-	void write(std::string,std::string);
-	Mutex p_mutex;
-	static DLogger* m_pInstance;
+  virtual ~DLogger();
+  DLogger();
+  DLogger(std::string);
+  DLogger(std::string, std::string, std::string);
+  DateFormat datFormat;
+  std::string level;
+  std::string mode;
+  std::string filepath;
+  std::ofstream out;
+  void write(std::string, std::string);
+  Mutex p_mutex;
+  static DLogger *m_pInstance;
 };
 
 #endif /* DLOGGER_H_ */

@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -23,49 +23,47 @@
 #ifndef CRONTIMER_H_
 #define CRONTIMER_H_
 #include "AppDefines.h"
+#include "CastUtil.h"
 #include "Compatibility.h"
+#include "Date.h"
+#include "map"
+#include "string"
+#include "vector"
 #include <algorithm>
 #include <iostream>
-#include "vector"
-#include "string"
-#include "map"
-#include "Date.h"
-#include "CastUtil.h"
-
 
 class CronTimer {
-	class CronExpressionPart
-	{
-		bool all;
-		int from;
-		int to;
-		int interval;
-		std::string list;
-		int nextRun;
-		std::vector<int> lstParts;
-		friend class CronTimer;
-		CronExpressionPart()
-		{
-			interval = -1;
-			from = -1;
-			to = -1;
-			all = false;
-			nextRun = -1;
-		}
-	};
-	std::vector<CronExpressionPart> cParts;
-	Date nextRunDate;
-	std::vector<int> starts, ends, lstParts;
-	std::map<std::string, int> months, days;
-	friend class JobScheduler;
+  class CronExpressionPart {
+    bool all;
+    int from;
+    int to;
+    int interval;
+    std::string list;
+    int nextRun;
+    std::vector<int> lstParts;
+    friend class CronTimer;
+    CronExpressionPart() {
+      interval = -1;
+      from = -1;
+      to = -1;
+      all = false;
+      nextRun = -1;
+    }
+  };
+  std::vector<CronExpressionPart> cParts;
+  Date nextRunDate;
+  std::vector<int> starts, ends, lstParts;
+  std::map<std::string, int> months, days;
+  friend class JobScheduler;
+
 public:
-	CronTimer(const std::string& cronExpression);
-	virtual ~CronTimer();
-	std::string toString();
-	bool isValid(const int& pos, const int& cvalue, const int& nvalue);
-	void correctNextRunDateTime(const int& pos);
-	bool tryIncrement(const int& pos, const int& cvalue);
-	void run();
+  CronTimer(const std::string &cronExpression);
+  virtual ~CronTimer();
+  std::string toString();
+  bool isValid(const int &pos, const int &cvalue, const int &nvalue);
+  void correctNextRunDateTime(const int &pos);
+  bool tryIncrement(const int &pos, const int &cvalue);
+  void run();
 };
 
 #endif /* CRONTIMER_H_ */

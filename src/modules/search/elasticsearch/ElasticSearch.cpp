@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -24,84 +24,75 @@
 
 #ifdef HAVE_ELASTIC
 
-ElasticSearch::ElasticSearch(ConnectionPooler* pool) {
-	this->pool = pool;
+ElasticSearch::ElasticSearch(ConnectionPooler *pool) { this->pool = pool; }
+
+ElasticSearch::~ElasticSearch() {}
+
+void ElasticSearch::createIndex(IndexQuery &iq) {}
+
+void ElasticSearch::updateIndex(IndexQuery &iq) {}
+
+void ElasticSearch::removeIndex(IndexQuery &iq) {}
+
+void ElasticSearch::add(DocumentQuery &iq) {
+  Connection *connection = pool->checkout();
+  elasticlient::Client *ec = (elasticlient::Client *)connection->getConn();
+  cpr::Response indexResponse =
+      ec->index(iq.getIndexName(), "docType", "docId", iq.getData());
+  pool->release(connection);
+  if (indexResponse.status_code != 200) {
+    throw std::runtime_error("Error during document op " + indexResponse.text);
+  }
 }
 
-ElasticSearch::~ElasticSearch() {
+void ElasticSearch::update(DocumentQuery &iq) { add(iq); }
+
+void ElasticSearch::remove(DocumentQuery &iq) {
+  Connection *connection = pool->checkout();
+  elasticlient::Client *ec = (elasticlient::Client *)connection->getConn();
+  cpr::Response indexResponse =
+      ec->remove(iq.getIndexName(), "docType", "docId");
+  pool->release(connection);
+  if (indexResponse.status_code != 200) {
+    throw std::runtime_error("Error during document op " + indexResponse.text);
+  }
 }
 
-void ElasticSearch::createIndex(IndexQuery& iq) {
+std::string ElasticSearch::query(SearchQuery &q) {
+  Connection *connection = pool->checkout();
+  elasticlient::Client *ec = (elasticlient::Client *)connection->getConn();
+  cpr::Response resp;
+  if (q.getId() != "") {
+    resp = ec->get(q.getIndexName(), "docType", q.getId());
+  } else {
+    resp = ec->search(q.getIndexName(), "docType", q.getData());
+  }
+  pool->release(connection);
+  if (resp.status_code != 200) {
+    throw std::runtime_error("Error during document op " + resp.text);
+  } else {
+    return resp.text;
+  }
 }
 
-void ElasticSearch::updateIndex(IndexQuery& iq) {
+void ElasticSearchConnectionPool::initEnv() {}
+
+void *ElasticSearchConnectionPool::newConnection(const bool &isWrite,
+                                                 const ConnectionNode &node) {
+  return new elasticlient::Client({node.getBaseUrl()});
 }
 
-void ElasticSearch::removeIndex(IndexQuery& iq) {
+void ElasticSearchConnectionPool::closeConnection(void *conn) {
+  delete ((elasticlient::Client *)conn);
 }
 
-void ElasticSearch::add(DocumentQuery& iq) {
-	Connection* connection = pool->checkout();
-	elasticlient::Client* ec = (elasticlient::Client*)connection->getConn();
-	cpr::Response indexResponse = ec->index(iq.getIndexName(), "docType", "docId", iq.getData());
-	pool->release(connection);
-	if(indexResponse.status_code!=200) {
-		throw std::runtime_error("Error during document op " + indexResponse.text);
-	}
+void ElasticSearchConnectionPool::destroy() {}
+
+ElasticSearchConnectionPool::ElasticSearchConnectionPool(
+    const ConnectionProperties &props) {
+  createPool(props);
 }
 
-void ElasticSearch::update(DocumentQuery& iq) {
-	add(iq);
-}
-
-void ElasticSearch::remove(DocumentQuery& iq) {
-	Connection* connection = pool->checkout();
-	elasticlient::Client* ec = (elasticlient::Client*)connection->getConn();
-	cpr::Response indexResponse = ec->remove(iq.getIndexName(), "docType", "docId");
-	pool->release(connection);
-	if(indexResponse.status_code!=200) {
-		throw std::runtime_error("Error during document op " + indexResponse.text);
-	}
-}
-
-std::string ElasticSearch::query(SearchQuery& q) {
-	Connection* connection = pool->checkout();
-	elasticlient::Client* ec = (elasticlient::Client*)connection->getConn();
-	cpr::Response resp;
-	if(q.getId()!="") {
-		resp = ec->get(q.getIndexName(), "docType", q.getId());
-	} else {
-		resp = ec->search(q.getIndexName(), "docType", q.getData());
-	}
-	pool->release(connection);
-	if(resp.status_code!=200) {
-		throw std::runtime_error("Error during document op " + resp.text);
-	} else {
-		return resp.text;
-	}
-}
-
-void ElasticSearchConnectionPool::initEnv() {
-}
-
-void* ElasticSearchConnectionPool::newConnection(const bool& isWrite, const ConnectionNode& node) {
-	return new elasticlient::Client({node.getBaseUrl()});
-}
-
-void ElasticSearchConnectionPool::closeConnection(void* conn) {
-	delete ((elasticlient::Client*)conn);
-}
-
-void ElasticSearchConnectionPool::destroy() {
-}
-
-ElasticSearchConnectionPool::ElasticSearchConnectionPool(const ConnectionProperties& props) {
-	createPool(props);
-}
-
-ElasticSearchConnectionPool::~ElasticSearchConnectionPool() {
-	destroyPool();
-}
-
+ElasticSearchConnectionPool::~ElasticSearchConnectionPool() { destroyPool(); }
 
 #endif

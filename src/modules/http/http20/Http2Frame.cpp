@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,25 +22,22 @@
 
 #include "Http2Frame.h"
 
-Http2Frame::~Http2Frame() {
-	
-}
+Http2Frame::~Http2Frame() {}
 
 /*string Http2Frame::getFrameData() {
-	std::string finaldata;
-	finaldata.append(CommonUtils::ulonglongTocharArray(header.payloadLength, 3));
-	finaldata.push_back(header.type);
-	//finaldata.push_back(header.flags);
-	std::string rstib = CommonUtils::ulonglongTocharArray(header.streamIdentifier, 4);
-	if(header.reserved)
-	{
-		rstib[0] |= 0x01 << 1;
-	}
-	finaldata.append(rstib);
-	finaldata.append(payload);
-	return finaldata;
+        std::string finaldata;
+        finaldata.append(CommonUtils::ulonglongTocharArray(header.payloadLength,
+3)); finaldata.push_back(header.type);
+        //finaldata.push_back(header.flags);
+        std::string rstib =
+CommonUtils::ulonglongTocharArray(header.streamIdentifier, 4);
+        if(header.reserved)
+        {
+                rstib[0] |= 0x01 << 1;
+        }
+        finaldata.append(rstib);
+        finaldata.append(payload);
+        return finaldata;
 }*/
 
-Http2FrameHeader& Http2Frame::getHeader() {
-	return header;
-}
+Http2FrameHeader &Http2Frame::getHeader() { return header; }

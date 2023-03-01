@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,63 +22,59 @@
 #include "Http2ReadWriteUtil.h"
 
 Http2RequestResponseData::Http2RequestResponseData() {
-	endStream = false;
-	incompleteResponse = NULL;
-	isWebSocket = false;
-	streamIdentifier = -1;
+  endStream = false;
+  incompleteResponse = NULL;
+  isWebSocket = false;
+  streamIdentifier = -1;
 }
 
-Http2RequestResponseData::~Http2RequestResponseData() {
-}
+Http2RequestResponseData::~Http2RequestResponseData() {}
 
-const std::string& Http2RequestResponseData::getData() const {
-	return data;
-}
+const std::string &Http2RequestResponseData::getData() const { return data; }
 
 void Http2RequestResponseData::reset() {
-	data = "";
-	headerBlock = "";
-	preHeaders.clear();
-	endStream = false;
-	if(incompleteResponse!=NULL) {
-		if(isWebSocket)
-			delete (WebSocketData*)incompleteResponse;
-		else
-			delete (HttpRequest*)incompleteResponse;
-	}
-	incompleteResponse = NULL;
+  data = "";
+  headerBlock = "";
+  preHeaders.clear();
+  endStream = false;
+  if (incompleteResponse != NULL) {
+    if (isWebSocket)
+      delete (WebSocketData *)incompleteResponse;
+    else
+      delete (HttpRequest *)incompleteResponse;
+  }
+  incompleteResponse = NULL;
 }
 
 bool Http2RequestResponseData::isDataPending() {
-	if(!isWebSocket) {
-		HttpResponse* res = (HttpResponse*)incompleteResponse;
-		return data.length()>0 || (res!=NULL && res->isContentRemains());
-	} else {
-		//WebSocketData* res = (WebSocketData*)incompleteResponse;
-		return data.length()>0/* || (res!=NULL && res->isContentRemains())*/;
-	}
+  if (!isWebSocket) {
+    HttpResponse *res = (HttpResponse *)incompleteResponse;
+    return data.length() > 0 || (res != NULL && res->isContentRemains());
+  } else {
+    // WebSocketData* res = (WebSocketData*)incompleteResponse;
+    return data.length() > 0 /* || (res!=NULL && res->isContentRemains())*/;
+  }
 }
 
 void Http2RequestResponseData::updateContent() {
-	if(!isWebSocket) {
-		HttpResponse* res = (HttpResponse*)incompleteResponse;
-		if(data.length()==0 && res!=NULL && res->isContentRemains()) {
-			res->getRemainingContent(url, false, data);
-		}
-	} else {
-		//WebSocketData* res = (WebSocketData*)incompleteResponse;
-		//if(data.length()==0 && res!=NULL && res->isContentRemains()) {
-		//	data = res->getRemainingContent();
-		//}
-	}
+  if (!isWebSocket) {
+    HttpResponse *res = (HttpResponse *)incompleteResponse;
+    if (data.length() == 0 && res != NULL && res->isContentRemains()) {
+      res->getRemainingContent(url, false, data);
+    }
+  } else {
+    // WebSocketData* res = (WebSocketData*)incompleteResponse;
+    // if(data.length()==0 && res!=NULL && res->isContentRemains()) {
+    //	data = res->getRemainingContent();
+    // }
+  }
 }
 
-const std::map<std::string, std::string, std::less<>>& Http2RequestResponseData::getHeaders() const {
-	return preHeaders;
+const std::map<std::string, std::string, std::less<>> &
+Http2RequestResponseData::getHeaders() const {
+  return preHeaders;
 }
 
-Http2ReadWriteUtil::Http2ReadWriteUtil() {
-}
+Http2ReadWriteUtil::Http2ReadWriteUtil() {}
 
-Http2ReadWriteUtil::~Http2ReadWriteUtil() {
-}
+Http2ReadWriteUtil::~Http2ReadWriteUtil() {}

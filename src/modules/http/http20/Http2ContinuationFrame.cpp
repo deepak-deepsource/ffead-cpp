@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,24 +22,21 @@
 
 #include "Http2ContinuationFrame.h"
 
-Http2ContinuationFrame::Http2ContinuationFrame() {
-	header.type = 9;
+Http2ContinuationFrame::Http2ContinuationFrame() { header.type = 9; }
+
+Http2ContinuationFrame::Http2ContinuationFrame(const std::string &data,
+                                               Http2FrameHeader &aheader) {
+  header = aheader;
+  header.type = 9;
+  headerBlockFragment = data;
 }
 
-Http2ContinuationFrame::Http2ContinuationFrame(const std::string& data, Http2FrameHeader& aheader) {
-	header = aheader;
-	header.type = 9;
-	headerBlockFragment = data;
+const std::string &Http2ContinuationFrame::getHeaderBlockFragment() const {
+  return headerBlockFragment;
 }
 
-const std::string& Http2ContinuationFrame::getHeaderBlockFragment() const {
-	return headerBlockFragment;
-}
-
-Http2ContinuationFrame::~Http2ContinuationFrame() {
-	
-}
+Http2ContinuationFrame::~Http2ContinuationFrame() {}
 
 std::string Http2ContinuationFrame::getFrameData() {
-	return headerBlockFragment;
+  return headerBlockFragment;
 }
