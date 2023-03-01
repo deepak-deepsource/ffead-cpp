@@ -422,10 +422,10 @@ static lsi_serverhook_t serverHooks[] = {
     {LSI_HKPT_WORKER_ATEXIT, workerExit, LSI_HOOK_NORMAL, LSI_FLAG_ENABLED},
     {LSI_HKPT_MAIN_ATEXIT, mainExit, LSI_HOOK_NORMAL, LSI_FLAG_ENABLED},
     //{ LSI_HKPT_RCVD_REQ_HEADER, rcvd_req_header_cbf, 	LSI_HOOK_NORMAL,
-    //LSI_FLAG_ENABLED}, { LSI_HKPT_HTTP_BEGIN, 		httpinit,
-    //LSI_HOOK_NORMAL, LSI_FLAG_ENABLED}, { LSI_HKPT_RECV_REQ_BODY,
-    //httpreqread, 			LSI_HOOK_EARLY,  LSI_FLAG_TRANSFORM |
-    //LSI_FLAG_ENABLED},
+    // LSI_FLAG_ENABLED}, { LSI_HKPT_HTTP_BEGIN, 		httpinit,
+    // LSI_HOOK_NORMAL, LSI_FLAG_ENABLED}, { LSI_HKPT_RECV_REQ_BODY,
+    // httpreqread, 			LSI_HOOK_EARLY,  LSI_FLAG_TRANSFORM |
+    // LSI_FLAG_ENABLED},
     LSI_HOOK_END // Must put this at the end position
 };
 
