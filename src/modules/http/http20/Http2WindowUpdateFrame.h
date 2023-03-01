@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -25,17 +25,18 @@
 #include "Http2Frame.h"
 
 class Http2WindowUpdateFrame : public Http2Frame {
-	bool reserved;
-	int windowSizeIncrement;
-	Http2WindowUpdateFrame(std::string data, Http2FrameHeader& aheader);
-	friend class Http2Handler;
-	friend class Http2StreamHandler;
+  bool reserved;
+  int windowSizeIncrement;
+  Http2WindowUpdateFrame(std::string data, Http2FrameHeader &aheader);
+  friend class Http2Handler;
+  friend class Http2StreamHandler;
+
 public:
-	Http2WindowUpdateFrame();
-	virtual ~Http2WindowUpdateFrame();
-	bool isReserved() const;
-	int getWindowSizeIncrement() const;
-	std::string getFrameData();
+  Http2WindowUpdateFrame();
+  virtual ~Http2WindowUpdateFrame();
+  bool isReserved() const;
+  int getWindowSizeIncrement() const;
+  std::string getFrameData();
 };
 
 #endif /* HTTP2WINDOWUPDATEFRAME_H_ */

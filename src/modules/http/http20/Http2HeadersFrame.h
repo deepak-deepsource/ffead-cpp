@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -25,26 +25,27 @@
 #include "Http2Frame.h"
 
 class Http2HeadersFrame : public Http2Frame {
-	unsigned char padLength;
-	bool exclusive;
-	int streamDependency;
-	unsigned char weight;
-	std::string headerBlockFragment;
-	std::string padding;
-	Http2HeadersFrame(std::string data, Http2FrameHeader& header);
-	friend class Http2Handler;
-	friend class Http2StreamHandler;
+  unsigned char padLength;
+  bool exclusive;
+  int streamDependency;
+  unsigned char weight;
+  std::string headerBlockFragment;
+  std::string padding;
+  Http2HeadersFrame(std::string data, Http2FrameHeader &header);
+  friend class Http2Handler;
+  friend class Http2StreamHandler;
+
 public:
-	Http2HeadersFrame();
-	virtual ~Http2HeadersFrame();
-	bool isExclusive() const;
-	const std::string& getHeaderBlockFragment() const;
-	void setHeaderBlockFragment(const std::string& headerBlockFragment);
-	const std::string& getPadding() const;
-	unsigned char getPadLength() const;
-	int getStreamDependency() const;
-	unsigned char getWeight() const;
-	std::string getFrameData();
+  Http2HeadersFrame();
+  virtual ~Http2HeadersFrame();
+  bool isExclusive() const;
+  const std::string &getHeaderBlockFragment() const;
+  void setHeaderBlockFragment(const std::string &headerBlockFragment);
+  const std::string &getPadding() const;
+  unsigned char getPadLength() const;
+  int getStreamDependency() const;
+  unsigned char getWeight() const;
+  std::string getFrameData();
 };
 
 #endif /* HTTP2HEADERSFRAME_H_ */

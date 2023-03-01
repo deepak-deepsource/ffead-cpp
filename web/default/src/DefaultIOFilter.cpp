@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,30 +23,27 @@
 #include "DefaultIOFilter.h"
 
 DefaultIOFilter::DefaultIOFilter() {
-	// TODO Auto-generated constructor stub
-
+  // TODO Auto-generated constructor stub
 }
 
 DefaultIOFilter::~DefaultIOFilter() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
 
-void DefaultIOFilter::doInputFilter(HttpRequest *req)
-{
-	//Process the input request here...
-	std::cout << "Processed input request" << std::endl;
+void DefaultIOFilter::doInputFilter(HttpRequest *req) {
+  // Process the input request here...
+  std::cout << "Processed input request" << std::endl;
 }
 
-void DefaultIOFilter::doOutputFilter(HttpResponse *res)
-{
-	//Process the output response here...
-	std::cout << "Processed output response" << std::endl;
+void DefaultIOFilter::doOutputFilter(HttpResponse *res) {
+  // Process the output response here...
+  std::cout << "Processed output response" << std::endl;
 }
 
-bool DefaultIOFilter::doHandle(HttpRequest *req, HttpResponse* res)
-{
-	bool continue_proc_request = false;
-	res->setContent("Filter handled your request as you visited a *.filter location");
-	res->setHTTPResponseStatus(HTTPResponseStatus::Ok);
-	return continue_proc_request;
+bool DefaultIOFilter::doHandle(HttpRequest *req, HttpResponse *res) {
+  bool continue_proc_request = false;
+  res->setContent(
+      "Filter handled your request as you visited a *.filter location");
+  res->setHTTPResponseStatus(HTTPResponseStatus::Ok);
+  return continue_proc_request;
 }

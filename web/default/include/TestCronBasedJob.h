@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,17 +22,17 @@
 
 #ifndef TESTCRONBASEDJOB_H_
 #define TESTCRONBASEDJOB_H_
+#include "CastUtil.h"
 #include "string"
 #include <iostream>
-#include "CastUtil.h"
-
 
 class TestCronBasedJob {
-	int counter;
+  int counter;
+
 public:
-	TestCronBasedJob();
-	virtual ~TestCronBasedJob();
-	void runJob();
+  TestCronBasedJob();
+  virtual ~TestCronBasedJob();
+  void runJob();
 };
 
 #endif /* TESTCRONBASEDJOB_H_ */

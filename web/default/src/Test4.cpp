@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,51 +23,25 @@
 #include "Test4.h"
 
 Test4::Test4() {
-	// TODO Auto-generated constructor stub
-
+  // TODO Auto-generated constructor stub
 }
 
 Test4::~Test4() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
 
-Date Test4::getDate() const
-{
-	return this->date;
-}
+Date Test4::getDate() const { return this->date; }
 
-void Test4::setDate(Date date)
-{
-	this->date = date;
-}
+void Test4::setDate(Date date) { this->date = date; }
 
+Date Test4::getDatt() const { return datt; }
 
-Date Test4::getDatt() const
-{
-	return datt;
-}
+void Test4::setDatt(Date datt) { this->datt = datt; }
 
-void Test4::setDatt(Date datt)
-{
-	this->datt = datt;
-}
+Date Test4::getDattm() const { return dattm; }
 
-Date Test4::getDattm() const
-{
-	return dattm;
-}
+void Test4::setDattm(Date dattm) { this->dattm = dattm; }
 
-void Test4::setDattm(Date dattm)
-{
-	this->dattm = dattm;
-}
+BinaryData Test4::getBinar() const { return binar; }
 
-BinaryData Test4::getBinar() const
-{
-	return binar;
-}
-
-void Test4::setBinar(BinaryData binar)
-{
-	this->binar = binar;
-}
+void Test4::setBinar(BinaryData binar) { this->binar = binar; }

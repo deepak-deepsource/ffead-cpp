@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,30 +22,22 @@
 
 #include "TeBkFortune.h"
 
-int TeBkFortune::getId() const {
-	return id;
+int TeBkFortune::getId() const { return id; }
+
+void TeBkFortune::setId(int id) { this->id = id; }
+
+const std::string &TeBkFortune::getMessage() const { return message; }
+
+void TeBkFortune::setMessage(const std::string &message) {
+  this->message = message;
 }
 
-void TeBkFortune::setId(int id) {
-	this->id = id;
-}
-
-const std::string& TeBkFortune::getMessage() const {
-	return message;
-}
-
-void TeBkFortune::setMessage(const std::string& message) {
-	this->message = message;
-}
-
-TeBkFortune::TeBkFortune() {
-	id = 0;
-}
+TeBkFortune::TeBkFortune() { id = 0; }
 
 TeBkFortune::~TeBkFortune() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
 
-bool TeBkFortune::operator < (const TeBkFortune& other) const {
-	return message.compare(other.message)<0;
+bool TeBkFortune::operator<(const TeBkFortune &other) const {
+  return message.compare(other.message) < 0;
 }

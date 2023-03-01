@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,20 +22,16 @@
 
 #include "MarkerController.h"
 
-
 MarkerController::MarkerController() {
-	// TODO Auto-generated constructor stub
-
+  // TODO Auto-generated constructor stub
 }
 
 MarkerController::~MarkerController() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
 
-bool MarkerController::service(HttpRequest* req, HttpResponse* res)
-{
-	res->setHTTPResponseStatus(HTTPResponseStatus::NoContent);
-	std::cout << "Called Marker Controller...." << std::flush;
-	return true;
+bool MarkerController::service(HttpRequest *req, HttpResponse *res) {
+  res->setHTTPResponseStatus(HTTPResponseStatus::NoContent);
+  std::cout << "Called Marker Controller...." << std::flush;
+  return true;
 }
-
