@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,36 +22,25 @@
 
 #include "ThreadLocal.h"
 
-void ThreadLocal::init() {
-	pthread_key_create(&_key, NULL);
+void ThreadLocal::init() { pthread_key_create(&_key, NULL); }
+
+ThreadLocal::ThreadLocal() { init(); }
+
+void ThreadLocal::set(void *val) {
+  if (pthread_getspecific(_key) == NULL) {
+    pthread_setspecific(_key, val);
+  }
 }
 
-ThreadLocal::ThreadLocal() {
-	init();
+void ThreadLocal::reset(void *val) { pthread_setspecific(_key, val); }
+
+ThreadLocal::ThreadLocal(void *t) {
+  init();
+  if (pthread_getspecific(_key) == NULL) {
+    pthread_setspecific(_key, t);
+  }
 }
 
-void ThreadLocal::set(void* val) {
-	if (pthread_getspecific(_key) == NULL) {
-		pthread_setspecific(_key, val);
-	}
-}
+void *ThreadLocal::get() { return pthread_getspecific(_key); }
 
-void ThreadLocal::reset(void* val) {
-	pthread_setspecific(_key, val);
-}
-
-ThreadLocal::ThreadLocal(void* t) {
-	init();
-	if (pthread_getspecific(_key) == NULL) {
-		pthread_setspecific(_key, t);
-	}
-}
-
-void* ThreadLocal::get() {
-	return pthread_getspecific(_key);
-}
-
-ThreadLocal::~ThreadLocal() {
-	pthread_key_delete(_key);
-}
-
+ThreadLocal::~ThreadLocal() { pthread_key_delete(_key); }

@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -26,18 +26,21 @@
 #include "SocketInterface.h"
 
 class WebSockHandler {
-	BaseSocket* sif;
-	friend class HttpServiceTask;
-	friend class ServiceTask;
+  BaseSocket *sif;
+  friend class HttpServiceTask;
+  friend class ServiceTask;
+
 public:
-	int writeTo(WebSocketRespponseData* res);
-	int writeToPeer(WebSocketRespponseData* res, BaseSocket* sif);
-	virtual bool onOpen(WebSocketData* req, WebSocketRespponseData* res, std::string uniqueAddress, void* hreq)=0;
-	virtual void onClose(std::string uniqueAddress)=0;
-	virtual bool onMessage(WebSocketData* req, WebSocketRespponseData* res, std::string uniqueAddress)=0;
-	virtual bool isWriteControl();
-	BaseSocket* getSif();
-	virtual ~WebSockHandler();
+  int writeTo(WebSocketRespponseData *res);
+  int writeToPeer(WebSocketRespponseData *res, BaseSocket *sif);
+  virtual bool onOpen(WebSocketData *req, WebSocketRespponseData *res,
+                      std::string uniqueAddress, void *hreq) = 0;
+  virtual void onClose(std::string uniqueAddress) = 0;
+  virtual bool onMessage(WebSocketData *req, WebSocketRespponseData *res,
+                         std::string uniqueAddress) = 0;
+  virtual bool isWriteControl();
+  BaseSocket *getSif();
+  virtual ~WebSockHandler();
 };
 
 #endif /* SRC_FRAMEWORK_WEBSOCKHANDLER_H_ */

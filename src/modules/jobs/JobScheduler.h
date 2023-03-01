@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -24,51 +24,53 @@
 #define JOBSCHEDULER_H_
 #include "CastUtil.h"
 #include "CronTimer.h"
-#include "SimpleXmlParser.h"
-#include "Reflector.h"
-#include "Thread.h"
-#include "LoggerFactory.h"
-#include "Task.h"
 #include "GenericObject.h"
+#include "LoggerFactory.h"
+#include "Reflector.h"
+#include "SimpleXmlParser.h"
+#include "Task.h"
+#include "Thread.h"
 
-typedef void* (*JobFunction) (void*, const vals&);
+typedef void *(*JobFunction)(void *, const vals &);
 
-class JobConfig
-{
-	std::string name;
-	std::string cron;
-	std::string clas;
-	std::string meth;
-	std::string app;
-	friend class JobScheduler;
+class JobConfig {
+  std::string name;
+  std::string cron;
+  std::string clas;
+  std::string meth;
+  std::string app;
+  friend class JobScheduler;
 };
 
 class JobScheduler {
-	class JobTask : public Task
-	{
-		void* objIns;
-		std::string cron, clas;
-		std::string name, appName;
-		Method meth;
-		std::atomic<bool> doRun;
-		void run();
-		friend class JobScheduler;
-		public:
-			int getTid();
-			void setTid(int tid);
-	};
-	bool isStarted;
-	std::vector<JobConfig> configs;
-	std::vector<JobTask*> tasks;
-	static JobScheduler* instance;
-	JobScheduler();
-	virtual ~JobScheduler();
-	static void* service(void* arg);
+  class JobTask : public Task {
+    void *objIns;
+    std::string cron, clas;
+    std::string name, appName;
+    Method meth;
+    std::atomic<bool> doRun;
+    void run();
+    friend class JobScheduler;
+
+  public:
+    int getTid();
+    void setTid(int tid);
+  };
+  bool isStarted;
+  std::vector<JobConfig> configs;
+  std::vector<JobTask *> tasks;
+  static JobScheduler *instance;
+  JobScheduler();
+  virtual ~JobScheduler();
+  static void *service(void *arg);
+
 public:
-	static void init(const ElementList& tabs, const std::string& appName= "default");
-	static void init(const std::string& fileName, const std::string& appName= "default");
-	static void start();
-	static void stop();
+  static void init(const ElementList &tabs,
+                   const std::string &appName = "default");
+  static void init(const std::string &fileName,
+                   const std::string &appName = "default");
+  static void start();
+  static void stop();
 };
 
 #endif /* JOBSCHEDULER_H_ */

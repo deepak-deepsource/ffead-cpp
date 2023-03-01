@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -24,40 +24,40 @@
 #define THREAD_H_
 #include "Compatibility.h"
 #if defined(OS_BSD) && !defined(OS_DARWIN)
-#include <sys/cpuset.h>
 #include <pthread_np.h>
+#include <sys/cpuset.h>
 #endif
 
-typedef void* (*ThreadFunc)(void*);
+typedef void *(*ThreadFunc)(void *);
 
 class Thread;
 
-class ThreadFunctor
-{
-	friend class Thread;
-	ThreadFunc f;
-	void* arg;
-	Thread* _t;
+class ThreadFunctor {
+  friend class Thread;
+  ThreadFunc f;
+  void *arg;
+  Thread *_t;
 };
 
 class Thread {
-	ThreadFunctor* threadFunctor;
-	pthread_t pthread;
-	pthread_cond_t cond;
-	pthread_mutex_t mut;
-	bool isDetached;
-	static void* _service(void* arg);
+  ThreadFunctor *threadFunctor;
+  pthread_t pthread;
+  pthread_cond_t cond;
+  pthread_mutex_t mut;
+  bool isDetached;
+  static void *_service(void *arg);
+
 public:
-	Thread(const ThreadFunc& f, void* arg, const bool& isDetached= true);
-	virtual ~Thread();
-	void execute(int cid = -1);
-	void join();
-	static void nSleep(const long& nanos);
-	static void uSleep(const long& nanos);
-	static void mSleep(const long& nanos);
-	static void sSleep(const long& nanos);
-	void wait();
-	void interrupt();
+  Thread(const ThreadFunc &f, void *arg, const bool &isDetached = true);
+  virtual ~Thread();
+  void execute(int cid = -1);
+  void join();
+  static void nSleep(const long &nanos);
+  static void uSleep(const long &nanos);
+  static void mSleep(const long &nanos);
+  static void sSleep(const long &nanos);
+  void wait();
+  void interrupt();
 };
 
 #endif /* THREAD_H_ */

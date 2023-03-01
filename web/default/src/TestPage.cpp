@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,21 +23,15 @@
 #include "TestPage.h"
 
 TestPage::TestPage() {
-	// TODO Auto-generated constructor stub
-
+  // TODO Auto-generated constructor stub
 }
 
 TestPage::~TestPage() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
 
-std::string TestPage::textonclick(int a,std::string b,std::string c)
-{
-	return "Test Successfull" + b + c;
+std::string TestPage::textonclick(int a, std::string b, std::string c) {
+  return "Test Successfull" + b + c;
 }
 
-int TestPage::linkonclick()
-{
-	return 12345;
-}
-
+int TestPage::linkonclick() { return 12345; }

@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -26,8 +26,10 @@
 #include <mongols/http_server.hpp>
 
 class MongolsServer {
-public:	
-	static void runServer(std::string ipaddr, int port, std::vector<std::string> servedAppNames, std::string serverRootDirectory, bool isSSLEnabled);
+public:
+  static void runServer(std::string ipaddr, int port,
+                        std::vector<std::string> servedAppNames,
+                        std::string serverRootDirectory, bool isSSLEnabled);
 };
 
 #endif /* SRC_SERVER_MongolsServer_H_ */

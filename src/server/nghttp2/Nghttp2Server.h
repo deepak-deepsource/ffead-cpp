@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -29,9 +29,13 @@ using namespace nghttp2::asio_http2;
 using namespace nghttp2::asio_http2::server;
 
 class Nghttp2Server {
-	static void handle(const request &req2, const response &res2, std::string_view meth, const uint8_t *, std::size_t);
-public:	
-	static void runServer(std::string ipaddr, std::string port, std::vector<std::string> servedAppNames, std::string serverRootDirectory, bool isSSLEnabled);
+  static void handle(const request &req2, const response &res2,
+                     std::string_view meth, const uint8_t *, std::size_t);
+
+public:
+  static void runServer(std::string ipaddr, std::string port,
+                        std::vector<std::string> servedAppNames,
+                        std::string serverRootDirectory, bool isSSLEnabled);
 };
 
 #endif /* SRC_SERVER_Nghttp2Server_H_ */
