@@ -36,10 +36,11 @@ s cr = $c(13, 10),
       ""
       "" s dd = $d(@name) i dd = 1 !(dd = 11) d i dd = 1 QUIT json.s value =
           @name.i
-              value'[">" q .s json = $$walkArray(json, value, .subscripts) s ref =
-              name_ "(" s no = $o(subscripts(""), -1) i no > 0 f i = 1 : 1
-    : no d.s quot = ""
-                    "".i subscripts(i)
+              value'[">" q .s json = $$walkArray(json, value, .subscripts) s ref = name_
+          "(" s no = $o(subscripts(""), -1) i no > 0 f i = 1 : 1 : no d.s quot =
+                         ""
+                         "".i
+                         subscripts(i)
   ?."-" 1N.N s quot = "".s ref = ref_quot_subscripts(i) _quot_ "," s ref =
        ref_ "sub)" s sub = "",
   numsub = 0, subNo = 0,
@@ -47,15 +48,14 @@ s cr = $c(13, 10),
     : sub = "" d q
     : 'allNumeric .i sub'
       ? 1N.N s allNumeric = 0.s count =
-            count + 1.i sub'=count s allNumeric=0 ; i allNumeric, count = 1 s
-                        allNumeric = 0 i allNumeric d.s json =
-                json_ "[" e d.s json = json_ "{" s sub = "" f s sub = $o(@ref) q
+            count +
+            1.i sub'=count s allNumeric=0 ; i allNumeric, count = 1 s allNumeric =
+                0 i allNumeric d.s json = json_ "[" e d.s json =
+                    json_ "{" s sub = "" f s sub = $o(@ref) q
       : sub = "" d.s subscripts(no + 1) = sub.s subNo =
             subNo + 1.s dd = $d(@ref).i dd = 1 d..s value =
-                @ref.
-                    .i 'allNumeric d ...s json = json_ "" ""_sub_ ""
-                                                                  ":"..s type =
-                    "literal"..i $$numeric(value)
+                @ref..i 'allNumeric d ...s json = json_ "" ""_sub_ "" ":".
+                    .s type = "literal"..i $$numeric(value)
 s type = "numeric"..;
 i value ? 1N.N s type = "numeric"..;
 i value ? 1 "-" 1N.N s type = "numeric"..;
