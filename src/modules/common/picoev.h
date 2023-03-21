@@ -57,8 +57,9 @@ extern "C" {
 #define PICOEV_RND_UP(v, d) (((v) + (d)-1) / (d) * (d))
 
 #define PICOEV_PAGE_SIZE 4096
-#define PICOEV_CACHE_LINE_SIZE 32 /* in bytes, ok if greater than the actual   \
-                                   */
+#define PICOEV_CACHE_LINE_SIZE                                                 \
+  32 /* in bytes, ok if greater than the actual                                \
+      */
 #define PICOEV_SIMD_BITS 128
 #define PICOEV_TIMEOUT_VEC_SIZE 128
 #define PICOEV_SHORT_BITS (sizeof(short) * 8)

@@ -501,23 +501,23 @@ void Http2HPACKHeaderTable::init() {
     }
     // if(HUFFMAN_TABLE.at(var).numbits==8) {
     //	key.push_back((unsigned
-    //char)HUFFMAN_TABLE.at(var).bitv.at(HUFFMAN_TABLE.at(var).bitv.size()-1).to_ulong());
+    // char)HUFFMAN_TABLE.at(var).bitv.at(HUFFMAN_TABLE.at(var).bitv.size()-1).to_ulong());
     // }
     if (key.length() > 0) {
       int siz = HUFFMAN_TABLE.at(var).bitv.size();
       HUFFMAN_LK_STRINDX_NUMINDX_BL_TABLE
-          [key][(int)HUFFMAN_TABLE.at(var).bitv.at(siz - 1).to_ulong()] =
-              HUFFMAN_TABLE.at(var).lastbssize;
+      [key][(int)HUFFMAN_TABLE.at(var).bitv.at(siz - 1).to_ulong()] =
+          HUFFMAN_TABLE.at(var).lastbssize;
       HUFFMAN_LK_STRINDX_NUMINDX_TABLE
-          [key][(int)HUFFMAN_TABLE.at(var).bitv.at(siz - 1).to_ulong()] =
-              HUFFMAN_TABLE.at(var);
+      [key][(int)HUFFMAN_TABLE.at(var).bitv.at(siz - 1).to_ulong()] =
+          HUFFMAN_TABLE.at(var);
     } else {
       HUFFMAN_LK_NUMINDX_BL_TABLE
-          [(int)HUFFMAN_TABLE.at(var).bitv.at(0).to_ulong()] =
-              HUFFMAN_TABLE.at(var).numbits;
+      [(int)HUFFMAN_TABLE.at(var).bitv.at(0).to_ulong()] =
+          HUFFMAN_TABLE.at(var).numbits;
       HUFFMAN_LK_NUMINDX_TABLE
-          [(int)HUFFMAN_TABLE.at(var).bitv.at(0).to_ulong()] =
-              HUFFMAN_TABLE.at(var);
+      [(int)HUFFMAN_TABLE.at(var).bitv.at(0).to_ulong()] =
+          HUFFMAN_TABLE.at(var);
     }
   }
 }
