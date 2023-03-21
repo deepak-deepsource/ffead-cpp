@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,23 +22,30 @@
 
 #ifndef FILTERHANDLER_H_
 #define FILTERHANDLER_H_
-#include "Filter.h"
-#include "Reflector.h"
-#include <dlfcn.h>
-#include "LoggerFactory.h"
 #include "ConfigurationData.h"
+#include "Filter.h"
+#include "LoggerFactory.h"
+#include "Reflector.h"
 #include "string"
 #include "vector"
+#include <dlfcn.h>
 
-typedef ClassInfo (*FunPtr) ();
+typedef ClassInfo (*FunPtr)();
 
 class FilterHandler {
-	static bool getFilterForPath(std::string_view cntxtName, const std::string& actUrl, std::vector<std::string>& filters, const std::string& type);
+  static bool getFilterForPath(std::string_view cntxtName,
+                               const std::string &actUrl,
+                               std::vector<std::string> &filters,
+                               const std::string &type);
+
 public:
-	static void handleIn(HttpRequest* req, const std::string& ext, Reflector& reflector);
-	static bool handle(HttpRequest* req, HttpResponse* res, const std::string& ext, Reflector& reflector);
-	static void handleOut(HttpRequest* req, HttpResponse* res, const std::string& ext, Reflector& reflector);
-	static bool hasFilters(std::string_view cntxtName);
+  static void handleIn(HttpRequest *req, const std::string &ext,
+                       Reflector &reflector);
+  static bool handle(HttpRequest *req, HttpResponse *res,
+                     const std::string &ext, Reflector &reflector);
+  static void handleOut(HttpRequest *req, HttpResponse *res,
+                        const std::string &ext, Reflector &reflector);
+  static bool hasFilters(std::string_view cntxtName);
 };
 
 #endif /* FILTERHANDLER_H_ */

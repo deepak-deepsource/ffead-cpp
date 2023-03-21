@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -26,13 +26,13 @@
 #include "Filter.h"
 #include <iostream>
 
-class DefaultIOFilter: public Filter {
+class DefaultIOFilter : public Filter {
 public:
-	DefaultIOFilter();
-	virtual ~DefaultIOFilter();
-	void doInputFilter(HttpRequest *req);
-	void doOutputFilter(HttpResponse *res);
-	bool doHandle(HttpRequest *req, HttpResponse* res);
+  DefaultIOFilter();
+  virtual ~DefaultIOFilter();
+  void doInputFilter(HttpRequest *req);
+  void doOutputFilter(HttpResponse *res);
+  bool doHandle(HttpRequest *req, HttpResponse *res);
 };
 
 #endif /* DEFAULTIOFILTER_H_ */

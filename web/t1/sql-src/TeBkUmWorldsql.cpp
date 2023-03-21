@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,28 +22,21 @@
 
 #include "TeBkUmWorld.h"
 
-int TeBkUmWorld::getId() const {
-	return id;
-}
+int TeBkUmWorld::getId() const { return id; }
 
-void TeBkUmWorld::setId(int id) {
-	this->id = id;
-}
+void TeBkUmWorld::setId(int id) { this->id = id; }
 
-int TeBkUmWorld::getRandomNumber() const {
-	return randomNumber;
-}
+int TeBkUmWorld::getRandomNumber() const { return randomNumber; }
 
 void TeBkUmWorld::setRandomNumber(int randomNumber) {
-	this->randomNumber = randomNumber;
+  this->randomNumber = randomNumber;
 }
 
 TeBkUmWorld::TeBkUmWorld() {
-	id = 0;
-	randomNumber = 0;
+  id = 0;
+  randomNumber = 0;
 }
 
 TeBkUmWorld::~TeBkUmWorld() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
-

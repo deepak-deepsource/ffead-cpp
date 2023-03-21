@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,40 +22,20 @@
 
 #include "TestForm.h"
 
-TestForm::TestForm() {
-	num = 0;
-}
+TestForm::TestForm() { num = 0; }
 
-std::string TestForm::getChe() const
-{
-    return che;
-}
+std::string TestForm::getChe() const { return che; }
 
-int TestForm::getNum() const
-{
-    return num;
-}
+int TestForm::getNum() const { return num; }
 
-std::string TestForm::getTxt() const
-{
-    return txt;
-}
+std::string TestForm::getTxt() const { return txt; }
 
-void TestForm::setChe(std::string che)
-{
-    this->che = che;
-}
+void TestForm::setChe(std::string che) { this->che = che; }
 
-void TestForm::setNum(int num)
-{
-    this->num = num;
-}
+void TestForm::setNum(int num) { this->num = num; }
 
-void TestForm::setTxt(std::string txt)
-{
-    this->txt = txt;
-}
+void TestForm::setTxt(std::string txt) { this->txt = txt; }
 
 TestForm::~TestForm() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }

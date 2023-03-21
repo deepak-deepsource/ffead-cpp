@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -25,9 +25,9 @@
 
 #include "DataSourceInterface.h"
 #ifdef INC_SDORM_SQL
+#include "LibpqDataSourceImpl.h"
 #include "SQLConnectionPool.h"
 #include "SQLDataSourceImpl.h"
-#include "LibpqDataSourceImpl.h"
 #endif
 #ifdef INC_SDORM_MONGO
 #include "MongoDBConnectionPool.h"
@@ -38,29 +38,33 @@
 class DataSourceManager;
 
 class DataSourceManager {
-	static bool isSingleEVH;
-	static std::map<std::string, DataSourceInterface*> sevhDsnImpls;
-	static std::map<std::string, void*> sevhDsnRawImpls;
-	Logger logger;
-	static std::map<std::string, DataSourceManager*> dsns;
-	static std::map<std::string, std::string> defDsnNames;
-	static std::map<std::string, bool> appInitCompletionStatus;
-	ConnectionProperties props;
-	Mapping mapping;
-	ConnectionPooler* pool;
-	static void initDSN(const ConnectionProperties& props, const Mapping& mapping, GetClassBeanIns f);
-	DataSourceManager(const ConnectionProperties& props, const Mapping& mapping);
-	static void destroy();
-	friend class ConfigurationHandler;
+  static bool isSingleEVH;
+  static std::map<std::string, DataSourceInterface *> sevhDsnImpls;
+  static std::map<std::string, void *> sevhDsnRawImpls;
+  Logger logger;
+  static std::map<std::string, DataSourceManager *> dsns;
+  static std::map<std::string, std::string> defDsnNames;
+  static std::map<std::string, bool> appInitCompletionStatus;
+  ConnectionProperties props;
+  Mapping mapping;
+  ConnectionPooler *pool;
+  static void initDSN(const ConnectionProperties &props, const Mapping &mapping,
+                      GetClassBeanIns f);
+  DataSourceManager(const ConnectionProperties &props, const Mapping &mapping);
+  static void destroy();
+  friend class ConfigurationHandler;
+
 public:
-	static void init(bool isSingleEVH);
-	virtual ~DataSourceManager();
-	static DataSourceInterface* getImpl(std::string name = "", std::string appName = "");
-	static void cleanImpl(DataSourceInterface*);
-	static void* getRawImpl(std::string name = "", std::string appName = "", bool overrideSingleEVHFlag = false);
-	static void cleanRawImpl(DataSourceType*);
-	static void triggerAppInitCompletion(std::string appName = "");
-	static bool isInitCompleted();
+  static void init(bool isSingleEVH);
+  virtual ~DataSourceManager();
+  static DataSourceInterface *getImpl(std::string name = "",
+                                      std::string appName = "");
+  static void cleanImpl(DataSourceInterface *);
+  static void *getRawImpl(std::string name = "", std::string appName = "",
+                          bool overrideSingleEVHFlag = false);
+  static void cleanRawImpl(DataSourceType *);
+  static void triggerAppInitCompletion(std::string appName = "");
+  static bool isInitCompleted();
 };
 
 #endif /* DATASOURCEMANAGER_H_ */

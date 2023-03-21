@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,277 +22,272 @@
 
 #include "SSLHandler.h"
 
-SSLHandler* SSLHandler::instance = NULL;
-char* SSLHandler::pass = NULL;
+SSLHandler *SSLHandler::instance = NULL;
+char *SSLHandler::pass = NULL;
 int SSLHandler::s_server_session_id_context = 1;
 int SSLHandler::s_server_auth_session_id_context = 2;
-std::vector<std::vector<unsigned char> > SSLHandler::advertisedProtos;
+std::vector<std::vector<unsigned char>> SSLHandler::advertisedProtos;
 
 SSLHandler::SSLHandler() {
-	logger = LoggerFactory::getLogger("SSLHandler");
-	ctx = NULL;
-	isValid = false;
-	isSSLEnabled = false;
+  logger = LoggerFactory::getLogger("SSLHandler");
+  ctx = NULL;
+  isValid = false;
+  isSSLEnabled = false;
 }
 
-SSLHandler::~SSLHandler() {
-	
+SSLHandler::~SSLHandler() {}
+
+void SSLHandler::initInstance(const SecurityProperties &securityProperties) {
+  getInstance()->init(securityProperties);
 }
 
-void SSLHandler::initInstance(const SecurityProperties& securityProperties) {
-	getInstance()->init(securityProperties);
+void SSLHandler::setIsSSL(const bool &isSSLEnabled) {
+  getInstance()->isSSLEnabled = isSSLEnabled;
 }
 
-void SSLHandler::setIsSSL(const bool& isSSLEnabled) {
-	getInstance()->isSSLEnabled = isSSLEnabled;
+SSLHandler *SSLHandler::getInstance() {
+  if (instance == NULL) {
+    instance = new SSLHandler;
+  }
+  return instance;
 }
 
-SSLHandler* SSLHandler::getInstance() {
-	if(instance==NULL) {
-		instance = new SSLHandler;
-	}
-	return instance;
-}
+bool SSLHandler::getIsSSL() const { return isSSLEnabled; }
 
-bool SSLHandler::getIsSSL() const {
-	return isSSLEnabled;
-}
-
-SSL_CTX* SSLHandler::getCtx() const {
-	return ctx;
-}
+SSL_CTX *SSLHandler::getCtx() const { return ctx; }
 
 /*The password code is not thread safe*/
-int SSLHandler::password_cb(char *buf, int num, int rwflag, void *userdata)
-{
-	if(num<(int)(strlen(pass)+1))
-		return(0);
+int SSLHandler::password_cb(char *buf, int num, int rwflag, void *userdata) {
+  if (num < (int)(strlen(pass) + 1))
+    return (0);
 
-	strcpy(buf, pass);
-	return(strlen(pass));
+  strcpy(buf, pass);
+  return (strlen(pass));
 }
 
-void SSLHandler::init(const SecurityProperties& securityProperties) {
-	if(isSSLEnabled)
-	{
-		this->securityProperties = securityProperties;
-		if(securityProperties.alpnEnabled && securityProperties.alpnProtoList.size()>0)
-		{
-			for(int pn=0;pn<(int)securityProperties.alpnProtoList.size();pn++)
-			{
-				std::string protoname = securityProperties.alpnProtoList.at(pn);
-				std::vector<unsigned char> res = std::vector<unsigned char>(1 + protoname.length());
-				unsigned char* p = res.data();
-				*p++ = protoname.length();
-				memcpy(p, protoname.c_str(), protoname.length());
-				advertisedProtos.push_back(res);
-			}
-		}
+void SSLHandler::init(const SecurityProperties &securityProperties) {
+  if (isSSLEnabled) {
+    this->securityProperties = securityProperties;
+    if (securityProperties.alpnEnabled &&
+        securityProperties.alpnProtoList.size() > 0) {
+      for (int pn = 0; pn < (int)securityProperties.alpnProtoList.size();
+           pn++) {
+        std::string protoname = securityProperties.alpnProtoList.at(pn);
+        std::vector<unsigned char> res =
+            std::vector<unsigned char>(1 + protoname.length());
+        unsigned char *p = res.data();
+        *p++ = protoname.length();
+        memcpy(p, protoname.c_str(), protoname.length());
+        advertisedProtos.push_back(res);
+      }
+    }
 
-		std::string sslConfsettings = "Server setup with SSL enabled, CERTFILE = ";
-		sslConfsettings.append(securityProperties.cert_file);
-		sslConfsettings.append(", KEYFILE = ");
-		sslConfsettings.append(securityProperties.key_file);
-		sslConfsettings.append(", PASSWORD = ");
-		sslConfsettings.append(securityProperties.sec_password);
-		sslConfsettings.append(", DHFILE = ");
-		sslConfsettings.append(securityProperties.dh_file);
-		sslConfsettings.append(", CA_LIST = ");
-		sslConfsettings.append(securityProperties.ca_list);
-		//sslConfsettings.append(", ISDH_PARAMS = ");
-		//sslConfsettings.append(CastUtil::fromBool(securityProperties.isDHParams));
-		//sslConfsettings.append(", CLIENT_SEC_LEVEL = ");
-		//sslConfsettings.append(CastUtil::fromNumber(securityProperties.client_auth));
-		//logger << sslConfsettings << std::endl;
+    std::string sslConfsettings = "Server setup with SSL enabled, CERTFILE = ";
+    sslConfsettings.append(securityProperties.cert_file);
+    sslConfsettings.append(", KEYFILE = ");
+    sslConfsettings.append(securityProperties.key_file);
+    sslConfsettings.append(", PASSWORD = ");
+    sslConfsettings.append(securityProperties.sec_password);
+    sslConfsettings.append(", DHFILE = ");
+    sslConfsettings.append(securityProperties.dh_file);
+    sslConfsettings.append(", CA_LIST = ");
+    sslConfsettings.append(securityProperties.ca_list);
+    // sslConfsettings.append(", ISDH_PARAMS = ");
+    // sslConfsettings.append(CastUtil::fromBool(securityProperties.isDHParams));
+    // sslConfsettings.append(", CLIENT_SEC_LEVEL = ");
+    // sslConfsettings.append(CastUtil::fromNumber(securityProperties.client_auth));
+    // logger << sslConfsettings << std::endl;
 
-		/* Build our SSL context*/
-		ctx = SSLCommon::initialize_ctx(true);
+    /* Build our SSL context*/
+    ctx = SSLCommon::initialize_ctx(true);
 
-		pass = (char*)securityProperties.sec_password.c_str();
-		SSL_CTX_set_default_passwd_cb(ctx, SSLHandler::password_cb);
+    pass = (char *)securityProperties.sec_password.c_str();
+    SSL_CTX_set_default_passwd_cb(ctx, SSLHandler::password_cb);
 
-		/*SSL_CTX_set_options(ctx, SSL_OP_ALL | SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 |
-							SSL_OP_NO_COMPRESSION | SSL_OP_SINGLE_DH_USE |
-							SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION |
-							SSL_OP_SINGLE_ECDH_USE | SSL_OP_NO_TICKET |
-							SSL_OP_CIPHER_SERVER_PREFERENCE);*/
-		SSL_CTX_set_mode(ctx, SSL_MODE_AUTO_RETRY);
-		SSL_CTX_set_mode(ctx, SSL_MODE_RELEASE_BUFFERS);
+    /*SSL_CTX_set_options(ctx, SSL_OP_ALL | SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 |
+                                            SSL_OP_NO_COMPRESSION |
+       SSL_OP_SINGLE_DH_USE | SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION |
+                                            SSL_OP_SINGLE_ECDH_USE |
+       SSL_OP_NO_TICKET | SSL_OP_CIPHER_SERVER_PREFERENCE);*/
+    SSL_CTX_set_mode(ctx, SSL_MODE_AUTO_RETRY);
+    SSL_CTX_set_mode(ctx, SSL_MODE_RELEASE_BUFFERS);
 
-		if(securityProperties.isDHParams)
-		{
-			SSLCommon::load_dh_params(ctx,(char*)securityProperties.dh_file.c_str());
-		}
-		else
-		{
-			SSLCommon::load_ecdh_params(ctx);
-		}
+    if (securityProperties.isDHParams) {
+      SSLCommon::load_dh_params(ctx,
+                                (char *)securityProperties.dh_file.c_str());
+    } else {
+      SSLCommon::load_ecdh_params(ctx);
+    }
 
-		const unsigned char sid_ctx[] = "Ffead";
-		SSL_CTX_set_session_id_context(ctx, sid_ctx, sizeof(sid_ctx) - 1);
-		SSL_CTX_set_session_cache_mode(ctx, SSL_SESS_CACHE_SERVER);
-		/*SSL_CTX_set_session_id_context(ctx,
-				(const unsigned char*)&s_server_session_id_context,
-				sizeof s_server_session_id_context);
-		 */
+    const unsigned char sid_ctx[] = "Ffead";
+    SSL_CTX_set_session_id_context(ctx, sid_ctx, sizeof(sid_ctx) - 1);
+    SSL_CTX_set_session_cache_mode(ctx, SSL_SESS_CACHE_SERVER);
+    /*SSL_CTX_set_session_id_context(ctx,
+                    (const unsigned char*)&s_server_session_id_context,
+                    sizeof s_server_session_id_context);
+     */
 
-		/* Set our cipher list */
-		if(SSLCommon::ciphers!="") {
-			SSL_CTX_set_cipher_list(ctx, SSLCommon::ciphers.c_str());
-		}
+    /* Set our cipher list */
+    if (SSLCommon::ciphers != "") {
+      SSL_CTX_set_cipher_list(ctx, SSLCommon::ciphers.c_str());
+    }
 
-		SSLCommon::loadCerts(ctx, (char*)securityProperties.cert_file.c_str(),
-				(char*)securityProperties.key_file.c_str(),
-				securityProperties.ca_list, true);
+    SSLCommon::loadCerts(ctx, (char *)securityProperties.cert_file.c_str(),
+                         (char *)securityProperties.key_file.c_str(),
+                         securityProperties.ca_list, true);
 
-
-		if(securityProperties.client_auth==2)
-		{
-			/* Set to require peer (client) certificate verification */
-			SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER|SSL_VERIFY_CLIENT_ONCE|SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);
-			/* Set the verification depth to 1 */
-			#if (OPENSSL_VERSION_NUMBER < 0x00905100L)
-            	SSL_CTX_set_verify_depth(ctx,1);
-			#endif
-		}
-		else if(securityProperties.client_auth==1)
-		{
-			/* Set to require peer (client) certificate verification */
-			SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL);
-			/* Set the verification depth to 1 */
-			#if (OPENSSL_VERSION_NUMBER < 0x00905100L)
-            	SSL_CTX_set_verify_depth(ctx,1);
-			#endif
-		}
-		else
-		{
-			SSL_CTX_set_verify(ctx, SSL_VERIFY_NONE, NULL);
-		}
-
-#if OPENSSL_VERSION_NUMBER >= 0x10002000L
-		if(securityProperties.alpnEnabled)
-		{
-			for (int var = 0; var < (int)advertisedProtos.size(); ++var) {
-				SSL_CTX_set_next_protos_advertised_cb(ctx, SSLHandler::next_proto_cb, &(advertisedProtos.at(var)));
-			}
-
-
-			// ALPN selection callback
-			SSL_CTX_set_alpn_select_cb(ctx, SSLHandler::alpn_select_proto_cb, NULL);
-		}
-#endif // OPENSSL_VERSION_NUMBER >= 0x10002000L
-		isValid = true;
-	}
-}
-
-#if OPENSSL_VERSION_NUMBER >= 0x10002000L
-int SSLHandler::alpn_select_proto_cb(SSL *ssl, const unsigned char **out, unsigned char *outlen, const unsigned char *in, unsigned int inlen, void *arg) {
-	instance->logger << "[ALPN] client offers:" << std::endl;
-	for (unsigned int i = 0; i < inlen; i += in [i] + 1) {
-		instance->logger << " * ";
-		instance->logger << (std::string(reinterpret_cast<const char *>(&in[i + 1]), in[i]));
-		instance->logger << std::endl;
-	}
-	if (select_next_protocol(const_cast<unsigned char **>(out), outlen, in, inlen) <= 0) {
-		return SSL_TLSEXT_ERR_NOACK;
-	}
-	int sockfd;
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
-	BIO_get_fd(ssl->rbio, &sockfd);
-#else
-	BIO_get_fd(SSL_get_rbio(ssl), &sockfd);
+    if (securityProperties.client_auth == 2) {
+      /* Set to require peer (client) certificate verification */
+      SSL_CTX_set_verify(ctx,
+                         SSL_VERIFY_PEER | SSL_VERIFY_CLIENT_ONCE |
+                             SSL_VERIFY_FAIL_IF_NO_PEER_CERT,
+                         NULL);
+/* Set the verification depth to 1 */
+#if (OPENSSL_VERSION_NUMBER < 0x00905100L)
+      SSL_CTX_set_verify_depth(ctx, 1);
 #endif
-	instance->lock.lock();
-	instance->socketAlpnProtoMap[sockfd] = std::string((char*)*out, (int)(*outlen));
-	instance->lock.unlock();
-	return SSL_TLSEXT_ERR_OK;
+    } else if (securityProperties.client_auth == 1) {
+      /* Set to require peer (client) certificate verification */
+      SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL);
+/* Set the verification depth to 1 */
+#if (OPENSSL_VERSION_NUMBER < 0x00905100L)
+      SSL_CTX_set_verify_depth(ctx, 1);
+#endif
+    } else {
+      SSL_CTX_set_verify(ctx, SSL_VERIFY_NONE, NULL);
+    }
+
+#if OPENSSL_VERSION_NUMBER >= 0x10002000L
+    if (securityProperties.alpnEnabled) {
+      for (int var = 0; var < (int)advertisedProtos.size(); ++var) {
+        SSL_CTX_set_next_protos_advertised_cb(ctx, SSLHandler::next_proto_cb,
+                                              &(advertisedProtos.at(var)));
+      }
+
+      // ALPN selection callback
+      SSL_CTX_set_alpn_select_cb(ctx, SSLHandler::alpn_select_proto_cb, NULL);
+    }
+#endif // OPENSSL_VERSION_NUMBER >= 0x10002000L
+    isValid = true;
+  }
+}
+
+#if OPENSSL_VERSION_NUMBER >= 0x10002000L
+int SSLHandler::alpn_select_proto_cb(SSL *ssl, const unsigned char **out,
+                                     unsigned char *outlen,
+                                     const unsigned char *in,
+                                     unsigned int inlen, void *arg) {
+  instance->logger << "[ALPN] client offers:" << std::endl;
+  for (unsigned int i = 0; i < inlen; i += in[i] + 1) {
+    instance->logger << " * ";
+    instance->logger << (std::string(reinterpret_cast<const char *>(&in[i + 1]),
+                                     in[i]));
+    instance->logger << std::endl;
+  }
+  if (select_next_protocol(const_cast<unsigned char **>(out), outlen, in,
+                           inlen) <= 0) {
+    return SSL_TLSEXT_ERR_NOACK;
+  }
+  int sockfd;
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+  BIO_get_fd(ssl->rbio, &sockfd);
+#else
+  BIO_get_fd(SSL_get_rbio(ssl), &sockfd);
+#endif
+  instance->lock.lock();
+  instance->socketAlpnProtoMap[sockfd] =
+      std::string((char *)*out, (int)(*outlen));
+  instance->lock.unlock();
+  return SSL_TLSEXT_ERR_OK;
 }
 #endif // OPENSSL_VERSION_NUMBER >= 0x10002000L
 
-std::string SSLHandler::getAlpnProto(const int& fd) {
-	std::string retval;
-	instance->lock.lock();
-	if(instance->socketAlpnProtoMap.find(fd)!=instance->socketAlpnProtoMap.end()) {
-		retval = instance->socketAlpnProtoMap[fd];
-	}
-	instance->lock.unlock();
-	return retval;
+std::string SSLHandler::getAlpnProto(const int &fd) {
+  std::string retval;
+  instance->lock.lock();
+  if (instance->socketAlpnProtoMap.find(fd) !=
+      instance->socketAlpnProtoMap.end()) {
+    retval = instance->socketAlpnProtoMap[fd];
+  }
+  instance->lock.unlock();
+  return retval;
 }
 
-void SSLHandler::removeAlpnProtoSocket(const int& fd) {
-	instance->lock.lock();
-	if(instance->socketAlpnProtoMap.find(fd)!=instance->socketAlpnProtoMap.end()) {
-		instance->socketAlpnProtoMap.erase(fd);
-	}
-	instance->lock.unlock();
+void SSLHandler::removeAlpnProtoSocket(const int &fd) {
+  instance->lock.lock();
+  if (instance->socketAlpnProtoMap.find(fd) !=
+      instance->socketAlpnProtoMap.end()) {
+    instance->socketAlpnProtoMap.erase(fd);
+  }
+  instance->lock.unlock();
 }
 
-int SSLHandler::select_next_protocol(unsigned char **out, unsigned char *outlen, const unsigned char *in, const unsigned int& inlen) {
-	int http_selected = 0;
-	unsigned int i = 0;
-	for (; i < inlen; i += in [i] + 1) {
-		for (int var = 0; var < (int)advertisedProtos.size(); ++var) {
-			unsigned char* p = advertisedProtos.at(var).data();
-			if (in[i] == p[0] && i + 1 + in[i] <= inlen &&
-					memcmp(&in[i + 1], &p[1], in[i]) == 0) {
-				*out = (unsigned char *)&in[i + 1];
-				*outlen = in[i];
-				return 1;
-			}
-		}
-		/*if (in[i] == HTTP2_PROTO_VERSION_ID_LEN && i + 1 + in[i] <= inlen &&
-			memcmp(&in[i + 1], HTTP2_PROTO_VERSION_ID, in[i]) == 0) {
-			 *out = (unsigned char *)&in[i + 1];
-			 *outlen = in[i];
-		  return 1;
-		}*/
-		if (in[i] == 8 && i + 1 + in[i] <= inlen &&
-				memcmp(&in[i + 1], "http/1.1", in[i]) == 0) {
-			http_selected = 1;
-			*out = (unsigned char *)&in[i + 1];
-			*outlen = in[i];
-			/* Go through to the next iteration, because "HTTP/2" may be there */
-		}
-	}
-	if (http_selected) {
-		return 0;
-	} else {
-		return -1;
-	}
+int SSLHandler::select_next_protocol(unsigned char **out, unsigned char *outlen,
+                                     const unsigned char *in,
+                                     const unsigned int &inlen) {
+  int http_selected = 0;
+  unsigned int i = 0;
+  for (; i < inlen; i += in[i] + 1) {
+    for (int var = 0; var < (int)advertisedProtos.size(); ++var) {
+      unsigned char *p = advertisedProtos.at(var).data();
+      if (in[i] == p[0] && i + 1 + in[i] <= inlen &&
+          memcmp(&in[i + 1], &p[1], in[i]) == 0) {
+        *out = (unsigned char *)&in[i + 1];
+        *outlen = in[i];
+        return 1;
+      }
+    }
+    /*if (in[i] == HTTP2_PROTO_VERSION_ID_LEN && i + 1 + in[i] <= inlen &&
+            memcmp(&in[i + 1], HTTP2_PROTO_VERSION_ID, in[i]) == 0) {
+             *out = (unsigned char *)&in[i + 1];
+             *outlen = in[i];
+      return 1;
+    }*/
+    if (in[i] == 8 && i + 1 + in[i] <= inlen &&
+        memcmp(&in[i + 1], "http/1.1", in[i]) == 0) {
+      http_selected = 1;
+      *out = (unsigned char *)&in[i + 1];
+      *outlen = in[i];
+      /* Go through to the next iteration, because "HTTP/2" may be there */
+    }
+  }
+  if (http_selected) {
+    return 0;
+  } else {
+    return -1;
+  }
 }
 
-int SSLHandler::next_proto_cb(SSL *s, const unsigned char **data, unsigned int *len, void *arg) {
-	std::vector<unsigned char>* next_proto = static_cast<std::vector<unsigned char> *>(arg);
-	*data = next_proto->data();
-	*len = next_proto->size();
-	return SSL_TLSEXT_ERR_OK;
+int SSLHandler::next_proto_cb(SSL *s, const unsigned char **data,
+                              unsigned int *len, void *arg) {
+  std::vector<unsigned char> *next_proto =
+      static_cast<std::vector<unsigned char> *>(arg);
+  *data = next_proto->data();
+  *len = next_proto->size();
+  return SSL_TLSEXT_ERR_OK;
 }
 
 std::vector<unsigned char> SSLHandler::getDefaultALPN() {
-	std::vector<unsigned char> res;
-	if(advertisedProtos.size()>0) {
-		res = advertisedProtos.at(0);
-	}
-	return res;
+  std::vector<unsigned char> res;
+  if (advertisedProtos.size() > 0) {
+    res = advertisedProtos.at(0);
+  }
+  return res;
 }
 
 void SSLHandler::clear() {
-	if(instance!=NULL)
-	{
-		if(instance->ctx!=NULL)
-		{
-			SSL_CTX_free(instance->ctx);
-		}
-		delete instance;
-		instance = NULL;
-	}
+  if (instance != NULL) {
+    if (instance->ctx != NULL) {
+      SSL_CTX_free(instance->ctx);
+    }
+    delete instance;
+    instance = NULL;
+  }
 }
 
-void SSLHandler::closeSSL(const int& fd, SSL *ssl, BIO* bio)
-{
-	removeAlpnProtoSocket(fd);
-	if(instance->isValid)
-	{
-		SSLCommon::closeSSL(fd, ssl, bio);
-	}
+void SSLHandler::closeSSL(const int &fd, SSL *ssl, BIO *bio) {
+  removeAlpnProtoSocket(fd);
+  if (instance->isValid) {
+    SSLCommon::closeSSL(fd, ssl, bio);
+  }
 }

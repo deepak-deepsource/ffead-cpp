@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@
 #define CACHEMANAGER_H_
 #include "MemoryCacheImpl.h"
 #ifdef INC_MEMCACHED
-#include"MemcachedImpl.h"
+#include "MemcachedImpl.h"
 #endif
 #ifdef HAVE_REDIS_CLUSTERINC
 #include "RedisClusterCacheImpl.h"
@@ -35,26 +35,29 @@
 #include "GenericObject.h"
 
 class CacheManager {
-	static bool isSinglEVH;
-	static std::map<std::string, CacheInterface*> sevhCchImpls;
-	Logger logger;
-	static std::map<std::string, CacheManager*> caches;
-	static std::map<std::string, std::string> defDsnNames;
-	static std::map<std::string, bool> appInitCompletionStatus;
-	ConnectionProperties props;
-	ConnectionPooler* pool;
-	static void initCache(const ConnectionProperties& props, const std::string& appName, GetClassBeanIns f);
-	static void destroy();
-	CacheManager(const ConnectionProperties& props);
-	friend class ConfigurationHandler;
+  static bool isSinglEVH;
+  static std::map<std::string, CacheInterface *> sevhCchImpls;
+  Logger logger;
+  static std::map<std::string, CacheManager *> caches;
+  static std::map<std::string, std::string> defDsnNames;
+  static std::map<std::string, bool> appInitCompletionStatus;
+  ConnectionProperties props;
+  ConnectionPooler *pool;
+  static void initCache(const ConnectionProperties &props,
+                        const std::string &appName, GetClassBeanIns f);
+  static void destroy();
+  CacheManager(const ConnectionProperties &props);
+  friend class ConfigurationHandler;
+
 public:
-	static void init(bool isSinglEVH);
-	CacheManager();
-	virtual ~CacheManager();
-	static CacheInterface* getImpl(std::string name = "", std::string appName = "");
-	static void cleanImpl(CacheInterface*);
-	static void triggerAppInitCompletion(std::string appName = "");
-	static bool isInitCompleted();
+  static void init(bool isSinglEVH);
+  CacheManager();
+  virtual ~CacheManager();
+  static CacheInterface *getImpl(std::string name = "",
+                                 std::string appName = "");
+  static void cleanImpl(CacheInterface *);
+  static void triggerAppInitCompletion(std::string appName = "");
+  static bool isInitCompleted();
 };
 
 #endif /* CACHEMANAGER_H_ */

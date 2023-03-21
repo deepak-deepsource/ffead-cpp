@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -24,26 +24,26 @@
 #define TEBKWORLD_H_
 #include "string"
 
-
 #pragma @Entity
-#pragma @Table name="world"
+#pragma @Table name = "world"
 class TeBkWorld {
-	#pragma @Id dbf="_id"
-	int id;
-	#pragma @Column dbf="randomNumber"
-	int randomNumber;
-	#pragma @IgnoreSer
-	#pragma @Column dbf="id"
-	int anotherId;
+#pragma @Id dbf = "_id"
+  int id;
+#pragma @Column dbf = "randomNumber"
+  int randomNumber;
+#pragma @IgnoreSer
+#pragma @Column dbf = "id"
+  int anotherId;
+
 public:
-	TeBkWorld();
-	virtual ~TeBkWorld();
-	int getId() const;
-	void setId(int id);
-	int getRandomNumber() const;
-	void setRandomNumber(int randomNumber);
-	int getAnotherId() const;
-	void setAnotherId(int anotherId);
+  TeBkWorld();
+  virtual ~TeBkWorld();
+  int getId() const;
+  void setId(int id);
+  int getRandomNumber() const;
+  void setRandomNumber(int randomNumber);
+  int getAnotherId() const;
+  void setAnotherId(int anotherId);
 };
 
 #endif /* TEBKWORLD_H_ */

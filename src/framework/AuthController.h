@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,18 +22,19 @@
 
 #ifndef AUTHCONTROLLER_H_
 #define AUTHCONTROLLER_H_
-#include "string"
-#include "map"
 #include "HttpRequest.h"
 #include "HttpResponse.h"
+#include "map"
+#include "string"
 
 class AuthController {
 public:
-	AuthController();
-	virtual ~AuthController();
-	virtual bool authenticate(const std::string& user, const std::string& password)=0;
-	virtual std::string getUserRole(const std::string& username)=0;
-	virtual bool isInitialized()=0;
+  AuthController();
+  virtual ~AuthController();
+  virtual bool authenticate(const std::string &user,
+                            const std::string &password) = 0;
+  virtual std::string getUserRole(const std::string &username) = 0;
+  virtual bool isInitialized() = 0;
 };
 
 #endif /* AUTHCONTROLLER_H_ */

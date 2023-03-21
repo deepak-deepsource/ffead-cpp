@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,16 +22,16 @@
 
 #ifndef TESTFORMCONTROLLER_H_
 #define TESTFORMCONTROLLER_H_
-#include "HttpResponse.h"
 #include "FormController.h"
+#include "HttpResponse.h"
 #include "TestForm.h"
 #include "iostream"
 
 class TestFormController : FormController {
 public:
-	TestFormController();
-	virtual ~TestFormController();
-	void onSubmit(void*,HttpResponse*);
+  TestFormController();
+  virtual ~TestFormController();
+  void onSubmit(void *, HttpResponse *);
 };
 
 #endif /* TESTFORMCONTROLLER_H_ */

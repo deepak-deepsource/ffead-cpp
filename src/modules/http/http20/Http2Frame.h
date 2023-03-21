@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,18 +22,19 @@
 
 #ifndef HTTP2FRAME_H_
 #define HTTP2FRAME_H_
-#include "Http2FrameHeader.h"
 #include "CommonUtils.h"
+#include "Http2FrameHeader.h"
 
 class Http2Frame {
 protected:
-	Http2FrameHeader header;
-	friend class Http2Handler;
-	friend class Http2StreamHandler;
+  Http2FrameHeader header;
+  friend class Http2Handler;
+  friend class Http2StreamHandler;
+
 public:
-	Http2FrameHeader& getHeader();
-	virtual ~Http2Frame();
-	virtual std::string getFrameData()=0;
+  Http2FrameHeader &getHeader();
+  virtual ~Http2Frame();
+  virtual std::string getFrameData() = 0;
 };
 
 #endif /* HTTP2FRAME_H_ */

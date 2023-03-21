@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,14 +22,14 @@
 
 #ifndef FLEXAPPCONTROLLER_H_
 #define FLEXAPPCONTROLLER_H_
-#include <iostream>
 #include "Controller.h"
+#include <iostream>
 
-class FlexAppController : public Controller{
+class FlexAppController : public Controller {
 public:
-	FlexAppController();
-	virtual ~FlexAppController();
-	bool service(HttpRequest* req, HttpResponse* res);
+  FlexAppController();
+  virtual ~FlexAppController();
+  bool service(HttpRequest *req, HttpResponse *res);
 };
 
 #endif /* FLEXAPPCONTROLLER_H_ */

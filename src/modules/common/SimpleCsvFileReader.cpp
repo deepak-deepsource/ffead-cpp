@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,52 +22,46 @@
 
 #include "SimpleCsvFileReader.h"
 
-strVecVec SimpleCsvReader::getRows(const std::string& filepath)
-{
-	strVecVec all;
-	std::string line;
-	if (filepath=="")
-	{
-		return all;
-	}
-	std::ifstream myfile (&filepath[0],std::ios::in | std::ios::binary);
-	if (myfile.is_open())
-	{
-		while(getline(myfile,line,'\n'))
-		{
-			if(line!="")
-			{
-				StringUtil::replaceAll(line,"\n","");
-				StringUtil::replaceAll(line,"\r","");
-				std::vector<std::string> vemp = StringUtil::splitAndReturn<std::vector<std::string> >(line, (","));
-			    if(vemp.size()>0) {
-			    	all.push_back(vemp);
-			    }
-			}
-		}
-		myfile.close();
-	}
-	return all;
+strVecVec SimpleCsvReader::getRows(const std::string &filepath) {
+  strVecVec all;
+  std::string line;
+  if (filepath == "") {
+    return all;
+  }
+  std::ifstream myfile(&filepath[0], std::ios::in | std::ios::binary);
+  if (myfile.is_open()) {
+    while (getline(myfile, line, '\n')) {
+      if (line != "") {
+        StringUtil::replaceAll(line, "\n", "");
+        StringUtil::replaceAll(line, "\r", "");
+        std::vector<std::string> vemp =
+            StringUtil::splitAndReturn<std::vector<std::string>>(line, (","));
+        if (vemp.size() > 0) {
+          all.push_back(vemp);
+        }
+      }
+    }
+    myfile.close();
+  }
+  return all;
 }
 
-strVecVec AdvancedCsvReader::getRows(const std::string& filepath)
-{
-	strVecVec all;
-	std::string line;
-	if (filepath=="")
-	{
-		return all;
-	}
-	std::ifstream myfile (&filepath[0],std::ios::in | std::ios::binary);
-	csv::CSVReader reader(filepath);
-	for (csv::CSVRow& row: reader) {
-		std::vector<std::string> vemp;
-	    for (csv::CSVField& field: row) {
-	    	vemp.push_back(field.get());
-	    }
-	    if(vemp.size()>0) {
-	    	all.push_back(vemp);
-	    }
-	}
-	return all;
+strVecVec AdvancedCsvReader::getRows(const std::string &filepath) {
+  strVecVec all;
+  std::string line;
+  if (filepath == "") {
+    return all;
+  }
+  std::ifstream myfile(&filepath[0], std::ios::in | std::ios::binary);
+  csv::CSVReader reader(filepath);
+  for (csv::CSVRow &row : reader) {
+    std::vector<std::string> vemp;
+    for (csv::CSVField &field : row) {
+      vemp.push_back(field.get());
+    }
+    if (vemp.size() > 0) {
+      all.push_back(vemp);
+    }
+  }
+  return all;
 }
