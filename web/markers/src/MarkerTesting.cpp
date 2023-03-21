@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,32 +23,27 @@
 #include "MarkerTesting.h"
 
 MarkerTesting::MarkerTesting() {
-	// TODO Auto-generated constructor stub
-
+  // TODO Auto-generated constructor stub
 }
 
 MarkerTesting::~MarkerTesting() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
 
-void MarkerTesting::test1(std::string in)
-{
-	std::cout << "in Webservice Req for test1 --\n" << in << std::flush;
+void MarkerTesting::test1(std::string in) {
+  std::cout << "in Webservice Req for test1 --\n" << in << std::flush;
 }
-std::string MarkerTesting::test2()
-{
-	std::cout << "in Webservice Req for test2 --\n" <<  std::flush;
-	return "success";
+std::string MarkerTesting::test2() {
+  std::cout << "in Webservice Req for test2 --\n" << std::flush;
+  return "success";
 }
-void MarkerTesting::test3(MarkerTest t)
-{
-	std::cout << "in Webservice Req for test3 --\n" << t.getName() << std::flush;
+void MarkerTesting::test3(MarkerTest t) {
+  std::cout << "in Webservice Req for test3 --\n" << t.getName() << std::flush;
 }
-MarkerTest MarkerTesting::test4(std::string in)
-{
-	MarkerTest g;
-	g.setId(1);
-	g.setName("Sumeet");
-	std::cout << "in Webservice Req for test4 --\n" << in << std::flush;
-	return g;
+MarkerTest MarkerTesting::test4(std::string in) {
+  MarkerTest g;
+  g.setId(1);
+  g.setName("Sumeet");
+  std::cout << "in Webservice Req for test4 --\n" << in << std::flush;
+  return g;
 }

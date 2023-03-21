@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,26 +23,20 @@
 #include "Expose.h"
 
 Expose::Expose() {
-	// TODO Auto-generated constructor stub
-
+  // TODO Auto-generated constructor stub
 }
 
 Expose::~Expose() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
 
-YObject Expose::sayHello(std::string i,int b,float d)
-{
-	YObject y;
-	return y;
+YObject Expose::sayHello(std::string i, int b, float d) {
+  YObject y;
+  return y;
 }
 
-std::string Expose::sayHello1(std::string i,int b,float d)
-{
-	return "Hello World";
+std::string Expose::sayHello1(std::string i, int b, float d) {
+  return "Hello World";
 }
 
-YObject Expose::sayHello2(YObject i,int b,float d)
-{
-	return i;
-}
+YObject Expose::sayHello2(YObject i, int b, float d) { return i; }

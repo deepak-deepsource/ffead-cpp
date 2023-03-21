@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,32 +22,36 @@
 
 #ifndef SCRIPTHANDLER_H_
 #define SCRIPTHANDLER_H_
-#include "Compatibility.h"
-#include <stdlib.h>
 #include "AfcUtil.h"
+#include "Compatibility.h"
 #include "HttpRequest.h"
 #include "HttpResponse.h"
+#include <stdlib.h>
 #if !defined(OS_MINGW)
-#include <sys/wait.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #endif
-#include "Timer.h"
 #include "CommonUtils.h"
-#include "LoggerFactory.h"
 #include "Constants.h"
+#include "LoggerFactory.h"
+#include "Timer.h"
 
 class ScriptHandler {
-	#if !defined(OS_MINGW)
-	static int pcloseRWE(const int& pid, int *rwepipe);
-	static int popenRWE(int *rwepipe, const char *exe, const char *const argv[], const std::string& tmpf);
-	static int popenRWEN(int *rwepipe, const char *exe, const char** argv);
-	#endif
+#if !defined(OS_MINGW)
+  static int pcloseRWE(const int &pid, int *rwepipe);
+  static int popenRWE(int *rwepipe, const char *exe, const char *const argv[],
+                      const std::string &tmpf);
+  static int popenRWEN(int *rwepipe, const char *exe, const char **argv);
+#endif
 public:
-	static std::string execute(std::string exe, const bool& retErrs);
-	static std::string chdirExecute(const std::string& exe, const std::string& tmpf, const bool& retErrs);
+  static std::string execute(std::string exe, const bool &retErrs);
+  static std::string chdirExecute(const std::string &exe,
+                                  const std::string &tmpf, const bool &retErrs);
 #ifdef INC_SCRH
-	static bool handle(HttpRequest* req, HttpResponse* res, std::map<std::string, std::string>& handoffs, const std::string& ext);
+  static bool handle(HttpRequest *req, HttpResponse *res,
+                     std::map<std::string, std::string> &handoffs,
+                     const std::string &ext);
 #endif
 };
 

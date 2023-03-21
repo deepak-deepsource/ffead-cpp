@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -38,15 +38,21 @@
 
 class IDGenerator {
 public:
-	void init(DataSourceEntityMapping& dsemp, const bool& forceReinit= false);
-	virtual void executePreTable(DataSourceEntityMapping& dsemp, GenericObject&)=0;
-	virtual void executePostTable(DataSourceEntityMapping& dsemp, GenericObject& id)=0;
-	virtual void executeSequence(DataSourceEntityMapping& dsemp, GenericObject&)=0;
-	virtual void executeIdentity(DataSourceEntityMapping& dsemp, GenericObject&)=0;
-	virtual void executeCustom(DataSourceEntityMapping& dsemp, const std::string& customMethod, GenericObject&)=0;
-	void next(DataSourceEntityMapping& dsemp, GenericObject&);
-	IDGenerator();
-	virtual ~IDGenerator();
+  void init(DataSourceEntityMapping &dsemp, const bool &forceReinit = false);
+  virtual void executePreTable(DataSourceEntityMapping &dsemp,
+                               GenericObject &) = 0;
+  virtual void executePostTable(DataSourceEntityMapping &dsemp,
+                                GenericObject &id) = 0;
+  virtual void executeSequence(DataSourceEntityMapping &dsemp,
+                               GenericObject &) = 0;
+  virtual void executeIdentity(DataSourceEntityMapping &dsemp,
+                               GenericObject &) = 0;
+  virtual void executeCustom(DataSourceEntityMapping &dsemp,
+                             const std::string &customMethod,
+                             GenericObject &) = 0;
+  void next(DataSourceEntityMapping &dsemp, GenericObject &);
+  IDGenerator();
+  virtual ~IDGenerator();
 };
 
 #endif /* IDGENERATOR_H_ */

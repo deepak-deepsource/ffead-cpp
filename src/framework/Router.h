@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,16 +22,16 @@
 
 #ifndef SRC_FRAMEWORK_ROUTER_H_
 #define SRC_FRAMEWORK_ROUTER_H_
+#include "ClassInfo.h"
 #include "HttpRequest.h"
 #include "HttpResponse.h"
-#include "ClassInfo.h"
 #include "map"
 
 class Router {
 public:
-	virtual bool route(HttpRequest* req, HttpResponse* res, Writer* sif)=0;
-	virtual void routeAsync(HttpRequest* req, HttpResponse* res, Writer* sif){};
-	virtual ~Router(){}
+  virtual bool route(HttpRequest *req, HttpResponse *res, Writer *sif) = 0;
+  virtual void routeAsync(HttpRequest *req, HttpResponse *res, Writer *sif){};
+  virtual ~Router() {}
 };
 
 #endif /* SRC_FRAMEWORK_ROUTER_H_ */

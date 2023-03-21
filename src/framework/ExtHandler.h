@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,27 +22,28 @@
 
 #ifndef EXTHANDLER_H_
 #define EXTHANDLER_H_
-#include "HttpRequest.h"
-#include "HttpResponse.h"
-#include "TemplateHandler.h"
-#include "DynamicView.h"
-#include "Reflector.h"
-#include "Document.h"
-#include "View.h"
-#include <dlfcn.h>
-#include "Constants.h"
-#include "LoggerFactory.h"
-#include "map"
 #include "ConfigurationData.h"
+#include "Constants.h"
+#include "Document.h"
+#include "DynamicView.h"
 #include "FormHandler.h"
 #include "FviewHandler.h"
+#include "HttpRequest.h"
+#include "HttpResponse.h"
+#include "LoggerFactory.h"
+#include "Reflector.h"
+#include "TemplateHandler.h"
+#include "View.h"
+#include "map"
+#include <dlfcn.h>
 
-typedef std::string (*DCPPtr) ();
-typedef ClassInfo (*FunPtr) ();
+typedef std::string (*DCPPtr)();
+typedef ClassInfo (*FunPtr)();
 
 class ExtHandler {
 public:
-	static bool handle(HttpRequest* req, HttpResponse* res, void* dlib, void* ddlib, const std::string& ext, Reflector& reflector);
+  static bool handle(HttpRequest *req, HttpResponse *res, void *dlib,
+                     void *ddlib, const std::string &ext, Reflector &reflector);
 };
 
 #endif /* EXTHANDLER_H_ */

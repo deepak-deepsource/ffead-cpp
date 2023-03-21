@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,28 +22,28 @@
 
 #ifndef HTTPRESPONSEPARSER_H_
 #define HTTPRESPONSEPARSER_H_
-#include "map"
-#include "vector"
-#include "sstream"
-#include "StringUtil.h"
-#include "HttpResponse.h"
 #include "CastUtil.h"
-#include "stdio.h"
+#include "HttpResponse.h"
+#include "LoggerFactory.h"
+#include "StringUtil.h"
 #include "fstream"
 #include "iostream"
-#include "LoggerFactory.h"
-
+#include "map"
+#include "sstream"
+#include "stdio.h"
+#include "vector"
 
 class HttpResponseParser {
-	//TODO - Need to move this content to a MultipartContent List object in the
-	//HttpResponse class itself
-	std::string content;
-	Logger logger;
+  // TODO - Need to move this content to a MultipartContent List object in the
+  // HttpResponse class itself
+  std::string content;
+  Logger logger;
+
 public:
-	std::string getContent();
-	HttpResponseParser();
-	HttpResponseParser(const std::string& vecstr, HttpResponse &response);
-	virtual ~HttpResponseParser();
+  std::string getContent();
+  HttpResponseParser();
+  HttpResponseParser(const std::string &vecstr, HttpResponse &response);
+  virtual ~HttpResponseParser();
 };
 
 #endif /* HTTPRESPONSEPARSER_H_ */

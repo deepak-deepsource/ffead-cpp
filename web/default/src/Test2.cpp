@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,39 +23,21 @@
 #include "Test2.h"
 
 Test2::Test2() {
-	id = 0;
-	test_id = 0;
+  id = 0;
+  test_id = 0;
 }
 
 Test2::~Test2() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
-int Test2::getId() const
-{
-	return id;
-}
+int Test2::getId() const { return id; }
 
-void Test2::setId(int id)
-{
-	this->id = id;
-}
+void Test2::setId(int id) { this->id = id; }
 
-int Test2::getTest_id() const
-{
-	return test_id;
-}
+int Test2::getTest_id() const { return test_id; }
 
-void Test2::setTest_id(int test_id)
-{
-	this->test_id = test_id;
-}
+void Test2::setTest_id(int test_id) { this->test_id = test_id; }
 
-Test Test2::getTest() const
-{
-	return test;
-}
+Test Test2::getTest() const { return test; }
 
-void Test2::setTest(Test test)
-{
-	this->test = test;
-}
+void Test2::setTest(Test test) { this->test = test; }

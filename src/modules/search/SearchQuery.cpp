@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,39 +22,29 @@
 
 #include "SearchQuery.h"
 
-SearchQuery::SearchQuery() {
-}
+SearchQuery::SearchQuery() {}
 
-SearchQuery::~SearchQuery() {
-}
+SearchQuery::~SearchQuery() {}
 
-const std::string& SearchQuery::getIndexName() const {
-	return indexName;
-}
+const std::string &SearchQuery::getIndexName() const { return indexName; }
 
 void SearchQuery::setIndexName(const std::string &indexName) {
-	this->indexName = indexName;
+  this->indexName = indexName;
 }
 
-std::map<std::string, std::string>& SearchQuery::getProperties() {
-	return properties;
+std::map<std::string, std::string> &SearchQuery::getProperties() {
+  return properties;
 }
 
-const std::string& SearchQuery::getId() const {
-	return id;
-}
+const std::string &SearchQuery::getId() const { return id; }
 
-void SearchQuery::setData(const std::string &data) {
-}
+void SearchQuery::setData(const std::string &data) {}
 
-std::string& SearchQuery::getData() {
-	return data;
-}
+std::string &SearchQuery::getData() { return data; }
 
-void SearchQuery::setId(const std::string &id) {
-	this->id = id;
-}
+void SearchQuery::setId(const std::string &id) { this->id = id; }
 
-void SearchQuery::setProperties(const std::map<std::string, std::string> &properties) {
-	this->properties = properties;
+void SearchQuery::setProperties(
+    const std::map<std::string, std::string> &properties) {
+  this->properties = properties;
 }

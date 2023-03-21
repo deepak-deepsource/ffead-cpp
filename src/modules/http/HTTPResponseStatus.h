@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -26,75 +26,76 @@
 #ifdef CYGWIN
 #include <strings.h>
 #endif
-#include "string"
-#include "map"
 #include "CastUtil.h"
+#include "map"
+#include "string"
 
 struct cicomp {
-    bool operator() (const std::string& lhs, const std::string& rhs) const {
-        return strcasecmp(lhs.c_str(), rhs.c_str()) < 0;
-    }
+  bool operator()(const std::string &lhs, const std::string &rhs) const {
+    return strcasecmp(lhs.c_str(), rhs.c_str()) < 0;
+  }
 };
 
 class HTTPResponseStatus {
-	HTTPResponseStatus(const int&, const std::string&);
-	int code;
-	std::string scode;
-	std::string msg;
-	static std::map<int, HTTPResponseStatus> statuses;
-	static std::map<std::string, HTTPResponseStatus> sstatuses;
-	static std::map<int, std::string> http10slines;
-	static std::map<int, std::string> http11slines;
-public:
-	static void init();
-	static const std::string& getResponseLine(int code, float version);
-	static void getResponseLine(int code, float version, std::string& b);
-	const std::string& getResponseLine(float version);
-	void getResponseLine(float version, std::string& b);
-	HTTPResponseStatus();
-	HTTPResponseStatus(const HTTPResponseStatus& status) ;
-	HTTPResponseStatus(const HTTPResponseStatus& status, const std::string& msg);
-	virtual ~HTTPResponseStatus();
-	int getCode() const;
-	std::string getSCode() const;
-	const std::string& getMsg();
-	static HTTPResponseStatus& getStatusByCode(const int& code);
-	static HTTPResponseStatus& getStatusByCode(const std::string& code);
+  HTTPResponseStatus(const int &, const std::string &);
+  int code;
+  std::string scode;
+  std::string msg;
+  static std::map<int, HTTPResponseStatus> statuses;
+  static std::map<std::string, HTTPResponseStatus> sstatuses;
+  static std::map<int, std::string> http10slines;
+  static std::map<int, std::string> http11slines;
 
-	static HTTPResponseStatus Continue;
-	static HTTPResponseStatus Switching;
-	static HTTPResponseStatus Ok;
-	static HTTPResponseStatus Created;
-	static HTTPResponseStatus Accepted;
-	static HTTPResponseStatus NonAuthInfo;
-	static HTTPResponseStatus NoContent;
-	static HTTPResponseStatus ResetContent;
-	static HTTPResponseStatus PartialContent;
-	static HTTPResponseStatus ObjectMoved;
-	static HTTPResponseStatus MovedPermanently;
-	static HTTPResponseStatus NotModified;
-	static HTTPResponseStatus TempRedirect;
-	static HTTPResponseStatus BadRequest;
-	static HTTPResponseStatus AccessDenied;
-	static HTTPResponseStatus Unauthorized;
-	static HTTPResponseStatus Forbidden;
-	static HTTPResponseStatus NotFound;
-	static HTTPResponseStatus InvalidMethod;
-	static HTTPResponseStatus InvalidMime;
-	static HTTPResponseStatus ProxyAuthRequired;
-	static HTTPResponseStatus PreconditionFailed;
-	static HTTPResponseStatus ReqEntityLarge;
-	static HTTPResponseStatus ReqUrlLarge;
-	static HTTPResponseStatus UnsupportedMedia;
-	static HTTPResponseStatus InvalidReqRange;
-	static HTTPResponseStatus ExecutionFailed;
-	static HTTPResponseStatus LockedError;
-	static HTTPResponseStatus InternalServerError;
-	static HTTPResponseStatus InvalidHeaderConf;
-	static HTTPResponseStatus BadGateway;
-	static HTTPResponseStatus ServiceUnavailable;
-	static HTTPResponseStatus GatewayTimeout;
-	static HTTPResponseStatus HttpVersionNotSupported;
+public:
+  static void init();
+  static const std::string &getResponseLine(int code, float version);
+  static void getResponseLine(int code, float version, std::string &b);
+  const std::string &getResponseLine(float version);
+  void getResponseLine(float version, std::string &b);
+  HTTPResponseStatus();
+  HTTPResponseStatus(const HTTPResponseStatus &status);
+  HTTPResponseStatus(const HTTPResponseStatus &status, const std::string &msg);
+  virtual ~HTTPResponseStatus();
+  int getCode() const;
+  std::string getSCode() const;
+  const std::string &getMsg();
+  static HTTPResponseStatus &getStatusByCode(const int &code);
+  static HTTPResponseStatus &getStatusByCode(const std::string &code);
+
+  static HTTPResponseStatus Continue;
+  static HTTPResponseStatus Switching;
+  static HTTPResponseStatus Ok;
+  static HTTPResponseStatus Created;
+  static HTTPResponseStatus Accepted;
+  static HTTPResponseStatus NonAuthInfo;
+  static HTTPResponseStatus NoContent;
+  static HTTPResponseStatus ResetContent;
+  static HTTPResponseStatus PartialContent;
+  static HTTPResponseStatus ObjectMoved;
+  static HTTPResponseStatus MovedPermanently;
+  static HTTPResponseStatus NotModified;
+  static HTTPResponseStatus TempRedirect;
+  static HTTPResponseStatus BadRequest;
+  static HTTPResponseStatus AccessDenied;
+  static HTTPResponseStatus Unauthorized;
+  static HTTPResponseStatus Forbidden;
+  static HTTPResponseStatus NotFound;
+  static HTTPResponseStatus InvalidMethod;
+  static HTTPResponseStatus InvalidMime;
+  static HTTPResponseStatus ProxyAuthRequired;
+  static HTTPResponseStatus PreconditionFailed;
+  static HTTPResponseStatus ReqEntityLarge;
+  static HTTPResponseStatus ReqUrlLarge;
+  static HTTPResponseStatus UnsupportedMedia;
+  static HTTPResponseStatus InvalidReqRange;
+  static HTTPResponseStatus ExecutionFailed;
+  static HTTPResponseStatus LockedError;
+  static HTTPResponseStatus InternalServerError;
+  static HTTPResponseStatus InvalidHeaderConf;
+  static HTTPResponseStatus BadGateway;
+  static HTTPResponseStatus ServiceUnavailable;
+  static HTTPResponseStatus GatewayTimeout;
+  static HTTPResponseStatus HttpVersionNotSupported;
 };
 
 #endif /* HTTPRESPONSESTATUS_H_ */

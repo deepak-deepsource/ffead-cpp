@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -23,72 +23,76 @@
 #ifndef MUTEX_H_
 #define MUTEX_H_
 #include "AppDefines.h"
-#include <pthread.h>
-#include <atomic>
-#include <stdio.h>
-#include <fcntl.h>
-#include <stdlib.h>
-#include "string"
 #include "exception"
+#include "string"
+#include <atomic>
+#include <fcntl.h>
+#include <pthread.h>
 #include <stdexcept>
+#include <stdio.h>
+#include <stdlib.h>
 
 #ifdef OS_MINGW
 struct flock {
-	int l_type;
-	int l_len;
+  int l_type;
+  int l_len;
 };
 #endif
 
 class Mutex {
 protected:
-	pthread_mutex_t mut;
+  pthread_mutex_t mut;
+
 public:
-	Mutex();
-	virtual ~Mutex();
-	virtual void lock();
-	virtual void unlock();
+  Mutex();
+  virtual ~Mutex();
+  virtual void lock();
+  virtual void unlock();
 };
 
 class DummyMutex : public Mutex {
 public:
-	DummyMutex();
-	virtual ~DummyMutex();
-	void lock();
-	void unlock();
+  DummyMutex();
+  virtual ~DummyMutex();
+  void lock();
+  void unlock();
 };
 
 class ReadWriteMutex {
-	pthread_rwlock_t mut;
+  pthread_rwlock_t mut;
+
 public:
-	ReadWriteMutex();
-	virtual ~ReadWriteMutex();
-	void rlock();
-	void wlock();
-	void unlock();
+  ReadWriteMutex();
+  virtual ~ReadWriteMutex();
+  void rlock();
+  void wlock();
+  void unlock();
 };
 
 class ConditionMutex : public Mutex {
-	pthread_cond_t cond;
+  pthread_cond_t cond;
+
 public:
-	ConditionMutex();
-	virtual ~ConditionMutex();
-	void lock();
-	void unlock();
-	void conditionalWait();
-	void conditionalNotifyOne();
-	void conditionalNotifyAll();
-	void wait();
-	void interrupt();
+  ConditionMutex();
+  virtual ~ConditionMutex();
+  void lock();
+  void unlock();
+  void conditionalWait();
+  void conditionalNotifyOne();
+  void conditionalNotifyAll();
+  void wait();
+  void interrupt();
 };
 
 class FileBasedLock {
-	FILE *fp;
-	std::string lkFile;
-	struct flock fl;
+  FILE *fp;
+  std::string lkFile;
+  struct flock fl;
+
 public:
-	FileBasedLock(const std::string& lkFile);
-	virtual ~FileBasedLock();
-	void lock();
-	void unlock();
+  FileBasedLock(const std::string &lkFile);
+  virtual ~FileBasedLock();
+  void lock();
+  void unlock();
 };
 #endif /* MUTEX_H_ */

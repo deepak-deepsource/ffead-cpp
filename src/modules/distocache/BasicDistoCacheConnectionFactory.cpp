@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2013, Sumeet Chhetri
+        Copyright 2009-2013, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,40 +22,42 @@
 
 #include "BasicDistoCacheConnectionFactory.h"
 
-BasicDistoCacheConnectionFactory* BasicDistoCacheConnectionFactory::instance = NULL;
+BasicDistoCacheConnectionFactory *BasicDistoCacheConnectionFactory::instance =
+    NULL;
 
-BasicDistoCacheConnectionFactory::BasicDistoCacheConnectionFactory(const std::string& host, const int& port, const bool& isSSL) {
-	this->host = host;
-	this->port = port;
-	this->isSSL = isSSL;
+BasicDistoCacheConnectionFactory::BasicDistoCacheConnectionFactory(
+    const std::string &host, const int &port, const bool &isSSL) {
+  this->host = host;
+  this->port = port;
+  this->isSSL = isSSL;
 }
 
-BasicDistoCacheConnectionFactory::~BasicDistoCacheConnectionFactory() {
-}
+BasicDistoCacheConnectionFactory::~BasicDistoCacheConnectionFactory() {}
 
-void BasicDistoCacheConnectionFactory::init(const std::string& host, const int& port, const bool& isSSL) {
-	if(instance==NULL)
-	{
-		instance = new BasicDistoCacheConnectionFactory(host, port, isSSL);
-	}
+void BasicDistoCacheConnectionFactory::init(const std::string &host,
+                                            const int &port,
+                                            const bool &isSSL) {
+  if (instance == NULL) {
+    instance = new BasicDistoCacheConnectionFactory(host, port, isSSL);
+  }
 }
-
 
 void BasicDistoCacheConnectionFactory::destroy() {
-	if(instance!=NULL)
-	{
-		delete instance;
-	}
+  if (instance != NULL) {
+    delete instance;
+  }
 }
 
-DistoCacheClientUtils* BasicDistoCacheConnectionFactory::getConnection() {
-	if(instance!=NULL)
-	{
-		return new DistoCacheClientUtils(instance->host, instance->port, instance->isSSL);;
-	}
-	throw std::runtime_error("BasicDistoCacheConnectionFactory not initialized");
+DistoCacheClientUtils *BasicDistoCacheConnectionFactory::getConnection() {
+  if (instance != NULL) {
+    return new DistoCacheClientUtils(instance->host, instance->port,
+                                     instance->isSSL);
+    ;
+  }
+  throw std::runtime_error("BasicDistoCacheConnectionFactory not initialized");
 }
 
-void BasicDistoCacheConnectionFactory::releaseConnection(DistoCacheClientUtils* clientUtil) {
-	delete clientUtil;
+void BasicDistoCacheConnectionFactory::releaseConnection(
+    DistoCacheClientUtils *clientUtil) {
+  delete clientUtil;
 }
