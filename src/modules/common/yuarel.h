@@ -8,8 +8,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -22,8 +22,8 @@
 #ifndef INC_YUAREL_H
 #define INC_YUAREL_H
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #ifdef __cplusplus
@@ -33,36 +33,37 @@ extern "C" {
 /**
  * The struct where the parsed values will be stored:
  *
- * scheme ":" [ "//" ] [ username ":" password "@" ] host [ ":" port ] [ "/" ] [ path ] [ "?" query ]
+ * scheme ":" [ "//" ] [ username ":" password "@" ] host [ ":" port ] [ "/" ] [
+ * path ] [ "?" query ]
  *
  * Note: to make sure that no strings are copied, the first slash "/" in the
  * path will be used to null terminate the hostname if no port is supplied.
  */
 struct yuarel {
-	char *scheme; /* scheme, without ":" and "//" */
-	size_t scheme_len;
-	char *username; /* username, default: NULL */
-	size_t username_len;
-	char *password; /* password, default: NULL */
-	size_t password_len;
-	char *host; /* hostname or IP address */
-	size_t host_len;
-	int port; /* port, default: 0 */
-	size_t port_len;
-	char *path; /* path, without leading "/", default: NULL */
-	size_t path_len;
-	char *query; /* query, default: NULL */
-	size_t query_len;
-	char *fragment; /* fragment, default: NULL */
-	size_t fragment_len;
+  char *scheme; /* scheme, without ":" and "//" */
+  size_t scheme_len;
+  char *username; /* username, default: NULL */
+  size_t username_len;
+  char *password; /* password, default: NULL */
+  size_t password_len;
+  char *host; /* hostname or IP address */
+  size_t host_len;
+  int port; /* port, default: 0 */
+  size_t port_len;
+  char *path; /* path, without leading "/", default: NULL */
+  size_t path_len;
+  char *query; /* query, default: NULL */
+  size_t query_len;
+  char *fragment; /* fragment, default: NULL */
+  size_t fragment_len;
 };
 
 /* A struct to hold the query string parameter values. */
 struct yuarel_param {
-	char *key;
-	size_t key_len;
-	char *val;
-	size_t val_len;
+  char *key;
+  size_t key_len;
+  char *val;
+  size_t val_len;
 };
 
 /**
@@ -71,7 +72,8 @@ struct yuarel_param {
  * The URL string should be in one of the following formats:
  *
  * Absolute URL:
- * scheme ":" [ "//" ] [ username ":" password "@" ] host [ ":" port ] [ "/" ] [ path ] [ "?" query ] [ "#" fragment ]
+ * scheme ":" [ "//" ] [ username ":" password "@" ] host [ ":" port ] [ "/" ] [
+ * path ] [ "?" query ] [ "#" fragment ]
  *
  * Relative URL:
  * path [ "?" query ] [ "#" fragment ]
@@ -84,7 +86,8 @@ struct yuarel_param {
  *
  * Returns 0 on success, otherwise -1.
  */
-extern int yuarel_parse(struct yuarel *url, struct yuarel_param* params, int* num_params, char *url_str, size_t ulen);
+extern int yuarel_parse(struct yuarel *url, struct yuarel_param *params,
+                        int *num_params, char *url_str, size_t ulen);
 
 /**
  * Split a path into several strings.
@@ -104,10 +107,10 @@ extern int yuarel_split_path(char *path, char **parts, int max_parts);
 /**
  * Parse a query string into a key/value struct.
  *
- * The query string should be a null terminated string of parameters separated by
- * a delimiter. Each parameter are checked for the equal sign character. If it
- * appears in the parameter, it will be used as a null terminator and the part
- * that comes after it will be the value of the parameter.
+ * The query string should be a null terminated string of parameters separated
+ * by a delimiter. Each parameter are checked for the equal sign character. If
+ * it appears in the parameter, it will be used as a null terminator and the
+ * part that comes after it will be the value of the parameter.
  *
  * No data are copied, the equal sign and delimiters are used as null
  * terminators and then pointers to each parameter key and value will be stored
@@ -120,7 +123,8 @@ extern int yuarel_split_path(char *path, char **parts, int max_parts);
  *
  * Returns the number of parsed items. -1 on error.
  */
-extern int yuarel_parse_query(char *query, size_t query_len, struct yuarel_param *params, int max_params);
+extern int yuarel_parse_query(char *query, size_t query_len,
+                              struct yuarel_param *params, int max_params);
 
 #ifdef __cplusplus
 }

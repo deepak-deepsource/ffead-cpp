@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,288 +22,275 @@
 
 #include "DataSourceManager.h"
 
-std::map<std::string, DataSourceManager*> DataSourceManager::dsns;
+std::map<std::string, DataSourceManager *> DataSourceManager::dsns;
 std::map<std::string, std::string> DataSourceManager::defDsnNames;
-std::map<std::string, DataSourceInterface*> DataSourceManager::sevhDsnImpls;
-std::map<std::string, void*> DataSourceManager::sevhDsnRawImpls;
+std::map<std::string, DataSourceInterface *> DataSourceManager::sevhDsnImpls;
+std::map<std::string, void *> DataSourceManager::sevhDsnRawImpls;
 std::map<std::string, bool> DataSourceManager::appInitCompletionStatus;
 bool DataSourceManager::isSingleEVH = false;
 
-void DataSourceManager::init(bool issevh) {
-	isSingleEVH = issevh;
-}
+void DataSourceManager::init(bool issevh) { isSingleEVH = issevh; }
 
 void DataSourceManager::triggerAppInitCompletion(std::string appNameN) {
-	std::string appName = appNameN;
-	if(appName=="") {
-		appName = CommonUtils::getAppName();
-	} else {
-		StringUtil::replaceAll(appName, "-", "_");
-		RegexUtil::replace(appName, "[^a-zA-Z0-9_]+", "");
-	}
-	if(appInitCompletionStatus.find(appName)!=appInitCompletionStatus.end()) {
-		appInitCompletionStatus[appName] = true;
-	}
+  std::string appName = appNameN;
+  if (appName == "") {
+    appName = CommonUtils::getAppName();
+  } else {
+    StringUtil::replaceAll(appName, "-", "_");
+    RegexUtil::replace(appName, "[^a-zA-Z0-9_]+", "");
+  }
+  if (appInitCompletionStatus.find(appName) != appInitCompletionStatus.end()) {
+    appInitCompletionStatus[appName] = true;
+  }
 }
 
 bool DataSourceManager::isInitCompleted() {
-	bool flag = true;
-	if(appInitCompletionStatus.size()>0) {
-		std::map<std::string, bool>::iterator it = appInitCompletionStatus.begin();
-		for(;it!=appInitCompletionStatus.end();++it) {
-			flag &= it->second;
-		}
-	}
-	return flag;
+  bool flag = true;
+  if (appInitCompletionStatus.size() > 0) {
+    std::map<std::string, bool>::iterator it = appInitCompletionStatus.begin();
+    for (; it != appInitCompletionStatus.end(); ++it) {
+      flag &= it->second;
+    }
+  }
+  return flag;
 }
 
-void DataSourceManager::initDSN(const ConnectionProperties& props, const Mapping& mapping, GetClassBeanIns f)
-{
-	Logger logger = LoggerFactory::getLogger("DataSourceManager");
-	std::string name = StringUtil::trimCopy(props.getName());
-	if(name=="")
-	{
-		throw std::runtime_error("Data Source Name cannot be blank");
-	}
-	std::string appName = mapping.getAppName();
-	StringUtil::replaceAll(appName, "-", "_");
-	RegexUtil::replace(appName, "[^a-zA-Z0-9_]+", "");
-	name = appName + name;
-	if(dsns.find(name)!=dsns.end())
-	{
-		throw std::runtime_error("Data Source Already exists");
-	}
-	if(props.getProperty("_isdefault_")=="true") {
-		defDsnNames[appName] = StringUtil::trimCopy(props.getName());
-	}
+void DataSourceManager::initDSN(const ConnectionProperties &props,
+                                const Mapping &mapping, GetClassBeanIns f) {
+  Logger logger = LoggerFactory::getLogger("DataSourceManager");
+  std::string name = StringUtil::trimCopy(props.getName());
+  if (name == "") {
+    throw std::runtime_error("Data Source Name cannot be blank");
+  }
+  std::string appName = mapping.getAppName();
+  StringUtil::replaceAll(appName, "-", "_");
+  RegexUtil::replace(appName, "[^a-zA-Z0-9_]+", "");
+  name = appName + name;
+  if (dsns.find(name) != dsns.end()) {
+    throw std::runtime_error("Data Source Already exists");
+  }
+  if (props.getProperty("_isdefault_") == "true") {
+    defDsnNames[appName] = StringUtil::trimCopy(props.getName());
+  }
 
-	try {
-		DataSourceManager* dsnMgr = new DataSourceManager(props, mapping);
-		dsns[name] = dsnMgr;
-	} catch (const std::exception& e) {
-		logger.info("Error initializing Datasource " + mapping.getAppName() + "@" + props.getName() + " " + std::string(e.what()));
-		return;
-	}
+  try {
+    DataSourceManager *dsnMgr = new DataSourceManager(props, mapping);
+    dsns[name] = dsnMgr;
+  } catch (const std::exception &e) {
+    logger.info("Error initializing Datasource " + mapping.getAppName() + "@" +
+                props.getName() + " " + std::string(e.what()));
+    return;
+  }
 
-	Reflector* ref = GenericObject::getReflector();
-	if(props.getProperty("init")!="") {
-		std::string meth = props.getProperty("init");
-		std::vector<std::string> v;
-		StringUtil::split(v, meth, ".");
-		if(v.size()==2) {
-			CommonUtils::setAppName(appName);
-			ClassBeanIns cbi;
-			f(v.at(0), mapping.getAppName(), &cbi);
-			void* _temp = cbi.instance;
-			try {
-				if(_temp!=NULL) {
-					args argus;
-					vals valus;
-					const Method& meth = cbi.clas->getMethod(v.at(1), argus);
-					if(meth.getMethodName()!="")
-					{
-						appInitCompletionStatus[appName] = false;
-						ref->invokeMethodGVP(_temp, meth, valus);
-					}
-				}
-			} catch(const std::exception& e) {
-				logger.info("Error during init call for Datasource " + mapping.getAppName() + "@" + props.getName() + " " + std::string(e.what()));
-			}
-			if(cbi.cleanUp) {
-				ref->destroy(_temp, v.at(0), appName);
-			}
-		}
-	}
+  Reflector *ref = GenericObject::getReflector();
+  if (props.getProperty("init") != "") {
+    std::string meth = props.getProperty("init");
+    std::vector<std::string> v;
+    StringUtil::split(v, meth, ".");
+    if (v.size() == 2) {
+      CommonUtils::setAppName(appName);
+      ClassBeanIns cbi;
+      f(v.at(0), mapping.getAppName(), &cbi);
+      void *_temp = cbi.instance;
+      try {
+        if (_temp != NULL) {
+          args argus;
+          vals valus;
+          const Method &meth = cbi.clas->getMethod(v.at(1), argus);
+          if (meth.getMethodName() != "") {
+            appInitCompletionStatus[appName] = false;
+            ref->invokeMethodGVP(_temp, meth, valus);
+          }
+        }
+      } catch (const std::exception &e) {
+        logger.info("Error during init call for Datasource " +
+                    mapping.getAppName() + "@" + props.getName() + " " +
+                    std::string(e.what()));
+      }
+      if (cbi.cleanUp) {
+        ref->destroy(_temp, v.at(0), appName);
+      }
+    }
+  }
 }
 
-void DataSourceManager::destroy()
-{
-	std::map<std::string, DataSourceManager*>::iterator it;
-	for(it=dsns.begin();it!=dsns.end();++it)
-	{
-		if(it->second!=NULL)
-		{
-			delete it->second;
-		}
-	}
-	dsns.clear();
-	std::map<std::string, DataSourceInterface*>::iterator it1;
-	for(it1=sevhDsnImpls.begin();it1!=sevhDsnImpls.end();++it1)
-	{
-		if(it1->second!=NULL)
-		{
-			delete it1->second;
-		}
-	}
-	sevhDsnImpls.clear();
+void DataSourceManager::destroy() {
+  std::map<std::string, DataSourceManager *>::iterator it;
+  for (it = dsns.begin(); it != dsns.end(); ++it) {
+    if (it->second != NULL) {
+      delete it->second;
+    }
+  }
+  dsns.clear();
+  std::map<std::string, DataSourceInterface *>::iterator it1;
+  for (it1 = sevhDsnImpls.begin(); it1 != sevhDsnImpls.end(); ++it1) {
+    if (it1->second != NULL) {
+      delete it1->second;
+    }
+  }
+  sevhDsnImpls.clear();
 }
 
-DataSourceManager::DataSourceManager(const ConnectionProperties& props, const Mapping& mapping) {
-	logger = LoggerFactory::getLogger("DataSourceManager");
-	this->pool = NULL;
-	this->props = props;
-	this->mapping = mapping;
-	if(StringUtil::toLowerCopy(props.getType()) == "sql") {
+DataSourceManager::DataSourceManager(const ConnectionProperties &props,
+                                     const Mapping &mapping) {
+  logger = LoggerFactory::getLogger("DataSourceManager");
+  this->pool = NULL;
+  this->props = props;
+  this->mapping = mapping;
+  if (StringUtil::toLowerCopy(props.getType()) == "sql") {
 #ifdef INC_SDORM_SQL
-		this->pool = new SQLConnectionPool(props);
+    this->pool = new SQLConnectionPool(props);
 #endif
-	} else if(StringUtil::toLowerCopy(props.getType()) == "mongo") {
+  } else if (StringUtil::toLowerCopy(props.getType()) == "mongo") {
 #ifdef INC_SDORM_MONGO
-		this->pool = new MongoDBConnectionPool(props);
+    this->pool = new MongoDBConnectionPool(props);
 #endif
-	} else if(StringUtil::toLowerCopy(props.getType()) == "mongo-raw") {
+  } else if (StringUtil::toLowerCopy(props.getType()) == "mongo-raw") {
 #ifdef INC_SDORM_MONGO
-		this->pool = new MongoDBRawConnectionPool(props);
+    this->pool = new MongoDBRawConnectionPool(props);
 #endif
-	}
+  }
 }
 
 DataSourceManager::~DataSourceManager() {
-	if(this->pool!=NULL) {
-		delete this->pool;
-	}
+  if (this->pool != NULL) {
+    delete this->pool;
+  }
 }
 
-void* DataSourceManager::getRawImpl(std::string name, std::string appName, bool overrideSingleEVHFlag) {
-	if(appName=="") {
-		appName = CommonUtils::getAppName();
-	} else {
-		StringUtil::replaceAll(appName, "-", "_");
-		RegexUtil::replace(appName, "[^a-zA-Z0-9_]+", "");
-	}
-	StringUtil::trim(name);
-	if(name=="") {
-		name = defDsnNames[appName];
-	}
-	name = appName + name;
-	if(dsns.find(name)==dsns.end()) {
-		throw std::runtime_error("Data Source Not found...");
-	}
-	//This will cause serious issues if set/used in multi-threaded mode instead of single process mode
-	if(isSingleEVH && !overrideSingleEVHFlag) {
-		if(sevhDsnRawImpls.find(name)!=sevhDsnRawImpls.end()) {
-			return sevhDsnRawImpls[name];
-		}
-	}
-	DataSourceManager* dsnMgr = dsns[name];
-	void* t = NULL;
-	if(StringUtil::toLowerCopy(dsnMgr->props.getType())=="sql-raw-pq")
-	{
+void *DataSourceManager::getRawImpl(std::string name, std::string appName,
+                                    bool overrideSingleEVHFlag) {
+  if (appName == "") {
+    appName = CommonUtils::getAppName();
+  } else {
+    StringUtil::replaceAll(appName, "-", "_");
+    RegexUtil::replace(appName, "[^a-zA-Z0-9_]+", "");
+  }
+  StringUtil::trim(name);
+  if (name == "") {
+    name = defDsnNames[appName];
+  }
+  name = appName + name;
+  if (dsns.find(name) == dsns.end()) {
+    throw std::runtime_error("Data Source Not found...");
+  }
+  // This will cause serious issues if set/used in multi-threaded mode instead
+  // of single process mode
+  if (isSingleEVH && !overrideSingleEVHFlag) {
+    if (sevhDsnRawImpls.find(name) != sevhDsnRawImpls.end()) {
+      return sevhDsnRawImpls[name];
+    }
+  }
+  DataSourceManager *dsnMgr = dsns[name];
+  void *t = NULL;
+  if (StringUtil::toLowerCopy(dsnMgr->props.getType()) == "sql-raw-pq") {
 #if defined(INC_SDORM_SQL) && defined(HAVE_LIBPQ)
-		t = new LibpqDataSourceImpl(dsnMgr->props.getNodes().at(0).getBaseUrl(), dsnMgr->props.getProperty("async")=="true", dsnMgr->props.getProperty("batch")=="true");
-		((LibpqDataSourceImpl*)t)->name = name;
-		((LibpqDataSourceImpl*)t)->init();
+    t = new LibpqDataSourceImpl(dsnMgr->props.getNodes().at(0).getBaseUrl(),
+                                dsnMgr->props.getProperty("async") == "true",
+                                dsnMgr->props.getProperty("batch") == "true");
+    ((LibpqDataSourceImpl *)t)->name = name;
+    ((LibpqDataSourceImpl *)t)->init();
 #endif
-	}
-	if(StringUtil::toLowerCopy(dsnMgr->props.getType())=="mongo-raw")
-	{
+  }
+  if (StringUtil::toLowerCopy(dsnMgr->props.getType()) == "mongo-raw") {
 #if defined(INC_SDORM_MONGO)
-		t = new MongoDBRawDataSourceImpl(dsnMgr->pool);
-		((MongoDBRawDataSourceImpl*)t)->name = name;
-		((MongoDBRawDataSourceImpl*)t)->init();
+    t = new MongoDBRawDataSourceImpl(dsnMgr->pool);
+    ((MongoDBRawDataSourceImpl *)t)->name = name;
+    ((MongoDBRawDataSourceImpl *)t)->init();
 #endif
-	}
-	//This will cause serious issues if set/used in multi-threaded mode instead of single process mode
-	if(isSingleEVH && !overrideSingleEVHFlag) {
-		sevhDsnRawImpls[name] = t;
-	}
-	return t;
+  }
+  // This will cause serious issues if set/used in multi-threaded mode instead
+  // of single process mode
+  if (isSingleEVH && !overrideSingleEVHFlag) {
+    sevhDsnRawImpls[name] = t;
+  }
+  return t;
 }
 
-void DataSourceManager::cleanRawImpl(DataSourceType* dsImpl) {
-	if(dsImpl->getType()==SD_RAW_SQLPG)
-	{
+void DataSourceManager::cleanRawImpl(DataSourceType *dsImpl) {
+  if (dsImpl->getType() == SD_RAW_SQLPG) {
 #if defined(INC_SDORM_SQL) && defined(HAVE_LIBPQ)
-		delete (LibpqDataSourceImpl*)dsImpl;
+    delete (LibpqDataSourceImpl *)dsImpl;
 #endif
-	}
-	else if(dsImpl->getType()==SD_RAW_MONGO)
-	{
+  } else if (dsImpl->getType() == SD_RAW_MONGO) {
 #if defined(INC_SDORM_MONGO)
-		delete (MongoDBRawDataSourceImpl*)dsImpl;
+    delete (MongoDBRawDataSourceImpl *)dsImpl;
 #endif
-	}
-	else
-	{
-		delete dsImpl;
-	}
+  } else {
+    delete dsImpl;
+  }
 }
 
-DataSourceInterface* DataSourceManager::getImpl(std::string name, std::string appName) {
-	if(appName=="") {
-		appName = CommonUtils::getAppName();
-	} else {
-		StringUtil::replaceAll(appName, "-", "_");
-		RegexUtil::replace(appName, "[^a-zA-Z0-9_]+", "");
-	}
-	StringUtil::trim(name);
-	if(name=="") {
-		name = defDsnNames[appName];
-	}
-	name = appName + name;
-	if(dsns.find(name)==dsns.end()) {
-		throw std::runtime_error("Data Source Not found...");
-	}
-	//This will cause serious issues if set/used in multi-threaded mode instead of single process mode
-	if(isSingleEVH) {
-		if(sevhDsnImpls.find(name)!=sevhDsnImpls.end()) {
-			return sevhDsnImpls[name];
-		}
-	}
-	DataSourceManager* dsnMgr = dsns[name];
-	DataSourceInterface* t = NULL;
-	if(StringUtil::toLowerCopy(dsnMgr->props.getType())=="sql")
-	{
+DataSourceInterface *DataSourceManager::getImpl(std::string name,
+                                                std::string appName) {
+  if (appName == "") {
+    appName = CommonUtils::getAppName();
+  } else {
+    StringUtil::replaceAll(appName, "-", "_");
+    RegexUtil::replace(appName, "[^a-zA-Z0-9_]+", "");
+  }
+  StringUtil::trim(name);
+  if (name == "") {
+    name = defDsnNames[appName];
+  }
+  name = appName + name;
+  if (dsns.find(name) == dsns.end()) {
+    throw std::runtime_error("Data Source Not found...");
+  }
+  // This will cause serious issues if set/used in multi-threaded mode instead
+  // of single process mode
+  if (isSingleEVH) {
+    if (sevhDsnImpls.find(name) != sevhDsnImpls.end()) {
+      return sevhDsnImpls[name];
+    }
+  }
+  DataSourceManager *dsnMgr = dsns[name];
+  DataSourceInterface *t = NULL;
+  if (StringUtil::toLowerCopy(dsnMgr->props.getType()) == "sql") {
 #ifdef INC_SDORM_SQL
-		t = new SQLDataSourceImpl(dsnMgr->pool, &dsnMgr->mapping);
-		((SQLDataSourceImpl*)t)->name = name;
+    t = new SQLDataSourceImpl(dsnMgr->pool, &dsnMgr->mapping);
+    ((SQLDataSourceImpl *)t)->name = name;
 #endif
-	}
-	else if(StringUtil::toLowerCopy(dsnMgr->props.getType())=="mongo")
-	{
+  } else if (StringUtil::toLowerCopy(dsnMgr->props.getType()) == "mongo") {
 #ifdef INC_SDORM_MONGO
-		t = new MongoDBDataSourceImpl(dsnMgr->pool, &dsnMgr->mapping);
-		((MongoDBDataSourceImpl*)t)->name = name;
+    t = new MongoDBDataSourceImpl(dsnMgr->pool, &dsnMgr->mapping);
+    ((MongoDBDataSourceImpl *)t)->name = name;
 #endif
-	}
-	if(t == NULL)
-	{
-		return NULL;
-	}
-	t->isSingleEVH = isSingleEVH;
-	t->appName = dsnMgr->mapping.getAppName();
-	t->reflector = GenericObject::getReflector();
-	std::map<std::string, DataSourceEntityMapping>::iterator it;
-	for(it=dsnMgr->mapping.getDseMap().begin();it!=dsnMgr->mapping.getDseMap().end();++it)
-	{
-		DataSourceEntityMapping dsemp = it->second;
-		if(dsemp.isIdGenerate())
-		{
-			t->init(dsemp, true);
-		}
-	}
-	//This will cause serious issues if set/used in multi-threaded mode instead of single process mode
-	if(isSingleEVH) {
-		sevhDsnImpls[name] = t;
-	}
-	return t;
+  }
+  if (t == NULL) {
+    return NULL;
+  }
+  t->isSingleEVH = isSingleEVH;
+  t->appName = dsnMgr->mapping.getAppName();
+  t->reflector = GenericObject::getReflector();
+  std::map<std::string, DataSourceEntityMapping>::iterator it;
+  for (it = dsnMgr->mapping.getDseMap().begin();
+       it != dsnMgr->mapping.getDseMap().end(); ++it) {
+    DataSourceEntityMapping dsemp = it->second;
+    if (dsemp.isIdGenerate()) {
+      t->init(dsemp, true);
+    }
+  }
+  // This will cause serious issues if set/used in multi-threaded mode instead
+  // of single process mode
+  if (isSingleEVH) {
+    sevhDsnImpls[name] = t;
+  }
+  return t;
 }
 
-void DataSourceManager::cleanImpl(DataSourceInterface* dsImpl) {
-	if(!isSingleEVH) {
-		if(dsImpl->getType()==SD_ORM_SQL)
-		{
+void DataSourceManager::cleanImpl(DataSourceInterface *dsImpl) {
+  if (!isSingleEVH) {
+    if (dsImpl->getType() == SD_ORM_SQL) {
 #ifdef INC_SDORM_SQL
-			delete (SQLDataSourceImpl*)dsImpl;
+      delete (SQLDataSourceImpl *)dsImpl;
 #endif
-		}
-		else if(dsImpl->getType()==SD_ORM_MONGO)
-		{
+    } else if (dsImpl->getType() == SD_ORM_MONGO) {
 #ifdef INC_SDORM_MONGO
-			delete (MongoDBDataSourceImpl*)dsImpl;
+      delete (MongoDBDataSourceImpl *)dsImpl;
 #endif
-		}
-	} else {
-		dsImpl->endSession();
-	}
+    }
+  } else {
+    dsImpl->endSession();
+  }
 }

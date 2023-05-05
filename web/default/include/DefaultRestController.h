@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,29 +23,31 @@
 #ifndef DEFAULTRESTCONTROLLER_H_
 #define DEFAULTRESTCONTROLLER_H_
 
-#include <math.h>
-#include <iostream>
-#include "vector"
-#include "TestMany.h"
-#include <fstream>
 #include "CastUtil.h"
-#include "TestSTLs.h"
 #include "ConfigurationData.h"
+#include "TestMany.h"
+#include "TestSTLs.h"
+#include "vector"
+#include <fstream>
+#include <iostream>
+#include <math.h>
 
 class DefaultRestController {
 public:
-	DefaultRestController();
-	virtual ~DefaultRestController();
-	int addNumbers(int,int);
-	double power(int,int);
-	std::vector<int> testVector(std::vector<int>);
-	TestMany testObject(TestMany);
-	std::vector<TestMany> testVectorObject(std::vector<TestMany> param);
-	std::string testUploadFile(std::ifstream* ifs, std::string param);
-	std::string testUploadFileMulti1(std::ifstream* ifs1, std::ifstream* ifs2, std::ifstream* ifs3, std::string param);
-	std::string testUploadFileMulti2(std::vector<std::ifstream*> vifs, std::string param);
-	TestSTLs sertest(TestSTLs ts);
-	//int alloccounter();
+  DefaultRestController();
+  virtual ~DefaultRestController();
+  int addNumbers(int, int);
+  double power(int, int);
+  std::vector<int> testVector(std::vector<int>);
+  TestMany testObject(TestMany);
+  std::vector<TestMany> testVectorObject(std::vector<TestMany> param);
+  std::string testUploadFile(std::ifstream *ifs, std::string param);
+  std::string testUploadFileMulti1(std::ifstream *ifs1, std::ifstream *ifs2,
+                                   std::ifstream *ifs3, std::string param);
+  std::string testUploadFileMulti2(std::vector<std::ifstream *> vifs,
+                                   std::string param);
+  TestSTLs sertest(TestSTLs ts);
+  // int alloccounter();
 };
 
 #endif /* DEFAULTRESTCONTROLLER_H_ */

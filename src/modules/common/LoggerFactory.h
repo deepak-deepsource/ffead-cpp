@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,28 +22,33 @@
 
 #ifndef LOGGERFACTORY_H_
 #define LOGGERFACTORY_H_
+#include "CommonUtils.h"
 #include "Logger.h"
 #include "SimpleXmlParser.h"
-#include "CommonUtils.h"
 
 class LoggerFactory {
-	std::map<std::string, LoggerConfig*> configs;
-	std::map<std::string, std::string> dupLogNames;
-	int vhostNumber;
-	static bool isLoggingEnabled;
-	static LoggerFactory* instance;
-	static Logger _l;
-	LoggerFactory();
-	static void setVhostNumber(const int& vhn);
-	static void init();
-	static void configureDefaultLogger(const std::string& appName);
-	friend class CHServer;
+  std::map<std::string, LoggerConfig *> configs;
+  std::map<std::string, std::string> dupLogNames;
+  int vhostNumber;
+  static bool isLoggingEnabled;
+  static LoggerFactory *instance;
+  static Logger _l;
+  LoggerFactory();
+  static void setVhostNumber(const int &vhn);
+  static void init();
+  static void configureDefaultLogger(const std::string &appName);
+  friend class CHServer;
+
 public:
-	virtual ~LoggerFactory();
-	static void clear();
-	static void init(const std::string& configFile, const std::string& serverRootDirectory, const std::string& appName = "", const bool& isLoggingEnabled = true);
-	static Logger getLogger(const std::string& className);
-	static Logger getLogger(const std::string& loggerName, const std::string& className);
+  virtual ~LoggerFactory();
+  static void clear();
+  static void init(const std::string &configFile,
+                   const std::string &serverRootDirectory,
+                   const std::string &appName = "",
+                   const bool &isLoggingEnabled = true);
+  static Logger getLogger(const std::string &className);
+  static Logger getLogger(const std::string &loggerName,
+                          const std::string &className);
 };
 
 #endif /* LOGGERFACTORY_H_ */

@@ -16,7 +16,8 @@
  *
  *=========================================================================*/
 
-//Copied from https://github.com/OSEHRA-Sandbox/gtm-bindings/blob/master/Source/GTMException.h
+// Copied from
+// https://github.com/OSEHRA-Sandbox/gtm-bindings/blob/master/Source/GTMException.h
 
 #ifndef __GTMException_h
 #define __GTMException_h
@@ -24,20 +25,16 @@
 #include <cstring>
 #include <sstream>
 
-class GTMException : public std::exception
-{
+class GTMException : public std::exception {
 public:
-
-  GTMException( const char * errorMessage )
-  {
+  GTMException(const char *errorMessage) {
     std::ostd::stringstream messageStream;
     messageStream << errorMessage;
     this->message = messageStream.str().c_str();
   }
 
 private:
-
-  const char * message;
+  const char *message;
 };
 
 #endif

@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,25 +22,30 @@
 
 #ifndef SECURITYHANDLER_H_
 #define SECURITYHANDLER_H_
+#include "ConfigurationData.h"
 #include "FileAuthController.h"
-#include "Reflector.h"
 #include "HttpRequest.h"
 #include "HttpResponse.h"
 #include "LoggerFactory.h"
-#include "ConfigurationData.h"
+#include "Reflector.h"
 
-typedef ClassInfo (*FunPtr) ();
+typedef ClassInfo (*FunPtr)();
 
 class SecurityHandler {
-	static std::string isLoginPage(std::string_view cntxtName, const std::string& actUrl);
-	static std::string validateSecurePath(std::string_view cntxtName, const std::string& actUrl, const std::string& username);
-	static void populateAuthDetails(HttpRequest* req);
-	static bool hasSecurity(std::string_view cntxtName);
-	friend class ServiceTask;
+  static std::string isLoginPage(std::string_view cntxtName,
+                                 const std::string &actUrl);
+  static std::string validateSecurePath(std::string_view cntxtName,
+                                        const std::string &actUrl,
+                                        const std::string &username);
+  static void populateAuthDetails(HttpRequest *req);
+  static bool hasSecurity(std::string_view cntxtName);
+  friend class ServiceTask;
+
 public:
-	SecurityHandler();
-	virtual ~SecurityHandler();
-	static bool handle(HttpRequest* req, HttpResponse* res, const long& sessionTimeout, Reflector& reflector);
+  SecurityHandler();
+  virtual ~SecurityHandler();
+  static bool handle(HttpRequest *req, HttpResponse *res,
+                     const long &sessionTimeout, Reflector &reflector);
 };
 
 #endif /* SECURITYHANDLER_H_ */

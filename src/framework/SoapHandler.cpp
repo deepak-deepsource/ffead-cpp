@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,143 +22,134 @@
 
 #include "SoapHandler.h"
 
-void SoapHandler::handle(HttpRequest* req, HttpResponse* res, void* dlib, std::string ws_name)
-{
-	//Logger logger = LoggerFactory::getLogger("SoapHandler");
-	std::string wsUrl = "http://" + ConfigurationData::getInstance()->coreServerProperties.ip_address + "/";
-	wsUrl += req->getCurl();
-	//logger << ("WsUrl is " + wsUrl) << std::endl;
+void SoapHandler::handle(HttpRequest *req, HttpResponse *res, void *dlib,
+                         std::string ws_name) {
+  // Logger logger = LoggerFactory::getLogger("SoapHandler");
+  std::string wsUrl =
+      "http://" +
+      ConfigurationData::getInstance()->coreServerProperties.ip_address + "/";
+  wsUrl += req->getCurl();
+  // logger << ("WsUrl is " + wsUrl) << std::endl;
 
-	std::string xmlcnttype = CommonUtils::getMimeType(".xml");
-	std::string meth,env;
-	Element* soapenv = NULL;
-	//logger.info("request => "+req->getContent());
-	Element* soapbody = NULL;
-	try
-	{
-		SimpleXmlParser parser("Validator");
-		Document doc;
-		parser.parse(req->getContent(), doc);
-		soapenv = &(doc.getRootElement());
+  std::string xmlcnttype = CommonUtils::getMimeType(".xml");
+  std::string meth, env;
+  Element *soapenv = NULL;
+  // logger.info("request => "+req->getContent());
+  Element *soapbody = NULL;
+  try {
+    SimpleXmlParser parser("Validator");
+    Document doc;
+    parser.parse(req->getContent(), doc);
+    soapenv = &(doc.getRootElement());
 
-		soapbody = soapenv->getElementByNameIgnoreCase("body");
-		if(soapbody == NULL) {
-			throw std::runtime_error("SOAP Body not found in request");
-		}
+    soapbody = soapenv->getElementByNameIgnoreCase("body");
+    if (soapbody == NULL) {
+      throw std::runtime_error("SOAP Body not found in request");
+    }
 
-		//logger << soapbody->getTagName() << "----\n" << std::flush;
-		Element* method = (Element*)&(soapbody->getChildElements().at(0));
-		//logger << method.getTagName() << "----\n" << std::flush;
-		meth = method->getTagName();
-		std::string methodname = std::string(req->getCntxt_name()) + meth + ws_name;
-		//logger << methodname << "----\n" << std::flush;
-		void *mkr = dlsym(dlib, methodname.c_str());
-		if(mkr!=NULL)
-		{
-			typedef std::string (*WsPtr) (Element*);
-			WsPtr f =  (WsPtr)mkr;
-			std::string outpt = f(method);
-			typedef std::map<std::string,std::string> AttributeList;
-			AttributeList attl = soapbody->getAttributes();
-			AttributeList::iterator it;
-			std::string bod = "<" + soapbody->getTagNameSpc();
-			for(it=attl.begin();it!=attl.end();it++)
-			{
-				bod.append(" " + it->first + "=\"" + it->second + "\" ");
-			}
-			bod.append(">"+outpt + "</" + soapbody->getTagNameSpc()+">");
-			attl = soapenv->getAttributes();
-			env = "<" + soapenv->getTagNameSpc();
-			for(it=attl.begin();it!=attl.end();it++)
-			{
-				env.append(" " + it->first + "=\"" + it->second + "\" ");
-			}
-			env.append(">"+bod + "</" + soapenv->getTagNameSpc()+">");
-		}
-		else
-		{
-			AttributeList attl = soapbody->getAttributes();
-			AttributeList::iterator it;
-			std::string bod = "<" + soapbody->getTagNameSpc();
-			for(it=attl.begin();it!=attl.end();it++)
-			{
-				bod.append(" " + it->first + "=\"" + it->second + "\" ");
-			}
-			bod.append("><soap-fault><faultcode>soap:Server</faultcode><faultstring>Operation not supported</faultstring><faultactor/><detail>No such method error</detail><soap-fault></" + soapbody->getTagNameSpc()+">");
-			attl = soapenv->getAttributes();
-			env = "<" + soapenv->getTagNameSpc();
-			for(it=attl.begin();it!=attl.end();it++)
-			{
-				env.append(" " + it->first + "=\"" + it->second + "\" ");
-			}
-			env.append(">"+bod + "</" + soapenv->getTagNameSpc()+">");
-		}
-		//logger << "\n----------------------------------------------------------------------------\n" << std::flush;
-		//logger << env << "\n----------------------------------------------------------------------------\n" << std::flush;
-	}
-	catch(const Exception& e)
-	{
-		std::string bod = "", btag = "";
-		AttributeList attl;
-		AttributeList::iterator it;
-		if(soapbody!=NULL)
-		{
-			attl = soapbody->getAttributes();
-			btag = soapbody->getTagNameSpc();
-			bod = "<" + soapbody->getTagNameSpc();
-			for(it=attl.begin();it!=attl.end();it++)
-			{
-				bod.append(" " + it->first + "=\"" + it->second + "\" ");
-			}
-		}
-		else
-		{
-			btag = soapenv->getNameSpc() + ":body";
-			bod = "<" + btag;
-		}
-		bod.append("><soap-fault><faultcode>soap:Server</faultcode><faultstring>"+e.getMessage()+"</faultstring><detail></detail><soap-fault></" + btag+">");
-		attl = soapenv->getAttributes();
-		env = "<" + soapenv->getTagNameSpc();
-		for(it=attl.begin();it!=attl.end();it++)
-		{
-			env.append(" " + it->first + "=\"" + it->second + "\" ");
-		}
-		env.append(">"+bod + "</" + soapenv->getTagNameSpc()+">");
-		//logger << ("Soap fault - " + e.getMessage()) << std::flush;
-	}
-	catch(const std::exception& faultc)
-	{
-		std::string fault(faultc.what());
-		std::string bod = "", btag = "";
-		AttributeList attl;
-		AttributeList::iterator it;
-		if(soapbody!=NULL)
-		{
-			attl = soapbody->getAttributes();
-			btag = soapbody->getTagNameSpc();
-			bod = "<" + soapbody->getTagNameSpc();
-			for(it=attl.begin();it!=attl.end();it++)
-			{
-				bod.append(" " + it->first + "=\"" + it->second + "\" ");
-			}
-		}
-		else
-		{
-			btag = soapenv->getNameSpc() + ":body";
-			bod = "<" + btag;
-		}
-		bod.append("><soap-fault><faultcode>soap:Server</faultcode><faultstring>"+fault+"</faultstring><detail></detail><soap-fault></" + btag+">");
-		attl = soapenv->getAttributes();
-		env = "<" + soapenv->getTagNameSpc();
-		for(it=attl.begin();it!=attl.end();it++)
-		{
-			env.append(" " + it->first + "=\"" + it->second + "\" ");
-		}
-		env.append(">"+bod + "</" + soapenv->getTagNameSpc()+">");
-		//logger << ("Soap fault - " + fault) << std::flush;
-	}
-	res->setHTTPResponseStatus(HTTPResponseStatus::Ok);
-	res->addHeader(HttpResponse::ContentType, xmlcnttype);
-	res->setContent(env);
-	res->setDone(true);
+    // logger << soapbody->getTagName() << "----\n" << std::flush;
+    Element *method = (Element *)&(soapbody->getChildElements().at(0));
+    // logger << method.getTagName() << "----\n" << std::flush;
+    meth = method->getTagName();
+    std::string methodname = std::string(req->getCntxt_name()) + meth + ws_name;
+    // logger << methodname << "----\n" << std::flush;
+    void *mkr = dlsym(dlib, methodname.c_str());
+    if (mkr != NULL) {
+      typedef std::string (*WsPtr)(Element *);
+      WsPtr f = (WsPtr)mkr;
+      std::string outpt = f(method);
+      typedef std::map<std::string, std::string> AttributeList;
+      AttributeList attl = soapbody->getAttributes();
+      AttributeList::iterator it;
+      std::string bod = "<" + soapbody->getTagNameSpc();
+      for (it = attl.begin(); it != attl.end(); it++) {
+        bod.append(" " + it->first + "=\"" + it->second + "\" ");
+      }
+      bod.append(">" + outpt + "</" + soapbody->getTagNameSpc() + ">");
+      attl = soapenv->getAttributes();
+      env = "<" + soapenv->getTagNameSpc();
+      for (it = attl.begin(); it != attl.end(); it++) {
+        env.append(" " + it->first + "=\"" + it->second + "\" ");
+      }
+      env.append(">" + bod + "</" + soapenv->getTagNameSpc() + ">");
+    } else {
+      AttributeList attl = soapbody->getAttributes();
+      AttributeList::iterator it;
+      std::string bod = "<" + soapbody->getTagNameSpc();
+      for (it = attl.begin(); it != attl.end(); it++) {
+        bod.append(" " + it->first + "=\"" + it->second + "\" ");
+      }
+      bod.append("><soap-fault><faultcode>soap:Server</"
+                 "faultcode><faultstring>Operation not "
+                 "supported</faultstring><faultactor/><detail>No such method "
+                 "error</detail><soap-fault></" +
+                 soapbody->getTagNameSpc() + ">");
+      attl = soapenv->getAttributes();
+      env = "<" + soapenv->getTagNameSpc();
+      for (it = attl.begin(); it != attl.end(); it++) {
+        env.append(" " + it->first + "=\"" + it->second + "\" ");
+      }
+      env.append(">" + bod + "</" + soapenv->getTagNameSpc() + ">");
+    }
+    // logger <<
+    // "\n----------------------------------------------------------------------------\n"
+    // << std::flush; logger << env <<
+    // "\n----------------------------------------------------------------------------\n"
+    // << std::flush;
+  } catch (const Exception &e) {
+    std::string bod = "", btag = "";
+    AttributeList attl;
+    AttributeList::iterator it;
+    if (soapbody != NULL) {
+      attl = soapbody->getAttributes();
+      btag = soapbody->getTagNameSpc();
+      bod = "<" + soapbody->getTagNameSpc();
+      for (it = attl.begin(); it != attl.end(); it++) {
+        bod.append(" " + it->first + "=\"" + it->second + "\" ");
+      }
+    } else {
+      btag = soapenv->getNameSpc() + ":body";
+      bod = "<" + btag;
+    }
+    bod.append("><soap-fault><faultcode>soap:Server</faultcode><faultstring>" +
+               e.getMessage() +
+               "</faultstring><detail></detail><soap-fault></" + btag + ">");
+    attl = soapenv->getAttributes();
+    env = "<" + soapenv->getTagNameSpc();
+    for (it = attl.begin(); it != attl.end(); it++) {
+      env.append(" " + it->first + "=\"" + it->second + "\" ");
+    }
+    env.append(">" + bod + "</" + soapenv->getTagNameSpc() + ">");
+    // logger << ("Soap fault - " + e.getMessage()) << std::flush;
+  } catch (const std::exception &faultc) {
+    std::string fault(faultc.what());
+    std::string bod = "", btag = "";
+    AttributeList attl;
+    AttributeList::iterator it;
+    if (soapbody != NULL) {
+      attl = soapbody->getAttributes();
+      btag = soapbody->getTagNameSpc();
+      bod = "<" + soapbody->getTagNameSpc();
+      for (it = attl.begin(); it != attl.end(); it++) {
+        bod.append(" " + it->first + "=\"" + it->second + "\" ");
+      }
+    } else {
+      btag = soapenv->getNameSpc() + ":body";
+      bod = "<" + btag;
+    }
+    bod.append("><soap-fault><faultcode>soap:Server</faultcode><faultstring>" +
+               fault + "</faultstring><detail></detail><soap-fault></" + btag +
+               ">");
+    attl = soapenv->getAttributes();
+    env = "<" + soapenv->getTagNameSpc();
+    for (it = attl.begin(); it != attl.end(); it++) {
+      env.append(" " + it->first + "=\"" + it->second + "\" ");
+    }
+    env.append(">" + bod + "</" + soapenv->getTagNameSpc() + ">");
+    // logger << ("Soap fault - " + fault) << std::flush;
+  }
+  res->setHTTPResponseStatus(HTTPResponseStatus::Ok);
+  res->addHeader(HttpResponse::ContentType, xmlcnttype);
+  res->setContent(env);
+  res->setDone(true);
 }
