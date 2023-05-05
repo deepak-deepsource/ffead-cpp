@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,378 +23,335 @@
 #include "Bigdecimal.h"
 
 Bigdecimal::Bigdecimal() {
-	isPositive = true;
-	this->parts.push_back(Bigint::ZERO_INT);
-	this->decimalDigits = 0;
-	this->decimalStartsAt = 0;
+  isPositive = true;
+  this->parts.push_back(Bigint::ZERO_INT);
+  this->decimalDigits = 0;
+  this->decimalStartsAt = 0;
 }
 
-Bigdecimal::~Bigdecimal() {
+Bigdecimal::~Bigdecimal() {}
+
+Bigdecimal::Bigdecimal(const std::string &value) { create(value); }
+
+void Bigdecimal::create(const std::string &value) {
+  isPositive = true;
+  parts.clear();
+  std::string temp = StringUtil::trimCopy(value);
+  int minusSign = temp.find_last_of("-");
+  if (minusSign > 0)
+    throw std::runtime_error("Invalid -");
+  else if (minusSign == 0) {
+    isPositive = false;
+    temp = temp.substr(1);
+  }
+  if (temp.find_first_not_of("0") == std::string::npos) {
+    this->decimalStartsAt = 0;
+    this->decimalDigits = 0;
+    isPositive = true;
+    this->parts.push_back(Bigint::ZERO_INT);
+    return;
+  }
+  temp = temp.substr(temp.find_first_not_of("0"));
+  if (temp.find(".") != std::string::npos) {
+    if (temp.find(".") != temp.find_last_of(".")) {
+      throw std::runtime_error("Invalid decimal Number");
+    } else {
+      decimalDigits = temp.length() - temp.find(".") - 1;
+      decimalStartsAt = (int)temp.find(".");
+      StringUtil::replaceFirst(temp, ".", "");
+      temp = temp.substr(0, temp.find_last_not_of("0") + 1);
+    }
+  } else {
+    this->decimalStartsAt = 0;
+    this->decimalDigits = 0;
+  }
+  while ((int)temp.length() > Bigint::NUM_LENGTH) {
+    try {
+      int x = CastUtil::toInt(temp.substr(temp.length() - Bigint::NUM_LENGTH));
+      temp = temp.substr(0, temp.length() - Bigint::NUM_LENGTH);
+      parts.push_back(x);
+    } catch (const std::exception &e) {
+      throw std::runtime_error("Invalid Bigdecimal value");
+    }
+  }
+  if (temp.length() > 0) {
+    try {
+      int x = CastUtil::toInt(temp);
+      parts.push_back(x);
+    } catch (const std::exception &e) {
+      throw std::runtime_error("Invalid Bigdecimal value");
+    }
+  }
+  if (parts.at(parts.size() - 1) == 0)
+    parts.erase(parts.begin() + (parts.size() - 1));
+  checkAndSetIfZero();
 }
 
-Bigdecimal::Bigdecimal(const std::string& value)
-{
-	create(value);
+void Bigdecimal::checkAndSetIfZero() {
+  bool flag = false;
+  for (int i = 0; i < (int)parts.size(); i++) {
+    if (parts.at(i) > 0) {
+      flag = true;
+      break;
+    }
+  }
+  if (!flag || parts.size() == 0) {
+    parts.clear();
+    this->parts.push_back(Bigint::ZERO_INT);
+    isPositive = true;
+  }
 }
 
-void Bigdecimal::create(const std::string& value)
-{
-	isPositive = true;
-	parts.clear();
-	std::string temp = StringUtil::trimCopy(value);
-	int minusSign = temp.find_last_of("-");
-	if(minusSign>0)
-		throw std::runtime_error("Invalid -");
-	else if(minusSign==0)
-	{
-		isPositive = false;
-		temp = temp.substr(1);
-	}
-	if(temp.find_first_not_of("0")==std::string::npos)
-	{
-		this->decimalStartsAt = 0;
-		this->decimalDigits = 0;
-		isPositive = true;
-		this->parts.push_back(Bigint::ZERO_INT);
-		return;
-	}
-	temp = temp.substr(temp.find_first_not_of("0"));
-	if(temp.find(".")!=std::string::npos)
-	{
-		if(temp.find(".")!=temp.find_last_of("."))
-		{
-			throw std::runtime_error("Invalid decimal Number");
-		}
-		else
-		{
-			decimalDigits = temp.length() - temp.find(".") - 1;
-			decimalStartsAt = (int)temp.find(".");
-			StringUtil::replaceFirst(temp, ".", "");
-			temp = temp.substr(0, temp.find_last_not_of("0")+1);
-		}
-	}
-	else
-	{
-		this->decimalStartsAt = 0;
-		this->decimalDigits = 0;
-	}
-	while((int)temp.length()>Bigint::NUM_LENGTH)
-	{
-		try {
-			int x = CastUtil::toInt(temp.substr(temp.length()-Bigint::NUM_LENGTH));
-			temp = temp.substr(0, temp.length()-Bigint::NUM_LENGTH);
-			parts.push_back(x);
-		} catch(const std::exception& e) {
-			throw std::runtime_error("Invalid Bigdecimal value");
-		}
-	}
-	if(temp.length()>0)
-	{
-		try {
-			int x = CastUtil::toInt(temp);
-			parts.push_back(x);
-		} catch(const std::exception& e) {
-			throw std::runtime_error("Invalid Bigdecimal value");
-		}
-	}
-	if(parts.at(parts.size()-1)==0)
-		parts.erase(parts.begin()+(parts.size()-1));
-	checkAndSetIfZero();
+void Bigdecimal::add(const Bigdecimal &number) {
+  std::string fval = toString();
+  std::string sval = number.toString();
+  int maxdecdigits = decimalDigits > number.decimalDigits
+                         ? decimalDigits
+                         : number.decimalDigits;
+  for (int j = 0; j < maxdecdigits - decimalDigits; j++) {
+    fval.append(Bigint::ZERO);
+  }
+  for (int j = 0; j < maxdecdigits - number.decimalDigits; j++) {
+    sval.append(Bigint::ZERO);
+  }
+  StringUtil::replaceFirst(fval, ".", "");
+  StringUtil::replaceFirst(sval, ".", "");
+  Bigint fnum(fval);
+  Bigint snum(sval);
+  fnum.add(sval);
+  this->parts = fnum.parts;
+  this->isPositive = fnum.isPositive;
+  decimalDigits = (decimalDigits > number.decimalDigits ? decimalDigits
+                                                        : number.decimalDigits);
 }
 
-void Bigdecimal::checkAndSetIfZero()
-{
-	bool flag = false;
-	for (int i=0;i<(int)parts.size();i++) {
-		if(parts.at(i)>0)
-		{
-			flag = true;
-			break;
-		}
-	}
-	if(!flag || parts.size()==0)
-	{
-		parts.clear();
-		this->parts.push_back(Bigint::ZERO_INT);
-		isPositive = true;
-	}
+Bigdecimal Bigdecimal::operator+(const Bigdecimal &number) {
+  Bigdecimal temp = *this;
+  temp.add(number);
+  return temp;
 }
 
-void Bigdecimal::add(const Bigdecimal& number)
-{
-	std::string fval = toString();
-	std::string sval = number.toString();
-	int maxdecdigits = decimalDigits>number.decimalDigits?decimalDigits:number.decimalDigits;
-	for (int j = 0; j < maxdecdigits-decimalDigits; j++) {
-		fval.append(Bigint::ZERO);
-	}
-	for (int j = 0; j < maxdecdigits-number.decimalDigits; j++) {
-		sval.append(Bigint::ZERO);
-	}
-	StringUtil::replaceFirst(fval, ".", "");
-	StringUtil::replaceFirst(sval, ".", "");
-	Bigint fnum(fval);
-	Bigint snum(sval);
-	fnum.add(sval);
-	this->parts = fnum.parts;
-	this->isPositive = fnum.isPositive;
-	decimalDigits = (decimalDigits>number.decimalDigits?decimalDigits:number.decimalDigits);
+Bigdecimal Bigdecimal::operator-(const Bigdecimal &number) {
+  Bigdecimal temp = *this;
+  temp.subtract(number);
+  return temp;
 }
 
-Bigdecimal Bigdecimal::operator+(const Bigdecimal& number)
-{
-	Bigdecimal temp = *this;
-	temp.add(number);
-	return temp;
+Bigdecimal Bigdecimal::operator*(const Bigdecimal &number) {
+  Bigdecimal temp = *this;
+  temp.multiply(number);
+  return temp;
 }
 
-Bigdecimal Bigdecimal::operator-(const Bigdecimal& number)
-{
-	Bigdecimal temp = *this;
-	temp.subtract(number);
-	return temp;
+Bigdecimal Bigdecimal::operator/(const Bigdecimal &number) {
+  Bigdecimal temp = *this;
+  temp.divide(number);
+  return temp;
 }
 
-Bigdecimal Bigdecimal::operator*(const Bigdecimal& number)
-{
-	Bigdecimal temp = *this;
-	temp.multiply(number);
-	return temp;
+Bigdecimal &Bigdecimal::operator++() {
+  Bigdecimal temp("1");
+  this->add(temp);
+  return *this;
 }
 
-Bigdecimal Bigdecimal::operator/(const Bigdecimal& number)
-{
-	Bigdecimal temp = *this;
-	temp.divide(number);
-	return temp;
+Bigdecimal &Bigdecimal::operator+=(const Bigdecimal &number) {
+  this->add(number);
+  return *this;
 }
 
-Bigdecimal& Bigdecimal::operator++()
-{
-	Bigdecimal temp("1");
-	this->add(temp);
-	return *this;
+Bigdecimal &Bigdecimal::operator--() {
+  Bigdecimal temp("1");
+  this->subtract(temp);
+  return *this;
 }
 
-Bigdecimal& Bigdecimal::operator+=(const Bigdecimal& number)
-{
-	this->add(number);
-	return *this;
+Bigdecimal &Bigdecimal::operator-=(const Bigdecimal &number) {
+  this->subtract(number);
+  return *this;
 }
 
-Bigdecimal& Bigdecimal::operator--()
-{
-	Bigdecimal temp("1");
-	this->subtract(temp);
-	return *this;
+bool operator==(const Bigdecimal &lhs, const Bigdecimal &rhs) {
+  if (lhs.compare(rhs) == 0)
+    return true;
+  return false;
 }
 
-Bigdecimal& Bigdecimal::operator-=(const Bigdecimal& number)
-{
-	this->subtract(number);
-	return *this;
+bool operator!=(const Bigdecimal &lhs, const Bigdecimal &rhs) {
+  if (lhs.compare(rhs) != 0)
+    return true;
+  return false;
 }
 
-bool operator==(const Bigdecimal& lhs, const Bigdecimal& rhs)
-{
-	if(lhs.compare(rhs)==0)
-		return true;
-	return false;
+bool operator<(const Bigdecimal &lhs, const Bigdecimal &rhs) {
+  if (lhs.compare(rhs) == -1)
+    return true;
+  return false;
 }
 
-bool operator!=(const Bigdecimal& lhs, const Bigdecimal& rhs)
-{
-	if(lhs.compare(rhs)!=0)
-		return true;
-	return false;
+bool operator<=(const Bigdecimal &lhs, const Bigdecimal &rhs) {
+  if (lhs.compare(rhs) <= 0)
+    return true;
+  return false;
 }
 
-bool operator<(const Bigdecimal& lhs, const Bigdecimal& rhs)
-{
-	if(lhs.compare(rhs)==-1)
-		return true;
-	return false;
+bool operator>(const Bigdecimal &lhs, const Bigdecimal &rhs) {
+  if (lhs.compare(rhs) == 1)
+    return true;
+  return false;
 }
 
-bool operator<=(const Bigdecimal& lhs, const Bigdecimal& rhs)
-{
-	if(lhs.compare(rhs)<=0)
-		return true;
-	return false;
+bool operator>=(const Bigdecimal &lhs, const Bigdecimal &rhs) {
+  if (lhs.compare(rhs) >= 0)
+    return true;
+  return false;
 }
 
-bool operator>(const Bigdecimal& lhs, const Bigdecimal& rhs)
-{
-	if(lhs.compare(rhs)==1)
-		return true;
-	return false;
+void Bigdecimal::subtract(const Bigdecimal &number) {
+  std::string fval = toString();
+  std::string sval = number.toString();
+  int maxdecdigits = decimalDigits > number.decimalDigits
+                         ? decimalDigits
+                         : number.decimalDigits;
+  for (int j = 0; j < maxdecdigits - decimalDigits; j++) {
+    fval.append(Bigint::ZERO);
+  }
+  for (int j = 0; j < maxdecdigits - number.decimalDigits; j++) {
+    sval.append(Bigint::ZERO);
+  }
+  StringUtil::replaceFirst(fval, ".", "");
+  StringUtil::replaceFirst(sval, ".", "");
+  Bigint fnum(fval);
+  Bigint snum(sval);
+  fnum.subtract(sval);
+  this->parts = fnum.parts;
+  this->isPositive = fnum.isPositive;
+  decimalDigits = (decimalDigits > number.decimalDigits ? decimalDigits
+                                                        : number.decimalDigits);
 }
 
-bool operator>=(const Bigdecimal& lhs, const Bigdecimal& rhs)
-{
-	if(lhs.compare(rhs)>=0)
-		return true;
-	return false;
+void Bigdecimal::multiply(const Bigdecimal &number) {
+  std::string fval = toString();
+  std::string sval = number.toString();
+  int maxdecdigits = decimalDigits > number.decimalDigits
+                         ? decimalDigits
+                         : number.decimalDigits;
+  for (int j = 0; j < maxdecdigits - decimalDigits; j++) {
+    fval.append(Bigint::ZERO);
+  }
+  for (int j = 0; j < maxdecdigits - number.decimalDigits; j++) {
+    sval.append(Bigint::ZERO);
+  }
+  StringUtil::replaceFirst(fval, ".", "");
+  StringUtil::replaceFirst(sval, ".", "");
+  Bigint fnum(fval);
+  Bigint snum(sval);
+  fnum.multiply(sval);
+  this->parts = fnum.parts;
+  this->isPositive = fnum.isPositive;
+  decimalDigits += number.decimalDigits;
 }
 
-void Bigdecimal::subtract(const Bigdecimal& number)
-{
-	std::string fval = toString();
-	std::string sval = number.toString();
-	int maxdecdigits = decimalDigits>number.decimalDigits?decimalDigits:number.decimalDigits;
-	for (int j = 0; j < maxdecdigits-decimalDigits; j++) {
-		fval.append(Bigint::ZERO);
-	}
-	for (int j = 0; j < maxdecdigits-number.decimalDigits; j++) {
-		sval.append(Bigint::ZERO);
-	}
-	StringUtil::replaceFirst(fval, ".", "");
-	StringUtil::replaceFirst(sval, ".", "");
-	Bigint fnum(fval);
-	Bigint snum(sval);
-	fnum.subtract(sval);
-	this->parts = fnum.parts;
-	this->isPositive = fnum.isPositive;
-	decimalDigits = (decimalDigits>number.decimalDigits?decimalDigits:number.decimalDigits);
+void Bigdecimal::divide(const Bigdecimal &number, const int &precision) {
+  std::string fval = toString();
+  std::string sval = number.toString();
+  int maxdecdigits = decimalDigits > number.decimalDigits
+                         ? decimalDigits
+                         : number.decimalDigits;
+  for (int j = 0; j < maxdecdigits - decimalDigits; j++) {
+    fval.append(Bigint::ZERO);
+  }
+  for (int j = 0; j < maxdecdigits - number.decimalDigits; j++) {
+    sval.append(Bigint::ZERO);
+  }
+  StringUtil::replaceFirst(fval, ".", "");
+  StringUtil::replaceFirst(sval, ".", "");
+  Bigint fnum(fval);
+  Bigint snum(sval);
+  fnum.internalDivide(sval, true, precision - 1);
+  this->parts = fnum.parts;
+  this->isPositive = fnum.isPositive;
+  this->decimalStartsAt = fnum.decimalStartsAt;
+  decimalDigits -= number.decimalDigits;
 }
 
-void Bigdecimal::multiply(const Bigdecimal& number)
-{
-	std::string fval = toString();
-	std::string sval = number.toString();
-	int maxdecdigits = decimalDigits>number.decimalDigits?decimalDigits:number.decimalDigits;
-	for (int j = 0; j < maxdecdigits-decimalDigits; j++) {
-		fval.append(Bigint::ZERO);
-	}
-	for (int j = 0; j < maxdecdigits-number.decimalDigits; j++) {
-		sval.append(Bigint::ZERO);
-	}
-	StringUtil::replaceFirst(fval, ".", "");
-	StringUtil::replaceFirst(sval, ".", "");
-	Bigint fnum(fval);
-	Bigint snum(sval);
-	fnum.multiply(sval);
-	this->parts = fnum.parts;
-	this->isPositive = fnum.isPositive;
-	decimalDigits += number.decimalDigits;
+int Bigdecimal::compare(const Bigdecimal &number1, const Bigdecimal &number2) {
+  return number1.compare(number2);
 }
 
-void Bigdecimal::divide(const Bigdecimal& number, const int& precision)
-{
-	std::string fval = toString();
-	std::string sval = number.toString();
-	int maxdecdigits = decimalDigits>number.decimalDigits?decimalDigits:number.decimalDigits;
-	for (int j = 0; j < maxdecdigits-decimalDigits; j++) {
-		fval.append(Bigint::ZERO);
-	}
-	for (int j = 0; j < maxdecdigits-number.decimalDigits; j++) {
-		sval.append(Bigint::ZERO);
-	}
-	StringUtil::replaceFirst(fval, ".", "");
-	StringUtil::replaceFirst(sval, ".", "");
-	Bigint fnum(fval);
-	Bigint snum(sval);
-	fnum.internalDivide(sval, true, precision-1);
-	this->parts = fnum.parts;
-	this->isPositive = fnum.isPositive;
-	this->decimalStartsAt = fnum.decimalStartsAt;
-	decimalDigits -= number.decimalDigits;
+int Bigdecimal::compare(const Bigdecimal &number) const {
+  if (isPositive == number.isPositive) {
+    std::string fnvalue = toString();
+    std::string snvalue = number.toString();
+    Bigint fnum, snum;
+    if (decimalStartsAt > 0) {
+      Bigint temp(fnvalue.substr(0, decimalStartsAt));
+      fnum = temp;
+    } else {
+      Bigint temp(fnvalue);
+      fnum = temp;
+    }
+    if (number.decimalStartsAt > 0) {
+      Bigint temp(snvalue.substr(0, number.decimalStartsAt));
+      snum = temp;
+    } else {
+      Bigint temp(snvalue);
+      snum = temp;
+    }
+    int compVal = fnum.compare(snum);
+    if (compVal == 0) {
+      std::string fmantstr = fnvalue.substr(decimalStartsAt + 1, decimalDigits);
+      std::string smantstr =
+          snvalue.substr(number.decimalStartsAt + 1, number.decimalDigits);
+      int maxdecdigits = decimalDigits > number.decimalDigits
+                             ? decimalDigits
+                             : number.decimalDigits;
+      for (int j = 0; j < maxdecdigits - decimalDigits; j++) {
+        fmantstr.append(Bigint::ZERO);
+      }
+      for (int j = 0; j < maxdecdigits - number.decimalDigits; j++) {
+        smantstr.append(Bigint::ZERO);
+      }
+      Bigint fmantissa(fmantstr);
+      Bigint smantissa(smantstr);
+      return fmantissa.compare(smantissa);
+    }
+    return compVal;
+  } else if (isPositive && !number.isPositive) {
+    return 1;
+  } else {
+    return -1;
+  }
 }
 
-
-int Bigdecimal::compare(const Bigdecimal& number1, const Bigdecimal& number2)
-{
-	return number1.compare(number2);
-}
-
-int Bigdecimal::compare(const Bigdecimal& number) const
-{
-	if(isPositive==number.isPositive)
-	{
-		std::string fnvalue = toString();
-		std::string snvalue = number.toString();
-		Bigint fnum, snum;
-		if(decimalStartsAt>0)
-		{
-			Bigint temp(fnvalue.substr(0, decimalStartsAt));
-			fnum = temp;
-		}
-		else
-		{
-			Bigint temp(fnvalue);
-			fnum = temp;
-		}
-		if(number.decimalStartsAt>0)
-		{
-			Bigint temp(snvalue.substr(0, number.decimalStartsAt));
-			snum = temp;
-		}
-		else
-		{
-			Bigint temp(snvalue);
-			snum = temp;
-		}
-		int compVal = fnum.compare(snum);
-		if(compVal==0)
-		{
-			std::string fmantstr = fnvalue.substr(decimalStartsAt+1, decimalDigits);
-			std::string smantstr = snvalue.substr(number.decimalStartsAt+1, number.decimalDigits);
-			int maxdecdigits = decimalDigits>number.decimalDigits?decimalDigits:number.decimalDigits;
-			for (int j = 0; j < maxdecdigits-decimalDigits; j++) {
-				fmantstr.append(Bigint::ZERO);
-			}
-			for (int j = 0; j < maxdecdigits-number.decimalDigits; j++) {
-				smantstr.append(Bigint::ZERO);
-			}
-			Bigint fmantissa(fmantstr);
-			Bigint smantissa(smantstr);
-			return fmantissa.compare(smantissa);
-		}
-		return compVal;
-	}
-	else if(isPositive && !number.isPositive)
-	{
-		return 1;
-	}
-	else
-	{
-		return -1;
-	}
-}
-
-std::string Bigdecimal::toString() const
-{
-	if(parts.size()==0)
-		return Bigint::ZERO;
-	std::string build;
-	std::vector<int> nparts = parts;
-	std::reverse(nparts.begin(),nparts.end());
-	if(!isPositive)
-	{
-		build.append(Bigint::MINUS);
-	}
-	for (int i=0;i<(int)nparts.size();i++) {
-		if(i!=0)
-		{
-			std::string numstr = CastUtil::fromNumber(nparts.at(i));
-			for (int j = 0; j < Bigint::NUM_LENGTH-(int)numstr.length(); j++) {
-				build.append(Bigint::ZERO);
-			}
-			build.append(numstr);
-		}
-		else
-		{
-			build.append(CastUtil::fromNumber(nparts.at(i)));
-		}
-	}
-	if(decimalDigits>0)
-	{
-		build = build.substr(0, build.find_last_not_of("0")+1);
-		build = build.substr(0, build.length()-decimalDigits) + "." + build.substr(build.length()-decimalDigits);;
-	}
-	else if(decimalStartsAt>0)
-	{
-		build = build.substr(0, decimalStartsAt) + "." + build.substr(decimalStartsAt);
-	}
-	return build;
+std::string Bigdecimal::toString() const {
+  if (parts.size() == 0)
+    return Bigint::ZERO;
+  std::string build;
+  std::vector<int> nparts = parts;
+  std::reverse(nparts.begin(), nparts.end());
+  if (!isPositive) {
+    build.append(Bigint::MINUS);
+  }
+  for (int i = 0; i < (int)nparts.size(); i++) {
+    if (i != 0) {
+      std::string numstr = CastUtil::fromNumber(nparts.at(i));
+      for (int j = 0; j < Bigint::NUM_LENGTH - (int)numstr.length(); j++) {
+        build.append(Bigint::ZERO);
+      }
+      build.append(numstr);
+    } else {
+      build.append(CastUtil::fromNumber(nparts.at(i)));
+    }
+  }
+  if (decimalDigits > 0) {
+    build = build.substr(0, build.find_last_not_of("0") + 1);
+    build = build.substr(0, build.length() - decimalDigits) + "." +
+            build.substr(build.length() - decimalDigits);
+    ;
+  } else if (decimalStartsAt > 0) {
+    build =
+        build.substr(0, decimalStartsAt) + "." + build.substr(decimalStartsAt);
+  }
+  return build;
 }

@@ -1,17 +1,17 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri 
-  
-    Licensed under the Apache License, Version 2.0 (const the& "License"); 
-    you may not use this file except in compliance with the License. 
-    You may obtain a copy of the License at 
-  
-        http://www.apache.org/licenses/LICENSE-2.0 
-  
-    Unless required by applicable law or agreed to in writing, software 
-    distributed under the License is distributed on an "AS IS" BASIS, 
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-    See the License for the specific language governing permissions and 
-    limitations under the License.  
+        Copyright 2009-2020, Sumeet Chhetri
+
+    Licensed under the Apache License, Version 2.0 (const the& "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 */
 /*
  * BeanContext.h
@@ -24,34 +24,37 @@
 #define BeanContext_H_
 #include "CastUtil.h"
 #include "Client.h"
-#include "Reflector.h"
-#include "XMLSerialize.h"
 #include "GenericObject.h"
-#include "SimpleXmlParser.h"
 #include "LoggerFactory.h"
+#include "Reflector.h"
+#include "SimpleXmlParser.h"
+#include "XMLSerialize.h"
 
 class BeanContext {
-	std::string host;
-	int port;
-	Client client;
-	Logger logger;
+  std::string host;
+  int port;
+  Client client;
+  Logger logger;
+
 public:
-	BeanContext();
-	BeanContext(const std::string& host, const int& port);
-	virtual ~BeanContext();
-	std::string getHost() const;
-	void setHost(const std::string& host);
-	int getPort() const;
-	void setPort(const int& port);
-	void* lookup(const std::string&);
-	void* invoke(const std::string& name, std::vector<GenericObject> args, const std::string&, const std::string&);
+  BeanContext();
+  BeanContext(const std::string &host, const int &port);
+  virtual ~BeanContext();
+  std::string getHost() const;
+  void setHost(const std::string &host);
+  int getPort() const;
+  void setPort(const int &port);
+  void *lookup(const std::string &);
+  void *invoke(const std::string &name, std::vector<GenericObject> args,
+               const std::string &, const std::string &);
 };
 class RemoteComponentInt {
-	BeanContext cntxt;
+  BeanContext cntxt;
+
 public:
-	BeanContext getContext();
-	RemoteComponentInt();
-	virtual ~RemoteComponentInt();
-	void setBeanContext(const BeanContext& cntxt);
+  BeanContext getContext();
+  RemoteComponentInt();
+  virtual ~RemoteComponentInt();
+  void setBeanContext(const BeanContext &cntxt);
 };
 #endif /* BeanContext_H_ */

@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,10 +22,8 @@
 
 #include "TestMany.h"
 
-TestMany::TestMany() {
-	y = 0;
-}
+TestMany::TestMany() { y = 0; }
 
 TestMany::~TestMany() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }

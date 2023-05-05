@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2013, Sumeet Chhetri
+        Copyright 2009-2013, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -32,21 +32,24 @@
 #define MAXBUFLENM 32768
 
 class DistoCacheServiceHandler {
-	int fd;
-	bool isSSLEnabled;
+  int fd;
+  bool isSSLEnabled;
 #ifdef HAVE_SSLINC
-	SSL_CTX *ctx;
+  SSL_CTX *ctx;
 #endif
-	Logger logger;
-	int getLength(const std::string& header, const int& size);
-	bool validQuery(const std::vector<std::string>& parts, const int& size, const std::string& cmd1="", const std::string& cmd2="");
+  Logger logger;
+  int getLength(const std::string &header, const int &size);
+  bool validQuery(const std::vector<std::string> &parts, const int &size,
+                  const std::string &cmd1 = "", const std::string &cmd2 = "");
+
 public:
 #ifdef HAVE_SSLINC
-	DistoCacheServiceHandler(const int& fd, const bool& isSSLEnabled, SSL_CTX *ctx);
+  DistoCacheServiceHandler(const int &fd, const bool &isSSLEnabled,
+                           SSL_CTX *ctx);
 #endif
-	DistoCacheServiceHandler(const int& fd);
-	virtual ~DistoCacheServiceHandler();
-	void run();
+  DistoCacheServiceHandler(const int &fd);
+  virtual ~DistoCacheServiceHandler();
+  void run();
 };
 
 #endif /* DITOCACHESERVICEHANDLER_H_ */

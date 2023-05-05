@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -25,24 +25,25 @@
 #include "Http2Frame.h"
 
 class Http2PushPromiseFrame : public Http2Frame {
-	unsigned char padLength;
-	bool reserved;
-	int promisedStreamId;
-	std::string headerBlockFragment;
-	std::string padding;
-	Http2PushPromiseFrame(std::string data, Http2FrameHeader& aheader);
-	friend class Http2Handler;
-	friend class Http2StreamHandler;
-	std::map<std::string, std::string, std::less<>> headers;
+  unsigned char padLength;
+  bool reserved;
+  int promisedStreamId;
+  std::string headerBlockFragment;
+  std::string padding;
+  Http2PushPromiseFrame(std::string data, Http2FrameHeader &aheader);
+  friend class Http2Handler;
+  friend class Http2StreamHandler;
+  std::map<std::string, std::string, std::less<>> headers;
+
 public:
-	Http2PushPromiseFrame();
-	virtual ~Http2PushPromiseFrame();
-	const std::string& getHeaderBlockFragment() const;
-	const std::string& getPadding() const;
-	unsigned char getPadLength() const;
-	int getPromisedStreamId() const;
-	bool isReserved() const;
-	std::string getFrameData();
+  Http2PushPromiseFrame();
+  virtual ~Http2PushPromiseFrame();
+  const std::string &getHeaderBlockFragment() const;
+  const std::string &getPadding() const;
+  unsigned char getPadLength() const;
+  int getPromisedStreamId() const;
+  bool isReserved() const;
+  std::string getFrameData();
 };
 
 #endif /* HTTP2PUSHPROMISEFRAME_H_ */
