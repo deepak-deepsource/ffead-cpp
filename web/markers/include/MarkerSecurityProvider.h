@@ -27,8 +27,8 @@
 
 #pragma @SecurityProvider providerName = "markerProvider" url =                \
     "/markerAuth" welcomefile = "index.html" usernamefld =                     \
-    "user" usernamefrom = "header" passwordfld = "pass" passwordfrom =         \
-    "header"
+        "user" usernamefrom = "header" passwordfld = "pass" passwordfrom =     \
+            "header"
 class MarkerSecurityProvider : public AuthController {
 public:
   MarkerSecurityProvider();
