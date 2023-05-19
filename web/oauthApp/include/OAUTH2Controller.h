@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,21 +22,21 @@
 
 #ifndef OAUTH2CONTROLLER_H
 #define OAUTH2CONTROLLER_H
-#include <iostream>
-#include "Controller.h"
-#include "FileAuthController.h"
 #include "Client.h"
-#include "HttpResponseParser.h"
+#include "Controller.h"
 #include "CryptoHandler.h"
+#include "FileAuthController.h"
+#include "HttpResponseParser.h"
+#include <iostream>
 #ifdef HAVE_SSLINC
 #include "SSLClient.h"
 #endif
 
-class OAUTH2Controller : public Controller{
+class OAUTH2Controller : public Controller {
 public:
-	OAUTH2Controller();
-	virtual ~OAUTH2Controller();
-	bool service(HttpRequest* req, HttpResponse* res);
+  OAUTH2Controller();
+  virtual ~OAUTH2Controller();
+  bool service(HttpRequest *req, HttpResponse *res);
 };
 
 #endif /* OAUTH2CONTROLLER_H */

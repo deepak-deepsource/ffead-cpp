@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -26,25 +26,26 @@
 #include "map"
 
 class Http2SettingsFrame : public Http2Frame {
-	std::map<uint16_t, uint32_t> settings;
-	Http2SettingsFrame(const std::string& data, Http2FrameHeader& aheader);
-	friend class Http2Handler;
-	friend class Http2StreamHandler;
-public:
-	static uint16_t SETTINGS_HEADER_TABLE_SIZE;
-	static uint16_t SETTINGS_ENABLE_PUSH;
-	static uint16_t SETTINGS_MAX_CONCURRENT_STREAMS;
-	static uint16_t SETTINGS_INITIAL_WINDOW_SIZE;
-	static uint16_t SETTINGS_MAX_FRAME_SIZE;
-	static uint16_t SETTINGS_MAX_HEADER_LIST_SIZE;
+  std::map<uint16_t, uint32_t> settings;
+  Http2SettingsFrame(const std::string &data, Http2FrameHeader &aheader);
+  friend class Http2Handler;
+  friend class Http2StreamHandler;
 
-	//Not the final spec yet, change this when the real rfc is finalized
-	//https://tools.ietf.org/html/draft-hirano-httpbis-websocket-over-http2-01
-	static uint16_t SETTINGS_WEBSOCKET_CAPABLE;
-	Http2SettingsFrame();
-	virtual ~Http2SettingsFrame();
-	const std::map<uint16_t, uint32_t>& getSettings() const;
-	std::string getFrameData();
+public:
+  static uint16_t SETTINGS_HEADER_TABLE_SIZE;
+  static uint16_t SETTINGS_ENABLE_PUSH;
+  static uint16_t SETTINGS_MAX_CONCURRENT_STREAMS;
+  static uint16_t SETTINGS_INITIAL_WINDOW_SIZE;
+  static uint16_t SETTINGS_MAX_FRAME_SIZE;
+  static uint16_t SETTINGS_MAX_HEADER_LIST_SIZE;
+
+  // Not the final spec yet, change this when the real rfc is finalized
+  // https://tools.ietf.org/html/draft-hirano-httpbis-websocket-over-http2-01
+  static uint16_t SETTINGS_WEBSOCKET_CAPABLE;
+  Http2SettingsFrame();
+  virtual ~Http2SettingsFrame();
+  const std::map<uint16_t, uint32_t> &getSettings() const;
+  std::string getFrameData();
 };
 
 #endif /* HTTP2SETTINGSFRAME_H_ */

@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -25,21 +25,22 @@
 #include "Http2Frame.h"
 
 class Http2GoAwayFrame : public Http2Frame {
-	bool reserved;
-	int lastStreamId;
-	uint32_t errorCode;
-	std::string additionalDebugData;
-	Http2GoAwayFrame(std::string data, Http2FrameHeader& aheader);
-	friend class Http2Handler;
-	friend class Http2StreamHandler;
+  bool reserved;
+  int lastStreamId;
+  uint32_t errorCode;
+  std::string additionalDebugData;
+  Http2GoAwayFrame(std::string data, Http2FrameHeader &aheader);
+  friend class Http2Handler;
+  friend class Http2StreamHandler;
+
 public:
-	Http2GoAwayFrame();
-	virtual ~Http2GoAwayFrame();
-	const std::string& getAdditionalDebugData() const;
-	uint32_t getErrorCode() const;
-	int getLastStreamId() const;
-	bool isReserved() const;
-	std::string getFrameData();
+  Http2GoAwayFrame();
+  virtual ~Http2GoAwayFrame();
+  const std::string &getAdditionalDebugData() const;
+  uint32_t getErrorCode() const;
+  int getLastStreamId() const;
+  bool isReserved() const;
+  std::string getFrameData();
 };
 
 #endif /* HTTP2GOAWAYFRAME_H_ */

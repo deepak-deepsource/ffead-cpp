@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -25,19 +25,20 @@
 #include "Http2Frame.h"
 
 class Http2DataFrame : public Http2Frame {
-	unsigned char padLength;
-	std::string data;
-	std::string padding;
-	Http2DataFrame(const std::string& data, Http2FrameHeader& aheader);
-	friend class Http2Handler;
-	friend class Http2StreamHandler;
+  unsigned char padLength;
+  std::string data;
+  std::string padding;
+  Http2DataFrame(const std::string &data, Http2FrameHeader &aheader);
+  friend class Http2Handler;
+  friend class Http2StreamHandler;
+
 public:
-	Http2DataFrame();
-	virtual ~Http2DataFrame();
-	const std::string& getData() const;
-	const std::string& getPadding() const;
-	unsigned char getPadLength() const;
-	std::string getFrameData();
+  Http2DataFrame();
+  virtual ~Http2DataFrame();
+  const std::string &getData() const;
+  const std::string &getPadding() const;
+  unsigned char getPadLength() const;
+  std::string getFrameData();
 };
 
 #endif /* HTTP2DATAFRAME_H_ */

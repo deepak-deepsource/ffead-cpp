@@ -1,31 +1,26 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include "hescape.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #ifdef __SSE4_2__
-# ifdef _MSC_VER
-#  include <nmmintrin.h>
-# else
-#  include <x86intrin.h>
-# endif
+#ifdef _MSC_VER
+#include <nmmintrin.h>
+#else
+#include <x86intrin.h>
+#endif
 #endif
 
 #if __GNUC__ >= 3
-# define likely(x) __builtin_expect(!!(x), 1)
-# define unlikely(x) __builtin_expect(!!(x), 0)
+#define likely(x) __builtin_expect(!!(x), 1)
+#define unlikely(x) __builtin_expect(!!(x), 0)
 #else
-# define likely(x) (x)
-# define unlikely(x) (x)
+#define likely(x) (x)
+#define unlikely(x) (x)
 #endif
 
 static const uint8_t ESCAPED_STRING[6][7] = {
-  "",
-  "&quot;",
-  "&amp;",
-  "&#39;",
-  "&lt;",
-  "&gt;",
+    "", "&quot;", "&amp;", "&#39;", "&lt;", "&gt;",
 };
 
 // This is strlen(ESCAPED_STRING[x]) optimized specially.
@@ -42,27 +37,20 @@ static const uint8_t ESCAPED_STRING[6][7] = {
  * > (62) => 5 (&gt;)
  */
 static const char HTML_ESCAPE_TABLE[] = {
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 1, 0, 0, 0, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 5, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
-static uint8_t*
-ensure_allocated(uint8_t *buf, size_t size, size_t *asize)
-{
+static uint8_t *ensure_allocated(uint8_t *buf, size_t size, size_t *asize) {
   if (size < *asize)
     return buf;
 
@@ -78,13 +66,12 @@ ensure_allocated(uint8_t *buf, size_t size, size_t *asize)
     new_size = (new_size << 1) - (new_size >> 1);
 
   *asize = new_size;
-  return (uint8_t*)realloc(buf, new_size);
+  return (uint8_t *)realloc(buf, new_size);
 }
 
 #ifdef __SSE4_2__
-static size_t
-find_char_fast(const char *buf, size_t i, size_t size, __m128i range, size_t range_size, int *found)
-{
+static size_t find_char_fast(const char *buf, size_t i, size_t size,
+                             __m128i range, size_t range_size, int *found) {
   size_t left = (size - i) & ~15;
   do {
     __m128i b16 = _mm_loadu_si128((void *)(buf + i));
@@ -96,50 +83,51 @@ find_char_fast(const char *buf, size_t i, size_t size, __m128i range, size_t ran
     }
     i += 16;
     left -= 16;
-  } while(likely(left != 0));
+  } while (likely(left != 0));
 
   return i;
 }
 #endif
 
-static inline size_t
-append_pending_buf(uint8_t *rbuf, size_t rbuf_i, const uint8_t *buf, size_t buf_i, size_t esize)
-{
+static inline size_t append_pending_buf(uint8_t *rbuf, size_t rbuf_i,
+                                        const uint8_t *buf, size_t buf_i,
+                                        size_t esize) {
   memcpy(rbuf + rbuf_i, buf + (rbuf_i - esize), buf_i - (rbuf_i - esize));
   return buf_i + esize;
 }
 
-static inline size_t
-append_escaped_buf(uint8_t *rbuf, size_t rbuf_i, size_t esc_i, size_t *esize)
-{
+static inline size_t append_escaped_buf(uint8_t *rbuf, size_t rbuf_i,
+                                        size_t esc_i, size_t *esize) {
   memcpy(rbuf + rbuf_i, ESCAPED_STRING[esc_i], ESC_LEN(esc_i));
   *esize += ESC_LEN(esc_i) - 1;
   return rbuf_i + ESC_LEN(esc_i);
 }
 
-std::string_view hesc_escape_html(const uint8_t *buf, size_t size, std::string& data, bool& allocd)
-{
-  //const uint8_t *buf = (uint8_t *)data.data();
-  //size_t size = data.size();
+std::string_view hesc_escape_html(const uint8_t *buf, size_t size,
+                                  std::string &data, bool &allocd) {
+  // const uint8_t *buf = (uint8_t *)data.data();
+  // size_t size = data.size();
   size_t asize = 0, esc_i, esize = 0, i = 0, rbuf_i = 0;
-  //const uint8_t *esc;
+  // const uint8_t *esc;
   uint8_t *rbuf = NULL;
 
-# ifdef __SSE4_2__
+#ifdef __SSE4_2__
   __m128i escapes5 = _mm_loadu_si128((const __m128i *)"\"&'<>");
   while (likely(size - i >= 16)) {
     int found = 0;
     if (unlikely((esc_i = HTML_ESCAPE_TABLE[buf[i]]) == 0)) {
       i = find_char_fast(buf, i, size, escapes5, 5, &found);
-      if (!found) break;
+      if (!found)
+        break;
       esc_i = HTML_ESCAPE_TABLE[buf[i]];
     }
-    rbuf = ensure_allocated(rbuf, sizeof(uint8_t) * (size + esize + ESC_LEN(esc_i) + 1), &asize);
+    rbuf = ensure_allocated(
+        rbuf, sizeof(uint8_t) * (size + esize + ESC_LEN(esc_i) + 1), &asize);
     rbuf_i = append_pending_buf(rbuf, rbuf_i, buf, i, esize);
     rbuf_i = append_escaped_buf(rbuf, rbuf_i, esc_i, &esize);
     i++;
   }
-# endif
+#endif
 
   while (i < size) {
     // Loop here to skip non-escaped characters fast.
@@ -147,7 +135,8 @@ std::string_view hesc_escape_html(const uint8_t *buf, size_t size, std::string& 
       i++;
 
     if (esc_i) {
-      rbuf = ensure_allocated(rbuf, sizeof(uint8_t) * (size + esize + ESC_LEN(esc_i) + 1), &asize);
+      rbuf = ensure_allocated(
+          rbuf, sizeof(uint8_t) * (size + esize + ESC_LEN(esc_i) + 1), &asize);
       rbuf_i = append_pending_buf(rbuf, rbuf_i, buf, i, esize);
       rbuf_i = append_escaped_buf(rbuf, rbuf_i, esc_i, &esize);
     }
@@ -155,15 +144,15 @@ std::string_view hesc_escape_html(const uint8_t *buf, size_t size, std::string& 
   }
 
   if (rbuf_i == 0) {
-	allocd = false;
-	data.append((char*)buf, size);
+    allocd = false;
+    data.append((char *)buf, size);
     // Return given buf and size if there are no escaped characters.
     return std::string_view(data);
   } else {
     append_pending_buf(rbuf, rbuf_i, buf, size, esize);
-    //rbuf[size + esize] = '\0';
+    // rbuf[size + esize] = '\0';
     allocd = true;
     //*dest = rbuf;
-    return std::string_view{(char*)rbuf, size + esize};
+    return std::string_view{(char *)rbuf, size + esize};
   }
 }

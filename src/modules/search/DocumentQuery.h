@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -23,61 +23,62 @@
 #ifndef DOCUMENTQUERY_H_
 #define DOCUMENTQUERY_H_
 
-#include "string"
-#include "map"
-#include "vector"
 #include "JSONSerialize.h"
+#include "map"
+#include "string"
+#include "vector"
 
 class DocumentQuery {
 private:
-	std::string id;
-	std::string indexName;
-	std::string opType;
-	std::map<std::string, std::string> properties;
-	std::string data;
-	bool commit;
-	friend class SolrSearch;
+  std::string id;
+  std::string indexName;
+  std::string opType;
+  std::map<std::string, std::string> properties;
+  std::string data;
+  bool commit;
+  friend class SolrSearch;
+
 public:
-	DocumentQuery(bool commit = false);
-	virtual ~DocumentQuery();
+  DocumentQuery(bool commit = false);
+  virtual ~DocumentQuery();
 
-	void setData(const std::string &data);
-	std::string& getData();
-	std::map<std::string, std::string>& getFields();
-	void setFields(const std::map<std::string, std::string>& fields);
-	const std::string& getId() const;
-	void setId(const std::string& id);
-	const std::string& getIndexName() const;
-	void setIndexName(const std::string& indexName);
-	std::map<std::string, std::string>& getProperties();
-	void setProperties(const std::map<std::string, std::string>& properties);
-	const std::string& getOpType() const;
-	void setOpType(const std::string &opType);
+  void setData(const std::string &data);
+  std::string &getData();
+  std::map<std::string, std::string> &getFields();
+  void setFields(const std::map<std::string, std::string> &fields);
+  const std::string &getId() const;
+  void setId(const std::string &id);
+  const std::string &getIndexName() const;
+  void setIndexName(const std::string &indexName);
+  std::map<std::string, std::string> &getProperties();
+  void setProperties(const std::map<std::string, std::string> &properties);
+  const std::string &getOpType() const;
+  void setOpType(const std::string &opType);
 
-	template<class T> bool add(T& t) {
-		if(data=="") {
-			std::string cn = CastUtil::getClassName(t);
-			int serOpt = SerializeBase::identifySerOption(cn);
-			data = JSONSerialize::serialize(t, serOpt);
-		}
-		return false;
-	}
-	template<class T> bool update(T& t) {
-		if(data=="") {
-			std::string cn = CastUtil::getClassName(t);
-			int serOpt = SerializeBase::identifySerOption(cn);
-			data = JSONSerialize::serialize(t, serOpt);
-		}
-		return false;
-	}
-	template<class T> bool addMulti(std::vector<T>& vecT) {
-		if(data=="") {
-			std::string cn = CastUtil::getClassName(vecT);
-			int serOpt = SerializeBase::identifySerOption(cn);
-			data = JSONSerialize::serialize(vecT, serOpt);
-		}
-		return false;
-	}
+  template <class T> bool add(T &t) {
+    if (data == "") {
+      std::string cn = CastUtil::getClassName(t);
+      int serOpt = SerializeBase::identifySerOption(cn);
+      data = JSONSerialize::serialize(t, serOpt);
+    }
+    return false;
+  }
+  template <class T> bool update(T &t) {
+    if (data == "") {
+      std::string cn = CastUtil::getClassName(t);
+      int serOpt = SerializeBase::identifySerOption(cn);
+      data = JSONSerialize::serialize(t, serOpt);
+    }
+    return false;
+  }
+  template <class T> bool addMulti(std::vector<T> &vecT) {
+    if (data == "") {
+      std::string cn = CastUtil::getClassName(vecT);
+      int serOpt = SerializeBase::identifySerOption(cn);
+      data = JSONSerialize::serialize(vecT, serOpt);
+    }
+    return false;
+  }
 };
 
 #endif /* DOCUMENTQUERY_H_ */

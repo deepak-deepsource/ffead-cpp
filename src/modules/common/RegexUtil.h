@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -31,35 +31,50 @@
 #else
 #include "onigposix.h"
 #endif
-#include "vector"
+#include "StringUtil.h"
 #include "map"
 #include "string"
-#include "StringUtil.h"
-#include <iostream>
-#include <stdlib.h>
-#include <libcuckoo/cuckoohash_map.hh>
+#include "vector"
 #include <ThreadLocal.h>
-
+#include <iostream>
+#include <libcuckoo/cuckoohash_map.hh>
+#include <stdlib.h>
 
 class RegexUtil {
-	static libcuckoo::cuckoohash_map<std::string, regex_t*> nlpatterns;
-	static libcuckoo::cuckoohash_map<std::string, regex_t*> patterns;
-	//static ThreadLocal patterns_th;
-	//static ThreadLocal nlpatterns_th;
-	static bool cacheRegexes;
-	friend class ConfigurationHandler;
-	static bool isValidRegex(const std::string& pattern);
-	static regex_t* getRegex(const std::string& pattern, const bool& matchNewLine);
+  static libcuckoo::cuckoohash_map<std::string, regex_t *> nlpatterns;
+  static libcuckoo::cuckoohash_map<std::string, regex_t *> patterns;
+  // static ThreadLocal patterns_th;
+  // static ThreadLocal nlpatterns_th;
+  static bool cacheRegexes;
+  friend class ConfigurationHandler;
+  static bool isValidRegex(const std::string &pattern);
+  static regex_t *getRegex(const std::string &pattern,
+                           const bool &matchNewLine);
+
 public:
-	static std::vector<std::string> findWithGroups(const std::string& text, const std::string& pattern, const int& groupCount, const bool& matchNewLine= false);
-	static std::vector<std::string> findWithGroups(const std::string& text, const std::string& pattern, const bool& matchNewLine= false);
-	static std::vector<std::string> search(const std::string& text, const std::string& pattern, const bool& matchNewLine= false);
-	static void find(const std::string& text, const std::string& pattern, int &spos, int &epos, const bool& matchNewLine= false);
-	static bool matches(const std::string& text, const std::string& pattern, const bool& matchNewLine= false);
-	static int find(const std::string& text, const std::string& pattern, const bool& matchNewLine= false);
-	static std::string replaceCopy(const std::string& text, const std::string& pattern, const std::string& with, const bool& matchNewLine= false);
-	static bool replace(std::string& text, const std::string& pattern, const std::string& with, const bool& matchNewLine= false);
-	static void flushCache();
+  static std::vector<std::string>
+  findWithGroups(const std::string &text, const std::string &pattern,
+                 const int &groupCount, const bool &matchNewLine = false);
+  static std::vector<std::string>
+  findWithGroups(const std::string &text, const std::string &pattern,
+                 const bool &matchNewLine = false);
+  static std::vector<std::string> search(const std::string &text,
+                                         const std::string &pattern,
+                                         const bool &matchNewLine = false);
+  static void find(const std::string &text, const std::string &pattern,
+                   int &spos, int &epos, const bool &matchNewLine = false);
+  static bool matches(const std::string &text, const std::string &pattern,
+                      const bool &matchNewLine = false);
+  static int find(const std::string &text, const std::string &pattern,
+                  const bool &matchNewLine = false);
+  static std::string replaceCopy(const std::string &text,
+                                 const std::string &pattern,
+                                 const std::string &with,
+                                 const bool &matchNewLine = false);
+  static bool replace(std::string &text, const std::string &pattern,
+                      const std::string &with,
+                      const bool &matchNewLine = false);
+  static void flushCache();
 };
 
 #endif /* REGEXUTIL_H_ */

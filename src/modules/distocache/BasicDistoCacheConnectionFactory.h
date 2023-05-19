@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2013, Sumeet Chhetri
+        Copyright 2009-2013, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -25,17 +25,20 @@
 #include "DistoCacheClientUtils.h"
 
 class BasicDistoCacheConnectionFactory {
-	static BasicDistoCacheConnectionFactory* instance;
-	std::string host;
-	int port;
-	bool isSSL;
-	BasicDistoCacheConnectionFactory(const std::string& host, const int& port, const bool& isSSL= false);
+  static BasicDistoCacheConnectionFactory *instance;
+  std::string host;
+  int port;
+  bool isSSL;
+  BasicDistoCacheConnectionFactory(const std::string &host, const int &port,
+                                   const bool &isSSL = false);
+
 public:
-	virtual ~BasicDistoCacheConnectionFactory();
-	static void init(const std::string& host, const int& port, const bool& isSSL= false);
-	static void destroy();
-	static DistoCacheClientUtils* getConnection();
-	static void releaseConnection(DistoCacheClientUtils* clientUtil);
+  virtual ~BasicDistoCacheConnectionFactory();
+  static void init(const std::string &host, const int &port,
+                   const bool &isSSL = false);
+  static void destroy();
+  static DistoCacheClientUtils *getConnection();
+  static void releaseConnection(DistoCacheClientUtils *clientUtil);
 };
 
 #endif /* BASICDISTOCACHECONNECTIONFACTORY_H_ */

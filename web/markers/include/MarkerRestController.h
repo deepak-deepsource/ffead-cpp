@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,25 +23,23 @@
 #ifndef MarkerRESTCONTROLLER_H_
 #define MarkerRESTCONTROLLER_H_
 
-#include <math.h>
-#include <iostream>
 #include "vector"
 #include <fstream>
+#include <iostream>
+#include <math.h>
 
-
-
-#pragma @RestController path="/markRest"
-#pragma @Secure role="ROLE_USER" providerName="markerProvider"
+#pragma @RestController path = "/markRest"
+#pragma @Secure role = "ROLE_USER" providerName = "markerProvider"
 class MarkerRestController {
 public:
-	MarkerRestController();
-	virtual ~MarkerRestController();
-	#pragma @GET path="/" statusCode="200"
-	int addNumbers(
-			#pragma @QueryParam name="a"
-			int,
-			#pragma @QueryParam name="b"
-			int);
+  MarkerRestController();
+  virtual ~MarkerRestController();
+#pragma @GET path = "/" statusCode = "200"
+  int addNumbers(
+#pragma @QueryParam name = "a"
+      int,
+#pragma @QueryParam name = "b"
+      int);
 };
 
 #endif /* MarkerRESTCONTROLLER_H_ */

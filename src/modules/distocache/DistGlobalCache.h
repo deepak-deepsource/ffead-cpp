@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2013, Sumeet Chhetri
+        Copyright 2009-2013, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,44 +22,35 @@
 
 #ifndef DISTGLOBALCACHE_H_
 #define DISTGLOBALCACHE_H_
-#include "PooledDistoCacheConnectionFactory.h"
 #include "BinarySerialize.h"
+#include "PooledDistoCacheConnectionFactory.h"
 
 class DistGlobalCache {
-	DistoCacheClientUtils* cl;
+  DistoCacheClientUtils *cl;
+
 public:
-	DistGlobalCache()
-	{
-		cl = PooledDistoCacheConnectionFactory::getConnection();
-	}
-	template <class T> void add(const std::string& key, const T& value)
-	{
-		std::string serValue = BinarySerialize::serialize<T>(value, -1);
-		cl->addObjectEntry(key, serValue);
-	}
-	template <class K, class V> void addMap(const std::string& key, std::map<K,V>& value)
-	{
-		std::string serValue = BinarySerialize::serializeMap<K,V>(value);
-		cl->addObjectEntry(key, serValue);
-	}
-	template <class T> T get(const std::string& key)
-	{
-		std::string serValue = cl->getObjectEntryValue(key);
-		return BinarySerialize::unserialize<T>(serValue, -1);
-	}
-	template <class K, class V> std::map<K, V> getMap(const std::string& key)
-	{
-		std::string serValue = cl->getObjectEntryValue(key);
-		return BinarySerialize::unSerializeToMap<K, V>(serValue);
-	}
-	void erase(const std::string& key)
-	{
-		cl->removeObjectEntry(key);
-	}
-	~DistGlobalCache()
-	{
-		PooledDistoCacheConnectionFactory::releaseConnection(cl);
-	}
+  DistGlobalCache() { cl = PooledDistoCacheConnectionFactory::getConnection(); }
+  template <class T> void add(const std::string &key, const T &value) {
+    std::string serValue = BinarySerialize::serialize<T>(value, -1);
+    cl->addObjectEntry(key, serValue);
+  }
+  template <class K, class V>
+  void addMap(const std::string &key, std::map<K, V> &value) {
+    std::string serValue = BinarySerialize::serializeMap<K, V>(value);
+    cl->addObjectEntry(key, serValue);
+  }
+  template <class T> T get(const std::string &key) {
+    std::string serValue = cl->getObjectEntryValue(key);
+    return BinarySerialize::unserialize<T>(serValue, -1);
+  }
+  template <class K, class V> std::map<K, V> getMap(const std::string &key) {
+    std::string serValue = cl->getObjectEntryValue(key);
+    return BinarySerialize::unSerializeToMap<K, V>(serValue);
+  }
+  void erase(const std::string &key) { cl->removeObjectEntry(key); }
+  ~DistGlobalCache() {
+    PooledDistoCacheConnectionFactory::releaseConnection(cl);
+  }
 };
 
 #endif /* DISTGLOBALCACHE_H_ */

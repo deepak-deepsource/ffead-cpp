@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -43,80 +43,83 @@
     -+--------+-------------------------------------+-----------|
  */
 class WebSocketData {
-	std::string url;
-	std::string cnxtName;
-	std::string textData;
-	std::string binaryData;
-	friend class Http11WebSocketHandler;
-	friend class Http2StreamHandler;
-	friend class Http2Handler;
-	friend class HttpServiceTask;
-	friend class ServiceTask;
-	friend class WebSocketRespponseData;
-	friend class Http11WebSocketDataFrame;
-	friend class WebSockHandler;
+  std::string url;
+  std::string cnxtName;
+  std::string textData;
+  std::string binaryData;
+  friend class Http11WebSocketHandler;
+  friend class Http2StreamHandler;
+  friend class Http2Handler;
+  friend class HttpServiceTask;
+  friend class ServiceTask;
+  friend class WebSocketRespponseData;
+  friend class Http11WebSocketDataFrame;
+  friend class WebSockHandler;
+
 public:
-	bool hasData();
-	void collectText(const std::string& data);
-	void collectBinary(const std::string& data);
-	std::string getTextData() const;
-	std::string getBinaryData() const;
-	std::string getUrl() const;
-	std::string getCntxt_name() const;
-	WebSocketData();
-	virtual ~WebSocketData();
+  bool hasData();
+  void collectText(const std::string &data);
+  void collectBinary(const std::string &data);
+  std::string getTextData() const;
+  std::string getBinaryData() const;
+  std::string getUrl() const;
+  std::string getCntxt_name() const;
+  WebSocketData();
+  virtual ~WebSocketData();
 };
 
 class WebSocketRespponseData {
-	std::vector<WebSocketData> more;
-	friend class Http11WebSocketHandler;
-	friend class Http2StreamHandler;
-	friend class Http2Handler;
-	friend class HttpServiceTask;
-	friend class ServiceTask;
-	friend class Http11WebSocketDataFrame;
+  std::vector<WebSocketData> more;
+  friend class Http11WebSocketHandler;
+  friend class Http2StreamHandler;
+  friend class Http2Handler;
+  friend class HttpServiceTask;
+  friend class ServiceTask;
+  friend class Http11WebSocketDataFrame;
+
 public:
-	bool isEmpty();
-	void pushText(const std::string& textData);
-	void pushBinary(const std::string& binaryData);
-	std::vector<WebSocketData>& getMore();
-	void reset();
-	WebSocketRespponseData();
-	virtual ~WebSocketRespponseData();
+  bool isEmpty();
+  void pushText(const std::string &textData);
+  void pushBinary(const std::string &binaryData);
+  std::vector<WebSocketData> &getMore();
+  void reset();
+  WebSocketRespponseData();
+  virtual ~WebSocketRespponseData();
 };
 
 class Http11WebSocketDataFrame {
-	bool fin;
-	bool rsv1;
-	bool rsv2;
-	bool rsv3;
-	short opcode;
-	bool mask;
-	uint8_t payloadLength;
-	uint64_t extendedPayloadLength;
-	uint32_t maskingKey;
-	std::string extensionData;
-	std::string applicationData;
-	friend class Http11WebSocketHandler;
+  bool fin;
+  bool rsv1;
+  bool rsv2;
+  bool rsv3;
+  short opcode;
+  bool mask;
+  uint8_t payloadLength;
+  uint64_t extendedPayloadLength;
+  uint32_t maskingKey;
+  std::string extensionData;
+  std::string applicationData;
+  friend class Http11WebSocketHandler;
+
 public:
-	Http11WebSocketDataFrame();
-	virtual ~Http11WebSocketDataFrame();
-	std::string getPayloadData() const;
-	const std::string& getApplicationData() const;
-	void setApplicationData(const std::string& applicationData);
-	const std::string& getExtensionData() const;
-	uint64_t getExtendedPayloadLength() const;
-	bool isFin() const;
-	bool isMask() const;
-	uint64_t getMaskingKey() const;
-	short getOpcode() const;
-	uint8_t getPayloadLength() const;
-	bool isRsv1() const;
-	bool isRsv2() const;
-	bool isRsv3() const;
-	static int getFramePdu(WebSocketData* wres, std::string& data, bool copyData);
-	void getFrameData(std::string& data);
-	std::string getFrameData();
+  Http11WebSocketDataFrame();
+  virtual ~Http11WebSocketDataFrame();
+  std::string getPayloadData() const;
+  const std::string &getApplicationData() const;
+  void setApplicationData(const std::string &applicationData);
+  const std::string &getExtensionData() const;
+  uint64_t getExtendedPayloadLength() const;
+  bool isFin() const;
+  bool isMask() const;
+  uint64_t getMaskingKey() const;
+  short getOpcode() const;
+  uint8_t getPayloadLength() const;
+  bool isRsv1() const;
+  bool isRsv2() const;
+  bool isRsv3() const;
+  static int getFramePdu(WebSocketData *wres, std::string &data, bool copyData);
+  void getFrameData(std::string &data);
+  std::string getFrameData();
 };
 
 #endif /* HTTP11WEBSOCKETDATAFRAME_H_ */
