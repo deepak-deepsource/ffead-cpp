@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -23,40 +23,43 @@
 #ifndef CONNECTIONPOOLER_H_
 #define CONNECTIONPOOLER_H_
 #include "Compatibility.h"
-#include <time.h>
 #include "Connection.h"
 #include "Mutex.h"
-#include <unistd.h>
-#include <iostream>
-#include <stdlib.h>
-#include <stdio.h>
 #include "concurrentqueue.h"
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
 
 class ConnectionPooler {
-	moodycamel::ConcurrentQueue<Connection*> connections;
-	bool initialized;
-	void* _env;
-	ConnectionProperties properties;
-	Connection* checkoutInternal();
-	friend class ScyllaDBRawDataSourceImpl;
+  moodycamel::ConcurrentQueue<Connection *> connections;
+  bool initialized;
+  void *_env;
+  ConnectionProperties properties;
+  Connection *checkoutInternal();
+  friend class ScyllaDBRawDataSourceImpl;
+
 protected:
-	void setProperties(const ConnectionProperties& properties);
-	void destroyPool();
-	void createPool(const ConnectionProperties& properties);
-	virtual void initEnv()=0;
-	virtual void* newConnection(const bool& isWrite, const ConnectionNode& node)=0;
-	virtual void closeConnection(void* conn)=0;
-	virtual void destroy()=0;
-	void* getEnv();
-	void setEnv(void* env);
-	ConnectionProperties& getProps();
+  void setProperties(const ConnectionProperties &properties);
+  void destroyPool();
+  void createPool(const ConnectionProperties &properties);
+  virtual void initEnv() = 0;
+  virtual void *newConnection(const bool &isWrite,
+                              const ConnectionNode &node) = 0;
+  virtual void closeConnection(void *conn) = 0;
+  virtual void destroy() = 0;
+  void *getEnv();
+  void setEnv(void *env);
+  ConnectionProperties &getProps();
+
 public:
-	ConnectionPooler();
-	virtual ~ConnectionPooler();
-	Connection* checkout();
-	void release(Connection* conn);
-	bool isInitialized() const;
-	const ConnectionProperties& getProperties() const;
+  ConnectionPooler();
+  virtual ~ConnectionPooler();
+  Connection *checkout();
+  void release(Connection *conn);
+  bool isInitialized() const;
+  const ConnectionProperties &getProperties() const;
 };
 
 #endif /* CONNECTIONPOOLER_H_ */

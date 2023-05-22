@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -25,37 +25,38 @@
 #include "Bigint.h"
 
 class Bigdecimal {
-	std::vector<int> parts;
-	bool isPositive;
-	int decimalDigits;
-	int decimalStartsAt;
-	void create(const std::string& value);
-	void checkAndSetIfZero();
+  std::vector<int> parts;
+  bool isPositive;
+  int decimalDigits;
+  int decimalStartsAt;
+  void create(const std::string &value);
+  void checkAndSetIfZero();
+
 public:
-	Bigdecimal();
-	Bigdecimal(const std::string& value);
-	void add(const Bigdecimal& number);
-	Bigdecimal operator+(const Bigdecimal& number);
-	Bigdecimal operator-(const Bigdecimal& number);
-	Bigdecimal operator*(const Bigdecimal& number);
-	Bigdecimal operator/(const Bigdecimal& number);
-	Bigdecimal& operator++();
-	Bigdecimal& operator+=(const Bigdecimal& number);
-	Bigdecimal& operator--();
-	Bigdecimal& operator-=(const Bigdecimal& number);
-	friend bool operator== (const Bigdecimal& lhs, const Bigdecimal& rhs);
-	friend bool operator!= (const Bigdecimal& lhs, const Bigdecimal& rhs);
-	friend bool operator< (const Bigdecimal& lhs, const Bigdecimal& rhs);
-	friend bool operator<= (const Bigdecimal& lhs, const Bigdecimal& rhs);
-	friend bool operator> (const Bigdecimal& lhs, const Bigdecimal& rhs);
-	friend bool operator>= (const Bigdecimal& lhs, const Bigdecimal& rhs);
-	void subtract(const Bigdecimal& number);
-	void multiply(const Bigdecimal& number);
-	void divide(const Bigdecimal& number, const int& precision=15);
-	static int compare(const Bigdecimal& number1, const Bigdecimal& number2);
-	int compare(const Bigdecimal& number) const;
-	std::string toString() const;
-	virtual ~Bigdecimal();
+  Bigdecimal();
+  Bigdecimal(const std::string &value);
+  void add(const Bigdecimal &number);
+  Bigdecimal operator+(const Bigdecimal &number);
+  Bigdecimal operator-(const Bigdecimal &number);
+  Bigdecimal operator*(const Bigdecimal &number);
+  Bigdecimal operator/(const Bigdecimal &number);
+  Bigdecimal &operator++();
+  Bigdecimal &operator+=(const Bigdecimal &number);
+  Bigdecimal &operator--();
+  Bigdecimal &operator-=(const Bigdecimal &number);
+  friend bool operator==(const Bigdecimal &lhs, const Bigdecimal &rhs);
+  friend bool operator!=(const Bigdecimal &lhs, const Bigdecimal &rhs);
+  friend bool operator<(const Bigdecimal &lhs, const Bigdecimal &rhs);
+  friend bool operator<=(const Bigdecimal &lhs, const Bigdecimal &rhs);
+  friend bool operator>(const Bigdecimal &lhs, const Bigdecimal &rhs);
+  friend bool operator>=(const Bigdecimal &lhs, const Bigdecimal &rhs);
+  void subtract(const Bigdecimal &number);
+  void multiply(const Bigdecimal &number);
+  void divide(const Bigdecimal &number, const int &precision = 15);
+  static int compare(const Bigdecimal &number1, const Bigdecimal &number2);
+  int compare(const Bigdecimal &number) const;
+  std::string toString() const;
+  virtual ~Bigdecimal();
 };
 
 #endif /* BIGDECIMAL_H_ */

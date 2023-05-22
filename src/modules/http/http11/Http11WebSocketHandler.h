@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -22,51 +22,51 @@
 
 #ifndef HTTP11WEBSOCKETHANDLER_H_
 #define HTTP11WEBSOCKETHANDLER_H_
-#include "Compatibility.h"
-#include "map"
-#include "vector"
-#include "string"
-#include "string"
-#include <unistd.h>
-#include <sys/types.h>
-#include "Http11WebSocketDataFrame.h"
-#include "cstring"
-#include <iostream>
-#include <bitset>
-#include "string"
-#include "stdint.h"
-#include "vector"
 #include "CommonUtils.h"
-#include "SocketInterface.h"
-#include "SocketInterface.h"
+#include "Compatibility.h"
+#include "Http11WebSocketDataFrame.h"
 #include "LoggerFactory.h"
+#include "SocketInterface.h"
 #include "WebSockHandler.h"
+#include "cstring"
+#include "map"
+#include "stdint.h"
+#include "string"
+#include "vector"
+#include <bitset>
+#include <iostream>
+#include <sys/types.h>
+#include <unistd.h>
 #define MAXBUFLENMWS 32768
 
 class Http11WebSocketHandler : public SocketInterface {
-	Logger logger;
-	std::string url;
-	WebSockHandler* h;
-	std::map<int, std::string> dataframes;
-	std::map<int, bool> dataframesComplete;
-	short lastOpCode;
-	void replyPong();
-	bool processFrame(Http11WebSocketDataFrame* frame, WebSocketData* request, bool& isReq);
-	bool nextFrame(Http11WebSocketDataFrame* frame);
-	friend class HttpServiceTask;
+  Logger logger;
+  std::string url;
+  WebSockHandler *h;
+  std::map<int, std::string> dataframes;
+  std::map<int, bool> dataframesComplete;
+  short lastOpCode;
+  void replyPong();
+  bool processFrame(Http11WebSocketDataFrame *frame, WebSocketData *request,
+                    bool &isReq);
+  bool nextFrame(Http11WebSocketDataFrame *frame);
+  friend class HttpServiceTask;
+
 public:
-	void onOpen();
-	void onClose();
-	void addHandler(SocketInterface* handler);
-	std::string getUrl();
-	std::string getProtocol(void* context);
-	int getType(void* context);
-	int getTimeout();
-	bool readRequest(void* request, void*& context, int& pending, int& reqPos);
-	bool writeResponse(void* req, void* res, void* context, std::string& data, int reqPos);
-	Http11WebSocketHandler(const SOCKET& fd, void* ssl, void* io, const std::string& url, const bool& isServer);
-	virtual ~Http11WebSocketHandler();
-	bool isEmbedded();
+  void onOpen();
+  void onClose();
+  void addHandler(SocketInterface *handler);
+  std::string getUrl();
+  std::string getProtocol(void *context);
+  int getType(void *context);
+  int getTimeout();
+  bool readRequest(void *request, void *&context, int &pending, int &reqPos);
+  bool writeResponse(void *req, void *res, void *context, std::string &data,
+                     int reqPos);
+  Http11WebSocketHandler(const SOCKET &fd, void *ssl, void *io,
+                         const std::string &url, const bool &isServer);
+  virtual ~Http11WebSocketHandler();
+  bool isEmbedded();
 };
 
 #endif /* HTTP11WEBSOCKETHANDLER_H_ */

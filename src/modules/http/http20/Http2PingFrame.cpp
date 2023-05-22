@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -23,26 +23,23 @@
 #include "Http2PingFrame.h"
 
 Http2PingFrame::Http2PingFrame() {
-	header.type = 6;
-	opaqueData = -1;
+  header.type = 6;
+  opaqueData = -1;
 }
 
-Http2PingFrame::Http2PingFrame(const std::string& data, Http2FrameHeader& aheader) {
-	header = aheader;
-	header.type = 6;
-	opaqueData = (uint64_t)CommonUtils::charArrayToULongLong(data.substr(0, 8));
+Http2PingFrame::Http2PingFrame(const std::string &data,
+                               Http2FrameHeader &aheader) {
+  header = aheader;
+  header.type = 6;
+  opaqueData = (uint64_t)CommonUtils::charArrayToULongLong(data.substr(0, 8));
 }
 
-uint64_t Http2PingFrame::getOpqueData() const {
-	return opaqueData;
-}
+uint64_t Http2PingFrame::getOpqueData() const { return opaqueData; }
 
-Http2PingFrame::~Http2PingFrame() {
-	
-}
+Http2PingFrame::~Http2PingFrame() {}
 
 std::string Http2PingFrame::getFrameData() {
-	std::string edata;
-	edata.append(CommonUtils::ulonglongTocharArray(opaqueData, 8));
-	return edata;
+  std::string edata;
+  edata.append(CommonUtils::ulonglongTocharArray(opaqueData, 8));
+  return edata;
 }

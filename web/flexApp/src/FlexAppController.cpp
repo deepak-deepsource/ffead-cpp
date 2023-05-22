@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,21 +22,21 @@
 
 #include "FlexAppController.h"
 
-
 FlexAppController::FlexAppController() {
-	// TODO Auto-generated constructor stub
-
+  // TODO Auto-generated constructor stub
 }
 
 FlexAppController::~FlexAppController() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
 
-bool FlexAppController::service(HttpRequest* req, HttpResponse* res)
-{
-	res->setHTTPResponseStatus(HTTPResponseStatus::Ok);
-	res->addHeaderValue(HttpResponse::ContentType, ContentTypes::CONTENT_TYPE_APPLICATION_JSON);
-	res->setContent("[{\"num\": 1,\"name\": \"Sumeet\", \"role\": \"Developer\"},{\"num\": 2,\"name\": \"Ravi\", \"role\": \"Quality Analyst\"},{\"num\": 3,\"name\": \"Amit\", \"role\": \"Web Designer\"}]");
-	return true;
+bool FlexAppController::service(HttpRequest *req, HttpResponse *res) {
+  res->setHTTPResponseStatus(HTTPResponseStatus::Ok);
+  res->addHeaderValue(HttpResponse::ContentType,
+                      ContentTypes::CONTENT_TYPE_APPLICATION_JSON);
+  res->setContent(
+      "[{\"num\": 1,\"name\": \"Sumeet\", \"role\": \"Developer\"},{\"num\": "
+      "2,\"name\": \"Ravi\", \"role\": \"Quality Analyst\"},{\"num\": "
+      "3,\"name\": \"Amit\", \"role\": \"Web Designer\"}]");
+  return true;
 }
-

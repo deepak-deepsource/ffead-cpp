@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,196 +22,179 @@
 
 #include "MultipartContent.h"
 
-std::string MultipartContent::VALID_HEADERS = ",content-id,content-type,content-disposition,content-transfer-encoding,content-location,content-base,";
+std::string MultipartContent::VALID_HEADERS =
+    ",content-id,content-type,content-disposition,content-transfer-encoding,"
+    "content-location,content-base,";
 
 std::string MultipartContent::ContentId = "Content-Id";
 std::string MultipartContent::ContentDisposition = "Content-Disposition";
-std::string MultipartContent::ContentTransferEncoding = "Content-Transfer-Encoding";
+std::string MultipartContent::ContentTransferEncoding =
+    "Content-Transfer-Encoding";
 std::string MultipartContent::ContentLocation = "Content-Location";
 std::string MultipartContent::ContentBase = "Content-Base";
 std::string MultipartContent::ContentLength = "Content-Length";
 std::string MultipartContent::ContentMD5 = "Content-MD5";
-std::string MultipartContent::ContentType =	"Content-Type";
+std::string MultipartContent::ContentType = "Content-Type";
 
 std::map<std::string, int, std::less<>> MultipartContent::HDRS_SW_CODES;
 
 void MultipartContent::init() {
-	std::string t = VALID_HEADERS.substr(1, VALID_HEADERS.length()-1);
-	std::vector<std::string> vt;
-	StringUtil::split(vt, t, ",");
-	for(int i=0;i<(int)vt.size();i++) {
-		HDRS_SW_CODES[vt.at(i)] = i;
-	}
+  std::string t = VALID_HEADERS.substr(1, VALID_HEADERS.length() - 1);
+  std::vector<std::string> vt;
+  StringUtil::split(vt, t, ",");
+  for (int i = 0; i < (int)vt.size(); i++) {
+    HDRS_SW_CODES[vt.at(i)] = i;
+  }
 }
 
-MultipartContent::MultipartContent() {
+MultipartContent::MultipartContent() {}
+
+MultipartContent::MultipartContent(const std::string &content) {
+  setContent(content);
 }
 
-MultipartContent::MultipartContent(const std::string& content)
-{
-	setContent(content);
+MultipartContent::MultipartContent(const std::vector<std::string> &headers,
+                                   const std::string &content) {
+  setContent(content);
+  if (headers.size() != 0) {
+    for (unsigned int i = 0; i < headers.size(); i++) {
+      std::vector<std::string> temp;
+      if (headers.at(i) == "\r" || headers.at(i) == "" ||
+          headers.at(i) == "\r\n" ||
+          headers.at(i).find(": ") == std::string::npos) {
+        continue;
+      }
+
+      temp.push_back(headers.at(i).substr(0, headers.at(i).find(": ")));
+      temp.push_back(headers.at(i).substr(headers.at(i).find(": ") + 2));
+      if (temp.size() > 1) {
+        StringUtil::replaceFirst(temp.at(1), "\r", "");
+        if (temp.at(0).find("Content-Disposition") != std::string::npos) {
+          std::vector<std::string> parmdef;
+          StringUtil::split(parmdef, temp.at(1), (";"));
+          for (unsigned k = 0; k < parmdef.size(); k++) {
+            if (parmdef.at(k) != "" &&
+                parmdef.at(k).find("=") != std::string::npos) {
+              size_t stpd = parmdef.at(k).find_first_not_of(" ");
+              size_t enpd = parmdef.at(k).find_last_not_of(" ");
+              std::string propert = parmdef.at(k).substr(stpd, enpd - stpd + 1);
+              std::vector<std::string> proplr;
+              StringUtil::split(proplr, propert, ("="));
+              if (proplr.size() == 2) {
+                if (proplr.at(0) == "name" && proplr.at(1) != "\"\"") {
+                  std::string key = proplr.at(1);
+                  key = key.substr(key.find_first_not_of("\""),
+                                   key.find_last_not_of("\"") -
+                                       key.find_first_not_of("\"") + 1);
+                  key = CryptoHandler::urlDecode(key);
+                  name = key;
+                } else if (proplr.at(0) == "filename" &&
+                           proplr.at(1) != "\"\"") {
+                  std::string fna = proplr.at(1);
+                  fna = fna.substr(fna.find_first_not_of("\""),
+                                   fna.find_last_not_of("\"") -
+                                       fna.find_first_not_of("\"") + 1);
+                  fna = CryptoHandler::urlDecode(fna);
+                  fileName = fna;
+                }
+              }
+            }
+          }
+        }
+        addHeader(temp.at(0), temp.at(1));
+      }
+    }
+    if (this->headers.find(MultipartContent::ContentType) ==
+        this->headers.end()) {
+      addHeader(MultipartContent::ContentType,
+                ContentTypes::CONTENT_TYPE_TEXT_PLAIN);
+    }
+  }
 }
 
-MultipartContent::MultipartContent(const std::vector<std::string>& headers, const std::string& content)
-{
-	setContent(content);
-	if(headers.size()!=0)
-	{
-		for(unsigned int i=0;i<headers.size();i++)
-		{
-			std::vector<std::string> temp;
-			if(headers.at(i)=="\r" || headers.at(i)==""|| headers.at(i)=="\r\n" || headers.at(i).find(": ")==std::string::npos)
-			{
-				continue;
-			}
+MultipartContent::~MultipartContent() {}
 
-			temp.push_back(headers.at(i).substr(0, headers.at(i).find(": ")));
-			temp.push_back(headers.at(i).substr(headers.at(i).find(": ")+2));
-			if(temp.size()>1)
-			{
-				StringUtil::replaceFirst(temp.at(1), "\r", "");
-				if(temp.at(0).find("Content-Disposition")!=std::string::npos)
-				{
-					std::vector<std::string> parmdef;
-					StringUtil::split(parmdef, temp.at(1), (";"));
-					for(unsigned k=0;k<parmdef.size();k++)
-					{
-						if(parmdef.at(k)!="" && parmdef.at(k).find("=")!=std::string::npos)
-						{
-							size_t stpd = parmdef.at(k).find_first_not_of(" ");
-							size_t enpd = parmdef.at(k).find_last_not_of(" ");
-							std::string propert = parmdef.at(k).substr(stpd,enpd-stpd+1);
-							std::vector<std::string> proplr;
-							StringUtil::split(proplr, propert, ("="));
-							if(proplr.size()==2)
-							{
-								if(proplr.at(0)=="name" && proplr.at(1)!="\"\"")
-								{
-									std::string key = proplr.at(1);
-									key = key.substr(key.find_first_not_of("\""),key.find_last_not_of("\"")-key.find_first_not_of("\"")+1);
-									key = CryptoHandler::urlDecode(key);
-									name = key;
-								}
-								else if(proplr.at(0)=="filename" && proplr.at(1)!="\"\"")
-								{
-									std::string fna = proplr.at(1);
-									fna = fna.substr(fna.find_first_not_of("\""),fna.find_last_not_of("\"")-fna.find_first_not_of("\"")+1);
-									fna = CryptoHandler::urlDecode(fna);
-									fileName = fna;
-								}
-							}
-						}
-					}
-				}
-				addHeader(temp.at(0), temp.at(1));
-			}
-		}
-		if(this->headers.find(MultipartContent::ContentType)==this->headers.end()) {
-			addHeader(MultipartContent::ContentType, ContentTypes::CONTENT_TYPE_TEXT_PLAIN);
-		}
-	}
+std::string MultipartContent::getContent() const { return content; }
+
+void MultipartContent::setContent(const std::string &content) {
+  this->content = content;
 }
 
-MultipartContent::~MultipartContent() {
-}
+std::string MultipartContent::getFileName() const { return fileName; }
 
-std::string MultipartContent::getContent() const {
-	return content;
-}
-
-void MultipartContent::setContent(const std::string& content) {
-	this->content = content;
-}
-
-std::string MultipartContent::getFileName() const {
-	return fileName;
-}
-
-void MultipartContent::setFileName(const std::string& fileName) {
-	this->fileName = fileName;
+void MultipartContent::setFileName(const std::string &fileName) {
+  this->fileName = fileName;
 }
 
 std::map<std::string, std::string, std::less<>> MultipartContent::getHeaders() {
-	return headers;
+  return headers;
 }
 
-std::string MultipartContent::getTempFileName() const {
-	return tempFileName;
+std::string MultipartContent::getTempFileName() const { return tempFileName; }
+
+void MultipartContent::setTempFileName(const std::string &tempFileName) {
+  this->tempFileName = tempFileName;
 }
 
-void MultipartContent::setTempFileName(const std::string& tempFileName) {
-	this->tempFileName = tempFileName;
+void MultipartContent::addHeader(std::string header, const std::string &value) {
+  if (headers.find(header) != headers.end()) {
+    headers[header] += "," + value;
+  } else {
+    headers[header] = value;
+  }
 }
 
-void MultipartContent::addHeader(std::string header, const std::string& value)
-{
-	if(headers.find(header)!=headers.end()) {
-		headers[header] += "," + value;
-	} else {
-		headers[header] = value;
-	}
+void MultipartContent::addHeaderValue(std::string header,
+                                      const std::string &value) {
+  if (header.length() > 0) {
+    if (HDRS_SW_CODES.find(header) != HDRS_SW_CODES.end()) {
+      if (headers.find(header) != headers.end()) {
+        headers[header] += "," + value;
+      } else {
+        headers[header] = value;
+      }
+    } else {
+      std::vector<std::string> matres =
+          RegexUtil::search(header, "^[a-zA-Z]+[-|a-zA-Z]+[a-zA-Z]*[a-zA-Z]$");
+      if (matres.size() == 0) {
+        // std::cout << ("Invalid Header std::string " + header) << std::endl;
+        return;
+      }
+      if (headers.find(header) != headers.end()) {
+        headers[header] += "," + value;
+      } else {
+        headers[header] = value;
+      }
+    }
+  }
 }
 
-void MultipartContent::addHeaderValue(std::string header, const std::string& value)
-{
-	if(header.length()>0)
-	{
-		if(HDRS_SW_CODES.find(header)!=HDRS_SW_CODES.end())
-		{
-			if(headers.find(header)!=headers.end()) {
-				headers[header] += "," + value;
-			} else {
-				headers[header] = value;
-			}
-		}
-		else
-		{
-			std::vector<std::string> matres = RegexUtil::search(header, "^[a-zA-Z]+[-|a-zA-Z]+[a-zA-Z]*[a-zA-Z]$");
-			if(matres.size()==0)
-			{
-				//std::cout << ("Invalid Header std::string " + header) << std::endl;
-				return;
-			}
-			if(headers.find(header)!=headers.end()) {
-				headers[header] += "," + value;
-			} else {
-				headers[header] = value;
-			}
-		}
-	}
+bool MultipartContent::isHeaderValue(std::string header,
+                                     const std::string &value,
+                                     const bool &ignoreCase) {
+  header = StringUtil::camelCasedCopy(header, "-");
+  return header != "" && headers.find(header) != headers.end() &&
+         (headers[header] == value ||
+          (ignoreCase && StringUtil::toLowerCopy(headers[header]) ==
+                             StringUtil::toLowerCopy(value)));
 }
 
-bool MultipartContent::isHeaderValue(std::string header, const std::string& value, const bool& ignoreCase)
-{
-	header = StringUtil::camelCasedCopy(header, "-");
-	return header!="" && headers.find(header)!=headers.end()
-			&& (headers[header]==value ||
-					(ignoreCase && StringUtil::toLowerCopy(headers[header])==StringUtil::toLowerCopy(value)));
+std::string MultipartContent::getName() const { return name; }
+
+void MultipartContent::setName(const std::string &name) { this->name = name; }
+
+std::string MultipartContent::getHeader(const std::string &header) {
+  if (headers.find(header) != headers.end()) {
+    return headers[header];
+  }
+  return "";
 }
 
-std::string MultipartContent::getName() const {
-	return name;
+bool MultipartContent::isAFile() {
+  return tempFileName == "" && fileName == "" ? false : true;
 }
 
-void MultipartContent::setName(const std::string& name) {
-	this->name = name;
-}
-
-std::string MultipartContent::getHeader(const std::string& header)
-{
-	if(headers.find(header)!=headers.end())
-	{
-		return headers[header];
-	}
-	return "";
-}
-
-bool MultipartContent::isAFile()
-{
-	return tempFileName=="" && fileName==""?false:true;
-}
-
-bool MultipartContent::isValid()
-{
-	return headers.size()>0 || content!="" || tempFileName!="" || name!="";
+bool MultipartContent::isValid() {
+  return headers.size() > 0 || content != "" || tempFileName != "" ||
+         name != "";
 }

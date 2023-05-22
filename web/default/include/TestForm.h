@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -24,20 +24,20 @@
 #define TESTFORM_H_
 #include "string"
 
-
 class TestForm {
-	int num;
-	std::string txt;
-	std::string che;
+  int num;
+  std::string txt;
+  std::string che;
+
 public:
-	TestForm();
-	virtual ~TestForm();
-	std::string getChe() const;
-    int getNum() const;
-    std::string getTxt() const;
-    void setChe(std::string che);
-    void setNum(int num);
-    void setTxt(std::string txt);
+  TestForm();
+  virtual ~TestForm();
+  std::string getChe() const;
+  int getNum() const;
+  std::string getTxt() const;
+  void setChe(std::string che);
+  void setNum(int num);
+  void setTxt(std::string txt);
 };
 
 #endif /* TESTFORM_H_ */

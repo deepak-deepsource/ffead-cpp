@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,207 +22,197 @@
 
 #include "CORSHandler.h"
 
-CORSHandler::~CORSHandler() {
-}
+CORSHandler::~CORSHandler() {}
 
-bool CORSHandler::handle(CorsConfig& corsConfig, HttpRequest *req, HttpResponse *res) {
-	if(!req->isCorsRequest())return false;
-	if(req->getCORSRequestType() == PREFLIGHT)
-	{
-		if(corsConfig.isOriginAllowed(req->getHeader(HttpRequest::Origin)))
-		{
-			if(req->getHeader(HttpResponse::AccessControlAllowMethods)=="")
-			{
-				HTTPResponseStatus status(HTTPResponseStatus::BadRequest, "Invalid preflight CORS request: Missing Access-Control-Request-Method header");
-				throw status;
-			}
-			else
-			{
-				if(!HttpRequest::isValidHttpMethod(req->getHeader(HttpResponse::AccessControlAllowMethods)))
-				{
-					HTTPResponseStatus status(HTTPResponseStatus::InvalidMethod, "Unsupported HTTP method: " + req->getHeader(HttpResponse::AccessControlAllowMethods));
-					throw status;
-				}
+bool CORSHandler::handle(CorsConfig &corsConfig, HttpRequest *req,
+                         HttpResponse *res) {
+  if (!req->isCorsRequest())
+    return false;
+  if (req->getCORSRequestType() == PREFLIGHT) {
+    if (corsConfig.isOriginAllowed(req->getHeader(HttpRequest::Origin))) {
+      if (req->getHeader(HttpResponse::AccessControlAllowMethods) == "") {
+        HTTPResponseStatus status(HTTPResponseStatus::BadRequest,
+                                  "Invalid preflight CORS request: Missing "
+                                  "Access-Control-Request-Method header");
+        throw status;
+      } else {
+        if (!HttpRequest::isValidHttpMethod(
+                req->getHeader(HttpResponse::AccessControlAllowMethods))) {
+          HTTPResponseStatus status(
+              HTTPResponseStatus::InvalidMethod,
+              "Unsupported HTTP method: " +
+                  req->getHeader(HttpResponse::AccessControlAllowMethods));
+          throw status;
+        }
 
-				strVec reqHdrLst = req->parseHeaderValue(req->getHeader(HttpResponse::AccessControlAllowHeaders));
+        strVec reqHdrLst = req->parseHeaderValue(
+            req->getHeader(HttpResponse::AccessControlAllowHeaders));
 
-				if(!corsConfig.isMethodAllowed(req->getHeader(HttpResponse::AccessControlAllowMethods)))
-				{
-					HTTPResponseStatus status(HTTPResponseStatus::InvalidMethod, "Unsupported HTTP method: " + req->getHeader(HttpResponse::AccessControlAllowMethods));
-					throw status;
-				}
+        if (!corsConfig.isMethodAllowed(
+                req->getHeader(HttpResponse::AccessControlAllowMethods))) {
+          HTTPResponseStatus status(
+              HTTPResponseStatus::InvalidMethod,
+              "Unsupported HTTP method: " +
+                  req->getHeader(HttpResponse::AccessControlAllowMethods));
+          throw status;
+        }
 
-				std::string erheadr;
-				if(!corsConfig.isHeaderAllowed(reqHdrLst, erheadr))
-				{
-					HTTPResponseStatus status(HTTPResponseStatus::Forbidden, "Unsupported HTTP request header: " + erheadr);
-					throw status;
-				}
+        std::string erheadr;
+        if (!corsConfig.isHeaderAllowed(reqHdrLst, erheadr)) {
+          HTTPResponseStatus status(HTTPResponseStatus::Forbidden,
+                                    "Unsupported HTTP request header: " +
+                                        erheadr);
+          throw status;
+        }
 
-				if(corsConfig.allwdCredentials)
-				{
-					res->addHeader(HttpResponse::AccessControlAllowCredentials, "true");
-				}
-				if(corsConfig.allwdOrigins=="*")
-				{
-					res->addHeader(HttpResponse::AccessControlAllowOrigin, "*");
-				}
-				else
-				{
-					res->addHeader(HttpResponse::AccessControlAllowOrigin, req->getHeader(HttpRequest::Origin));
-				}
+        if (corsConfig.allwdCredentials) {
+          res->addHeader(HttpResponse::AccessControlAllowCredentials, "true");
+        }
+        if (corsConfig.allwdOrigins == "*") {
+          res->addHeader(HttpResponse::AccessControlAllowOrigin, "*");
+        } else {
+          res->addHeader(HttpResponse::AccessControlAllowOrigin,
+                         req->getHeader(HttpRequest::Origin));
+        }
 
-				if(corsConfig.maxAge>0)
-				{
-					res->addHeader(HttpResponse::AccessControlAllowMethods, CastUtil::fromNumber(corsConfig.maxAge));
-				}
+        if (corsConfig.maxAge > 0) {
+          res->addHeader(HttpResponse::AccessControlAllowMethods,
+                         CastUtil::fromNumber(corsConfig.maxAge));
+        }
 
-				res->addHeader(HttpResponse::AccessControlAllowMethods, corsConfig.allwdMethods);
-				res->addHeader(HttpResponse::AccessControlMaxAge, corsConfig.allwdHeaders);
+        res->addHeader(HttpResponse::AccessControlAllowMethods,
+                       corsConfig.allwdMethods);
+        res->addHeader(HttpResponse::AccessControlMaxAge,
+                       corsConfig.allwdHeaders);
+      }
+    } else {
+      HTTPResponseStatus status(HTTPResponseStatus::Forbidden,
+                                "CORS origin denied");
+      throw status;
+    }
 
-			}
-		}
-		else
-		{
-			HTTPResponseStatus status(HTTPResponseStatus::Forbidden, "CORS origin denied");
-			throw status;
-		}
+    return true;
+  } else if (req->getCORSRequestType() == CORS) {
+    if (corsConfig.isOriginAllowed(req->getHeader(HttpRequest::Origin))) {
+      if (!corsConfig.isMethodAllowed(req->getMethod())) {
+        throw HTTPResponseStatus::InvalidMethod;
+      }
 
-		return true;
-	}
-	else if(req->getCORSRequestType() == CORS)
-	{
-		if(corsConfig.isOriginAllowed(req->getHeader(HttpRequest::Origin)))
-		{
-			if(!corsConfig.isMethodAllowed(req->getMethod()))
-			{
-				throw HTTPResponseStatus::InvalidMethod;
-			}
+      if (corsConfig.allwdCredentials) {
+        res->addHeader(HttpResponse::AccessControlAllowCredentials, "true");
+      }
 
-			if(corsConfig.allwdCredentials)
-			{
-				res->addHeader(HttpResponse::AccessControlAllowCredentials, "true");
-			}
-
-			res->addHeader(HttpResponse::AccessControlAllowOrigin, req->getHeader(HttpRequest::Origin));
-			res->addHeader(HttpResponse::AccessControlAllowHeaders, corsConfig.exposedHeaders);
-		}
-		else
-		{
-			HTTPResponseStatus status(HTTPResponseStatus::Forbidden, "CORS origin denied");
-			throw status;
-		}
-	}
-	return false;
+      res->addHeader(HttpResponse::AccessControlAllowOrigin,
+                     req->getHeader(HttpRequest::Origin));
+      res->addHeader(HttpResponse::AccessControlAllowHeaders,
+                     corsConfig.exposedHeaders);
+    } else {
+      HTTPResponseStatus status(HTTPResponseStatus::Forbidden,
+                                "CORS origin denied");
+      throw status;
+    }
+  }
+  return false;
 }
 
 CorsConfig::CorsConfig() {
-	allwdCredentials = false;
-	maxAge = -1;
+  allwdCredentials = false;
+  maxAge = -1;
 }
 
-CorsConfig::CorsConfig(const std::string& allwdOrigins, const std::string& allwdMethods, const std::string& allwdHeaders, const std::string& exposedHeaders, const bool& allwdCredentials, const long& maxAge)
-{
-	this->allwdOrigins = allwdOrigins;
-	this->allwdMethods = allwdMethods;
-	this->allwdHeaders = allwdHeaders;
-	this->exposedHeaders = exposedHeaders;
-	this->allwdCredentials = allwdCredentials;
-	this->maxAge = maxAge;
-	init();
+CorsConfig::CorsConfig(const std::string &allwdOrigins,
+                       const std::string &allwdMethods,
+                       const std::string &allwdHeaders,
+                       const std::string &exposedHeaders,
+                       const bool &allwdCredentials, const long &maxAge) {
+  this->allwdOrigins = allwdOrigins;
+  this->allwdMethods = allwdMethods;
+  this->allwdHeaders = allwdHeaders;
+  this->exposedHeaders = exposedHeaders;
+  this->allwdCredentials = allwdCredentials;
+  this->maxAge = maxAge;
+  init();
 }
 
-CorsConfig::~CorsConfig()
-{
+CorsConfig::~CorsConfig() {}
 
-}
-
-void CorsConfig::init()
-{
-	if(allwdOriginsv.size()>0)return;
-	StringUtil::trim(allwdOrigins);
-	StringUtil::split(allwdOriginsv, allwdOrigins, (","));
-	for (int var = 0; var < (int)allwdOriginsv.size(); ++var) {
-		StringUtil::trim(allwdOriginsv.at(var));
-		StringUtil::toLower(allwdOriginsv.at(var));
-	}
-	StringUtil::trim(allwdMethods);
-	StringUtil::split(allwdMethodsv, allwdMethods, (","));
-	for (int var = 0; var < (int)allwdMethodsv.size(); ++var) {
-		StringUtil::trim(allwdMethodsv.at(var));
-		StringUtil::toLower(allwdMethodsv.at(var));
-	}
-	StringUtil::trim(allwdHeaders);
-	StringUtil::split(allwdHeadersv, allwdHeaders, (","));
-	for (int var = 0; var < (int)allwdHeadersv.size(); ++var) {
-		StringUtil::trim(allwdHeadersv.at(var));
-		StringUtil::toLower(allwdHeadersv.at(var));
-	}
-	StringUtil::trim(exposedHeaders);
-	StringUtil::split(exposedHeadersv, exposedHeaders, (","));
-	for (int var = 0; var < (int)exposedHeadersv.size(); ++var) {
-		StringUtil::trim(exposedHeadersv.at(var));
-		StringUtil::toLower(exposedHeadersv.at(var));
-	}
+void CorsConfig::init() {
+  if (allwdOriginsv.size() > 0)
+    return;
+  StringUtil::trim(allwdOrigins);
+  StringUtil::split(allwdOriginsv, allwdOrigins, (","));
+  for (int var = 0; var < (int)allwdOriginsv.size(); ++var) {
+    StringUtil::trim(allwdOriginsv.at(var));
+    StringUtil::toLower(allwdOriginsv.at(var));
+  }
+  StringUtil::trim(allwdMethods);
+  StringUtil::split(allwdMethodsv, allwdMethods, (","));
+  for (int var = 0; var < (int)allwdMethodsv.size(); ++var) {
+    StringUtil::trim(allwdMethodsv.at(var));
+    StringUtil::toLower(allwdMethodsv.at(var));
+  }
+  StringUtil::trim(allwdHeaders);
+  StringUtil::split(allwdHeadersv, allwdHeaders, (","));
+  for (int var = 0; var < (int)allwdHeadersv.size(); ++var) {
+    StringUtil::trim(allwdHeadersv.at(var));
+    StringUtil::toLower(allwdHeadersv.at(var));
+  }
+  StringUtil::trim(exposedHeaders);
+  StringUtil::split(exposedHeadersv, exposedHeaders, (","));
+  for (int var = 0; var < (int)exposedHeadersv.size(); ++var) {
+    StringUtil::trim(exposedHeadersv.at(var));
+    StringUtil::toLower(exposedHeadersv.at(var));
+  }
 }
 
-bool CorsConfig::isOriginAllowed(const std::string& reqOrgLst)
-{
-	if(allwdOrigins=="*")
-	{
-		return true;
-	}
-	for (int var1 = 0; var1 < (int)allwdOriginsv.size(); ++var1) {
-		if(allwdOriginsv.at(var1)==StringUtil::toLowerCopy(reqOrgLst))
-		{
-			return true;
-		}
-	}
-	return false;
+bool CorsConfig::isOriginAllowed(const std::string &reqOrgLst) {
+  if (allwdOrigins == "*") {
+    return true;
+  }
+  for (int var1 = 0; var1 < (int)allwdOriginsv.size(); ++var1) {
+    if (allwdOriginsv.at(var1) == StringUtil::toLowerCopy(reqOrgLst)) {
+      return true;
+    }
+  }
+  return false;
 }
-bool CorsConfig::isMethodAllowed(const std::string& method)
-{
-	if(method=="")
-	{
-		return false;
-	}
-	for (int var = 0; var < (int)allwdMethodsv.size(); ++var) {
-		if(StringUtil::toLowerCopy(method)==allwdMethodsv.at(var))
-		{
-			return true;
-		}
-	}
-	return false;
+bool CorsConfig::isMethodAllowed(const std::string &method) {
+  if (method == "") {
+    return false;
+  }
+  for (int var = 0; var < (int)allwdMethodsv.size(); ++var) {
+    if (StringUtil::toLowerCopy(method) == allwdMethodsv.at(var)) {
+      return true;
+    }
+  }
+  return false;
 }
-bool CorsConfig::isMethodAllowed(const std::string_view& method)
-{
-	if(method=="")
-	{
-		return false;
-	}
-	for (int var = 0; var < (int)allwdMethodsv.size(); ++var) {
-		if(strncasecmp(allwdMethodsv.at(var).c_str(), method.data(), allwdMethodsv.at(var).length()))
-		{
-			return true;
-		}
-	}
-	return false;
+bool CorsConfig::isMethodAllowed(const std::string_view &method) {
+  if (method == "") {
+    return false;
+  }
+  for (int var = 0; var < (int)allwdMethodsv.size(); ++var) {
+    if (strncasecmp(allwdMethodsv.at(var).c_str(), method.data(),
+                    allwdMethodsv.at(var).length())) {
+      return true;
+    }
+  }
+  return false;
 }
-bool CorsConfig::isHeaderAllowed(const strVec& reqHdrLst, std::string& erheadr)
-{
-	if(allwdHeaders=="*")
-	{
-		return true;
-	}
-	for (int var = 0; var < (int)reqHdrLst.size(); ++var) {
-		for (int var1 = 0; var1 < (int)allwdHeadersv.size(); ++var1) {
-			if(allwdHeadersv.at(var1)==StringUtil::toLowerCopy(reqHdrLst.at(var)))
-			{
-				return true;
-			}
-		}
-		erheadr = StringUtil::toUpperCopy(reqHdrLst.at(var));
-		break;
-	}
-	return false;
+bool CorsConfig::isHeaderAllowed(const strVec &reqHdrLst,
+                                 std::string &erheadr) {
+  if (allwdHeaders == "*") {
+    return true;
+  }
+  for (int var = 0; var < (int)reqHdrLst.size(); ++var) {
+    for (int var1 = 0; var1 < (int)allwdHeadersv.size(); ++var1) {
+      if (allwdHeadersv.at(var1) ==
+          StringUtil::toLowerCopy(reqHdrLst.at(var))) {
+        return true;
+      }
+    }
+    erheadr = StringUtil::toUpperCopy(reqHdrLst.at(var));
+    break;
+  }
+  return false;
 }

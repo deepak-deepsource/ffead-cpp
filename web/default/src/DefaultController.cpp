@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -27,26 +27,25 @@
 #include "Test3.h"
 #include "Test4.h"
 
-
 DefaultController::DefaultController() {
-	// TODO Auto-generated constructor stub
-
+  // TODO Auto-generated constructor stub
 }
 
 DefaultController::~DefaultController() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
 
-bool DefaultController::service(HttpRequest* req, HttpResponse* res)
-{
-	DataSourceInterface* sqli = DataSourceManager::getImpl();
-	std::vector<Test2> tec = sqli->getAll<Test2>();
-	std::cout << "\n Sdorm Query fetched " << tec.size() << " rows\n" << std::flush;
-	std::vector<Test3> tec1 = sqli->getAll<Test3>();
-	std::cout << "\n Sdorm Query fetched " << tec1.size() << " rows\n" << std::flush;
-	std::vector<Test4> tec2 = sqli->getAll<Test4>();
-	std::cout << "\n Sprint Query fetched " << tec2.size() << " rows\n" << std::flush;
-	DataSourceManager::cleanImpl(sqli);
-	return true;
+bool DefaultController::service(HttpRequest *req, HttpResponse *res) {
+  DataSourceInterface *sqli = DataSourceManager::getImpl();
+  std::vector<Test2> tec = sqli->getAll<Test2>();
+  std::cout << "\n Sdorm Query fetched " << tec.size() << " rows\n"
+            << std::flush;
+  std::vector<Test3> tec1 = sqli->getAll<Test3>();
+  std::cout << "\n Sdorm Query fetched " << tec1.size() << " rows\n"
+            << std::flush;
+  std::vector<Test4> tec2 = sqli->getAll<Test4>();
+  std::cout << "\n Sprint Query fetched " << tec2.size() << " rows\n"
+            << std::flush;
+  DataSourceManager::cleanImpl(sqli);
+  return true;
 }
-

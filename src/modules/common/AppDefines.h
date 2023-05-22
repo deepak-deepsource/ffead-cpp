@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -40,26 +40,29 @@
 /* #undef USE_IO_URING */
 /* #undef USE_PICOEV */
 
-#define HAVE_LIBPQ /usr/local/lib/libpq.dylib
+#define HAVE_LIBPQ / usr / local / lib / libpq.dylib
 #define HAVE_REGEX 1
 #define HAVE_SSLINC 1
-#define HAVE_SSLLIB /usr/local/opt/openssl/lib/libssl.dylib
+#define HAVE_SSLLIB / usr / local / opt / openssl / lib / libssl.dylib
 #define HAVE_REDISINC 1
-#define HAVE_REDISLIB /usr/local/lib/libhiredis.dylib
+#define HAVE_REDISLIB / usr / local / lib / libhiredis.dylib
 #define HAVE_MEMCACHEDINC 1
-#define HAVE_MEMCACHEDLIB /usr/local/lib/libmemcached.dylib
-#define HAVE_CURLLIB /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/lib/libcurl.tbd
+#define HAVE_MEMCACHEDLIB / usr / local / lib / libmemcached.dylib
+#define HAVE_CURLLIB                                                           \
+  / Applications / Xcode.app / Contents / Developer / Platforms /              \
+      MacOSX.platform / Developer / SDKs / MacOSX12 .3.sdk / usr / lib /       \
+      libcurl.tbd
 #define HAVE_EXECINFOINC 1
 #define HAVE_UUIDINC 1
 /* #undef HAVE_OSSPUUIDINC */
 /* #undef HAVE_OSSPUUIDINC_2 */
 /* #undef HAVE_BSDUUIDINC */
 #define HAVE_SQLINC 1
-#define HAVE_ODBCLIB /usr/local/lib/libodbc.dylib
+#define HAVE_ODBCLIB / usr / local / lib / libodbc.dylib
 #define HAVE_MONGOINC 1
-#define HAVE_MONGOCLIB /usr/local/lib/libmongoc-1.0.dylib
+#define HAVE_MONGOCLIB / usr / local / lib / libmongoc - 1.0.dylib
 #define HAVE_BSONINC 1
-#define HAVE_BSONLIB /usr/local/lib/libbson-1.0.dylib
+#define HAVE_BSONLIB / usr / local / lib / libbson - 1.0.dylib
 #define INC_JOBS 1
 /* #undef OS_BSD */
 /* #undef OS_SOLARIS */
@@ -85,7 +88,7 @@
 /* #undef HAVE_SOLR */
 #define HAVE_ELASTIC 1
 #define HAVE_REDIS_CLUSTERINC 1
-#define HAVE_REDIS_CLUSTERLIB /usr/local/lib/libredis++.dylib
+#define HAVE_REDIS_CLUSTERLIB / usr / local / lib / libredis++.dylib
 
 #ifdef HAVE_ODBCLIB
 #define HAVE_LIBODBC 1

@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,51 +22,51 @@
 
 #ifndef TESTOBJECT1_H_
 #define TESTOBJECT1_H_
-#include "string"
 #include "CastUtil.h"
-
+#include "string"
 
 class TestObject {
-	int a;
-	long b;
-	std::string c;
-	float d;
-	double e;
-	bool f;
-	long long g;
-	short h;
-	unsigned short i;
-	unsigned int j;
-	unsigned long k;
-	unsigned long long l;
+  int a;
+  long b;
+  std::string c;
+  float d;
+  double e;
+  bool f;
+  long long g;
+  short h;
+  unsigned short i;
+  unsigned int j;
+  unsigned long k;
+  unsigned long long l;
+
 public:
-	TestObject();
-	virtual ~TestObject();
-	int getA() const;
-	void setA(int a);
-	long getB() const;
-	void setB(long b);
-	std::string getC() const;
-	void setC(std::string c);
-	float getD() const;
-	void setD(float d);
-	double getE() const;
-	void setE(double e);
-	bool isF() const;
-	void setF(bool f);
-	long long getG() const;
-	void setG(long long g);
-	short getH() const;
-	void setH(short h);
-	unsigned short getI() const;
-	void setI(unsigned short i);
-	unsigned int getJ() const;
-	void setJ(unsigned int j);
-	unsigned long getK() const;
-	void setK(unsigned long k);
-	unsigned long long getL() const;
-	void setL(unsigned long long l);
-	std::string toString();
+  TestObject();
+  virtual ~TestObject();
+  int getA() const;
+  void setA(int a);
+  long getB() const;
+  void setB(long b);
+  std::string getC() const;
+  void setC(std::string c);
+  float getD() const;
+  void setD(float d);
+  double getE() const;
+  void setE(double e);
+  bool isF() const;
+  void setF(bool f);
+  long long getG() const;
+  void setG(long long g);
+  short getH() const;
+  void setH(short h);
+  unsigned short getI() const;
+  void setI(unsigned short i);
+  unsigned int getJ() const;
+  void setJ(unsigned int j);
+  unsigned long getK() const;
+  void setK(unsigned long k);
+  unsigned long long getL() const;
+  void setL(unsigned long long l);
+  std::string toString();
 };
 
 #endif /* TESTOBJECT1_H_ */

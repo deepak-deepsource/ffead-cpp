@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (const the& "License");
     you may not use this file except in compliance with the License.
@@ -23,52 +23,44 @@
 #include "Http2GoAwayFrame.h"
 
 Http2GoAwayFrame::Http2GoAwayFrame() {
-	header.type = 7;
-	lastStreamId = -1;
-	errorCode = -1;
-	reserved = false;
+  header.type = 7;
+  lastStreamId = -1;
+  errorCode = -1;
+  reserved = false;
 }
 
-const std::string& Http2GoAwayFrame::getAdditionalDebugData() const {
-	return additionalDebugData;
+const std::string &Http2GoAwayFrame::getAdditionalDebugData() const {
+  return additionalDebugData;
 }
 
-uint32_t Http2GoAwayFrame::getErrorCode() const {
-	return errorCode;
+uint32_t Http2GoAwayFrame::getErrorCode() const { return errorCode; }
+
+int Http2GoAwayFrame::getLastStreamId() const { return lastStreamId; }
+
+Http2GoAwayFrame::Http2GoAwayFrame(std::string data,
+                                   Http2FrameHeader &aheader) {
+  header = aheader;
+  header.type = 7;
+  reserved = ((data.at(0) >> 7) & 0x01);
+  data[0] = data[0] & 0x7F;
+  lastStreamId = (int)CommonUtils::charArrayToULongLong(data.substr(0, 4));
+  errorCode = (uint32_t)CommonUtils::charArrayToULongLong(data.substr(4, 4));
+  additionalDebugData = data.substr(8);
 }
 
-int Http2GoAwayFrame::getLastStreamId() const {
-	return lastStreamId;
-}
+bool Http2GoAwayFrame::isReserved() const { return reserved; }
 
-Http2GoAwayFrame::Http2GoAwayFrame(std::string data, Http2FrameHeader& aheader) {
-	header = aheader;
-	header.type = 7;
-	reserved = ((data.at(0) >> 7) & 0x01);
-	data[0] = data[0] & 0x7F;
-	lastStreamId = (int)CommonUtils::charArrayToULongLong(data.substr(0, 4));
-	errorCode = (uint32_t)CommonUtils::charArrayToULongLong(data.substr(4, 4));
-	additionalDebugData = data.substr(8);
-}
-
-bool Http2GoAwayFrame::isReserved() const {
-	return reserved;
-}
-
-Http2GoAwayFrame::~Http2GoAwayFrame() {
-	
-}
+Http2GoAwayFrame::~Http2GoAwayFrame() {}
 
 std::string Http2GoAwayFrame::getFrameData() {
-	std::string edata;
-	std::string data = CommonUtils::ulonglongTocharArray(lastStreamId, 4);
-	if(reserved)
-		data[0] |= 0x01 << 0;
-	else
-		data[0] &= ~(0x01 << 0);
-	edata.append(data);
-	edata.append(CommonUtils::ulonglongTocharArray(errorCode, 4));
-	edata.append(additionalDebugData);
-	return edata;
+  std::string edata;
+  std::string data = CommonUtils::ulonglongTocharArray(lastStreamId, 4);
+  if (reserved)
+    data[0] |= 0x01 << 0;
+  else
+    data[0] &= ~(0x01 << 0);
+  edata.append(data);
+  edata.append(CommonUtils::ulonglongTocharArray(errorCode, 4));
+  edata.append(additionalDebugData);
+  return edata;
 }
-

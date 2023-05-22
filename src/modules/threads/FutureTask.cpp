@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,48 +23,42 @@
 #include "FutureTask.h"
 
 FutureTask::FutureTask() {
-	init();
-	result = NULL;
-	isComplete = false;
+  init();
+  result = NULL;
+  isComplete = false;
 }
 
-FutureTask::FutureTask(const int& priority) {
-	setPriority(priority);
-	result = NULL;
-	isComplete = false;
+FutureTask::FutureTask(const int &priority) {
+  setPriority(priority);
+  result = NULL;
+  isComplete = false;
 }
 
-FutureTask::FutureTask(const int& tunit, const int& type) {
-	setTunitType(tunit, type);
-	result = NULL;
-	isComplete = false;
+FutureTask::FutureTask(const int &tunit, const int &type) {
+  setTunitType(tunit, type);
+  result = NULL;
+  isComplete = false;
 }
 
-FutureTask::~FutureTask() {
-	
+FutureTask::~FutureTask() {}
+
+void *FutureTask::getResult() {
+  while (!isTaskComplete()) {
+    Thread::mSleep(1);
+  }
+  return result;
 }
 
-void* FutureTask::getResult()
-{
-	while(!isTaskComplete())
-	{
-		Thread::mSleep(1);
-	}
-	return result;
+void FutureTask::taskComplete() {
+  m_mutex.lock();
+  isComplete = true;
+  m_mutex.unlock();
 }
 
-void FutureTask::taskComplete()
-{
-	m_mutex.lock();
-	isComplete = true;
-	m_mutex.unlock();
-}
-
-bool FutureTask::isTaskComplete()
-{
-	bool flag = false;
-	m_mutex.lock();
-	flag = isComplete;
-	m_mutex.unlock();
-	return flag;
+bool FutureTask::isTaskComplete() {
+  bool flag = false;
+  m_mutex.lock();
+  flag = isComplete;
+  m_mutex.unlock();
+  return flag;
 }

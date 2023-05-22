@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -26,10 +26,10 @@
 
 class TestPage {
 public:
-	TestPage();
-	virtual ~TestPage();
-	std::string textonclick(int,std::string,std::string);
-	int linkonclick();
+  TestPage();
+  virtual ~TestPage();
+  std::string textonclick(int, std::string, std::string);
+  int linkonclick();
 };
 
 #endif /* TESTPAGE_H_ */

@@ -1,5 +1,5 @@
 /*
-	Copyright 2009-2020, Sumeet Chhetri
+        Copyright 2009-2020, Sumeet Chhetri
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@
 using namespace li;
 
 class LithiumServer {
-public:	
-	static void runServer(int port, std::vector<std::string> servedAppNames);
+public:
+  static void runServer(int port, std::vector<std::string> servedAppNames);
 };
 
 #endif /* SRC_SERVER_LITHIUM_HTTP_LITHIUMSERVER_H_ */
