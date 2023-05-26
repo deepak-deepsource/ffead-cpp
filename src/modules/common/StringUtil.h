@@ -22,6 +22,7 @@
 
 #ifndef STRINGUTIL_H_
 #define STRINGUTIL_H_
+#include "Compatibility.h"
 #include "string"
 #include <algorithm>
 #include <sstream>
@@ -30,7 +31,6 @@
 #include <stdio.h>
 #include "cstring"
 #include "string_view"
-
 
 class StringUtil {
 	static std::string whitespaces;
@@ -117,6 +117,14 @@ public:
 			lastPos = pos + 1;
 		}
 		return tokens;
+	}
+	static inline void to_nbo(double in, double *out) {
+		uint64_t *i = (uint64_t *)&in;
+		uint32_t *r = (uint32_t *)out;
+
+		/* convert input to network byte order */
+		r[0] = htonl((uint32_t)((*i) >> 32));
+		r[1] = htonl((uint32_t)*i);
 	}
 	static int countOccurrences(const std::string& input, const std::string& delimiter);
 	static void trim(std::string& str);
