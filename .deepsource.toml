@@ -3,5 +3,8 @@ version = 1
 [[analyzers]]
 name = "cxx"
 
+  [analyzers.meta]
+  misra_compliance = true
+
 [[transformers]]
 name = "clang-format"
